@@ -79,3 +79,15 @@ func (c *HttpClient) Post(method string, p interface{}) ([]byte, error) {
 		return body, nil
 	}
 }
+
+func (c *HttpClient) PostAsResponse(method string, p interface{}) (*Response, error) {
+	bytes, err := c.Post(method, p)
+	if err != nil {
+		return nil, err
+	}
+	var resp = &Response{};
+	if err := json.Unmarshal(bytes, resp); err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
