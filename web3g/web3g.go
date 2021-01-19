@@ -2,8 +2,8 @@ package web3g
 
 import (
 	"fmt"
+	"math/big"
 	"platon-go-sdk/rpc"
-	"strconv"
 )
 
 type Web3g struct {
@@ -21,11 +21,15 @@ func ParseTagOrNumber(qt interface{}) (string, error) {
 	if ok && (spos == "latest" || spos == "earliest" || spos == "pending") {
 		return spos, nil
 	} else {
-		ipos, ok := qt.(int)
+		ipos, ok := qt.(big.Int)
 		if !ok {
 			return "", fmt.Errorf("req.TagOrNumber can only be integer or 'latest', 'earliest', 'pending'");
 		}
-		return strconv.Itoa(ipos), nil
+
+		if ipos.BitLen() == 0 {
+			return "0x0", nil
+		}
+		return fmt.Sprintf("%#x", ipos), nil
 	}
 }
 
@@ -42,10 +46,7 @@ func ParseHttpResponseToString(resp *rpc.Response, err error) (string, error) {
 // To get the client version of specific node.
 func (web3g *Web3g) ClientVersion() (string, error) {
 	resp, err := web3g.httpClient.PostAsResponse(Web3ClientVersion, nil)
-	if err != nil {
-		return "", err
-	}
-	return resp.Result.(string), nil
+	return ParseHttpResponseToString(resp, err)
 }
 // To get a hash of given hex string which starts with '0x',
 // and the hash algorithm is 'keccak-256'
@@ -53,8 +54,5 @@ func (web3g *Web3g) Sha3(dates string) (string, error) {
 	reqData := make([]string, 1)
 	reqData[0] = dates
 	resp, err := web3g.httpClient.PostAsResponse(Web3Sha3, reqData);
-	if err != nil {
-		return "", err
-	}
-	return resp.Result.(string), nil
+	return ParseHttpResponseToString(resp, err)
 }

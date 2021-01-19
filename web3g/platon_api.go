@@ -10,17 +10,6 @@ func (web3g *Web3g) PlatonProtocolVersion() (string, error) {
 	return ParseHttpResponseToString(resp, err)
 }
 
-type SyncingInfo struct {
-	StartingBlock string
-	CurrentBlock  string
-	HighestBlock  string
-}
-
-type PlatonSyncingResp struct {
-	Syncing bool
-	SyncingInfo
-}
-
 func (web3g *Web3g) PlatonSyncing() (PlatonSyncingResp, error) {
 	resp, err := web3g.httpClient.PostAsResponse(PlatonSyncing, nil)
 	if err != nil {
@@ -65,11 +54,6 @@ func (web3g *Web3g) PlatonBlockNumber() (string, error) {
 	return ParseHttpResponseToString(resp, err)
 }
 
-type PlatonGetBalanceReq struct {
-	Address     string
-	TagOrNumber interface{}
-}
-
 func (web3g *Web3g) PlatonGetBalance(req PlatonGetBalanceReq) (string, error) {
 	reqp := make([]string, 2)
 	reqp[0] = req.Address
@@ -79,15 +63,10 @@ func (web3g *Web3g) PlatonGetBalance(req PlatonGetBalanceReq) (string, error) {
 		reqp[1] = pos
 	}
 
-	resp, err := web3g.httpClient.PostAsResponse(PlatonGetBalance, reqp)
+	resp, err := web3g.httpClient.PostAsResponse(PlatonGetBalance, reqp[0], reqp[1])
 	return ParseHttpResponseToString(resp, err)
 }
 
-type PlatonGetStorageAtReq struct {
-	Address       string
-	PositionIndex int
-	TagOrNumber   interface{}
-}
 func (web3g *Web3g) PlatonGetStorageAt(req PlatonGetStorageAtReq) (string, error) {
 	reqp := make([]string, 3)
 	reqp[0] = req.Address
@@ -102,10 +81,6 @@ func (web3g *Web3g) PlatonGetStorageAt(req PlatonGetStorageAtReq) (string, error
 	return ParseHttpResponseToString(resp, err)
 }
 
-type PlatonGetTransactionCountReq struct {
-	Address       string
-	TagOrNumber   interface{}
-}
 func (web3g *Web3g) PlatonGetTransactionCount(req PlatonGetTransactionCountReq) (string, error) {
 	reqp := make([]string, 2)
 	reqp[0] = req.Address
@@ -133,10 +108,6 @@ func (web3g *Web3g) PlatonGetBlockTransactionCountByNumber(tagOrNumber interface
 	return ParseHttpResponseToString(resp, err)
 }
 
-type PlatonGetCodeReq struct {
-	Address string
-	TagOrNumber interface{}
-}
 func (web3g *Web3g) PlatonGetCode(req PlatonGetCodeReq) (string, error) {
 	reqp := make([]string, 2)
 	reqp[0] = req.Address
@@ -149,14 +120,36 @@ func (web3g *Web3g) PlatonGetCode(req PlatonGetCodeReq) (string, error) {
 	return ParseHttpResponseToString(resp, err)
 }
 
-type PlatonSignReq struct {
-	Address string
-	Data    string
-}
 func (web3g *Web3g) PlatonSign(req PlatonSignReq) (string, error) {
-	reqp := make([]string, 2)
-	reqp[0] = req.Address
-	reqp[1] = req.Data
-	resp, err := web3g.httpClient.PostAsResponse(PlatonGetCode, reqp)
+	resp, err := web3g.httpClient.PostAsResponse(PlatonSign, req.Address, req.Data)
+	return ParseHttpResponseToString(resp, err)
+}
+
+func (web3g *Web3g) PlatonSendTransaction(req PlatonSendTransactionReq) (string, error) {
+	if req.Gas == 0 {
+		req.Gas = 90000;
+	}
+
+	resp, err := web3g.httpClient.PostAsResponse(PlatonSendTransaction, req)
+	return ParseHttpResponseToString(resp, err)
+}
+
+func (web3g *Web3g) PlatonSendRawTransaction(req PlatonSendRawTransactionReq) (string, error) {
+	resp, err := web3g.httpClient.PostAsResponse(PlatonSendRawTransaction, req)
+	return ParseHttpResponseToString(resp, err)
+}
+
+func (web3g *Web3g) PlatonCall(req PlatonCallReq) (string, error) {
+	resp, err := web3g.httpClient.PostAsResponse(PlatonCall, req)
+	return ParseHttpResponseToString(resp, err)
+}
+
+func (web3g *Web3g) PlatonEstimateGas(req PlatonEstimateGasReq) (string, error) {
+	resp, err := web3g.httpClient.PostAsResponse(PlatonEstimateGas, req)
+	return ParseHttpResponseToString(resp, err)
+}
+
+func (web3g *Web3g) PlatonGetBlockByHash(blockHash string, showTxDetail bool) (string, error) {
+	resp, err := web3g.httpClient.PostAsResponse(PlatonGetBlockByHash, blockHash, showTxDetail)
 	return ParseHttpResponseToString(resp, err)
 }

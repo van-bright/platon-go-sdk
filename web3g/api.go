@@ -20,4 +20,9 @@ const (
 	PlatonGetTransactionCount = "platon_getTransactionCount"
 	PlatonGetBlockTransactionCountByHash = "platon_getBlockTransactionCountByHash"
 	PlatonGetBlockTransactionCountByNumber = "platon_getBlockTransactionCountByNumber"
+	PlatonSendTransaction = "platon_sendTransaction"
+	PlatonSendRawTransaction = "platon_sendRawTransaction"
+	PlatonCall            = "platon_call"
+	PlatonEstimateGas     = "platon_estimateGas"
+	PlatonGetBlockByHash  = "platon_getBlockByHash"
 )

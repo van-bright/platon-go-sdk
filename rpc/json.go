@@ -17,6 +17,7 @@
 package rpc
 
 import (
+	"encoding/json"
 	"fmt"
 )
 
@@ -31,8 +32,8 @@ const (
 type JsonRequest struct {
 	Method  string          `json:"method"`
 	Version string          `json:"jsonrpc"`
-	Id      uint64 `json:"id,omitempty"`
-	Payload interface{} `json:"params,omitempty"`
+	Id      uint64          `json:"id,omitempty"`
+	Payload json.RawMessage `json:"params,omitempty"`
 }
 
 type jsonError struct {
@@ -50,4 +51,11 @@ func (err *jsonError) Error() string {
 
 func (err *jsonError) ErrorCode() int {
 	return err.Code
+}
+
+type Response struct {
+	Version string      `json:"jsonrpc"`
+	ID      uint64      `json:"id"`
+	Result  interface{} `json:"result,omitempty"`
+	Error   interface{} `json:"error,omitempty"`
 }

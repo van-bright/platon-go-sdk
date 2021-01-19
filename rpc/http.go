@@ -36,25 +36,26 @@ type HttpClient struct {
 }
 
 func NewHttpClient(url string) (*HttpClient) {
-	return &HttpClient{url, &http.Client{}, 1}
+	return &HttpClient{url, &http.Client{}, 0}
 }
 
-func (c *HttpClient) Post(method string, p interface{}) ([]byte, error) {
-	params := JsonRequest{
-		Version: "2.0",
-		Id: c.nextId,
-		Method:  method,
-		Payload: p,
+func (c *HttpClient)newMessage(method string, paramsIn ...interface{}) ([]byte, error) {
+
+	params, err := json.Marshal(paramsIn)
+	if err != nil {
+		return nil, err
 	}
+	c.nextId++;
+	return json.Marshal(JsonRequest{Version: "2.0", Id: c.nextId, Method:  method, Payload: params})
+}
 
-	c.nextId++
-
-	jsonStr, err := json.Marshal(params)
+func (c *HttpClient) Post(method string, args ...interface{}) ([]byte, error) {
+	jsonStr, err := c.newMessage(method, args...)
 	if err != nil {
 		fmt.Println("marsh error: ", err)
 		return []byte(`""`),  err
 	}
-
+	fmt.Println("Message: ", jsonStr)
 	req, err := http.NewRequest(httpMethod, c.endPoint, bytes.NewBuffer(jsonStr))
 	if err != nil {
 		return []byte(`""`), err
@@ -80,8 +81,8 @@ func (c *HttpClient) Post(method string, p interface{}) ([]byte, error) {
 	}
 }
 
-func (c *HttpClient) PostAsResponse(method string, p interface{}) (*Response, error) {
-	bytes, err := c.Post(method, p)
+func (c *HttpClient) PostAsResponse(method string, args ...interface{}) (*Response, error) {
+	bytes, err := c.Post(method, args...)
 	if err != nil {
 		return nil, err
 	}
