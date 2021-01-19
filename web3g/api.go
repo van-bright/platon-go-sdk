@@ -25,4 +25,5 @@ const (
 	PlatonCall            = "platon_call"
 	PlatonEstimateGas     = "platon_estimateGas"
 	PlatonGetBlockByHash  = "platon_getBlockByHash"
+	PlatonGetBlockByNumber= "platon_getBlockByNumber"
 )

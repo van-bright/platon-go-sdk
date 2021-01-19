@@ -56,6 +56,6 @@ func (err *jsonError) ErrorCode() int {
 type Response struct {
 	Version string      `json:"jsonrpc"`
 	ID      uint64      `json:"id"`
-	Result  interface{} `json:"result,omitempty"`
+	Result  json.RawMessage `json:"result,omitempty"`
 	Error   interface{} `json:"error,omitempty"`
 }

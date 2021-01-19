@@ -1,8 +1,8 @@
 package web3g
 
 import (
+	"encoding/json"
 	"fmt"
-	"strconv"
 )
 
 func (web3g *Web3g) PlatonProtocolVersion() (string, error) {
@@ -19,12 +19,16 @@ func (web3g *Web3g) PlatonSyncing() (PlatonSyncingResp, error) {
 		return PlatonSyncingResp{}, fmt.Errorf("%s", resp.Error)
 	}
 
-	if _, ok := resp.Result.(bool); ok {
+	var ok = true
+	if err := json.Unmarshal(resp.Result, &ok); err == nil {
 		return PlatonSyncingResp{Syncing: false}, nil
 	}
 
-	info := resp.Result.(SyncingInfo)
-	return PlatonSyncingResp{true, info}, nil
+	var result SyncingInfo
+	if err := json.Unmarshal(resp.Result, &result); err != nil {
+		return PlatonSyncingResp{}, err
+	}
+	return PlatonSyncingResp{true, result}, nil
 }
 
 func (web3g *Web3g) PlatonGasPrice() (string, error) {
@@ -41,12 +45,11 @@ func (web3g *Web3g) PlatonAccounts() ([]string, error) {
 		return nil, fmt.Errorf("%s", resp.Error)
 	}
 
-	accounts := resp.Result.([]interface{})
-	result := make([]string, len(accounts))
-	for i,v := range accounts {
-		result[i] = v.(string)
+	var accounts []string
+	if err := json.Unmarshal(resp.Result, &accounts); err != nil {
+		return nil, err
 	}
-	return result, nil
+	return accounts, nil
 }
 
 func (web3g *Web3g) PlatonBlockNumber() (string, error) {
@@ -54,43 +57,28 @@ func (web3g *Web3g) PlatonBlockNumber() (string, error) {
 	return ParseHttpResponseToString(resp, err)
 }
 
-func (web3g *Web3g) PlatonGetBalance(req PlatonGetBalanceReq) (string, error) {
-	reqp := make([]string, 2)
-	reqp[0] = req.Address
-	if pos, err := ParseTagOrNumber(req.TagOrNumber); err != nil {
-		return "", err
-	} else {
-		reqp[1] = pos
-	}
-
-	resp, err := web3g.httpClient.PostAsResponse(PlatonGetBalance, reqp[0], reqp[1])
+func (web3g *Web3g) PlatonGetBalance(address string, pos interface{}) (string, error) {
+	resp, err := web3g.httpClient.PostAsResponse(PlatonGetBalance, address, pos)
 	return ParseHttpResponseToString(resp, err)
 }
 
 func (web3g *Web3g) PlatonGetStorageAt(req PlatonGetStorageAtReq) (string, error) {
-	reqp := make([]string, 3)
-	reqp[0] = req.Address
-	reqp[1] = strconv.Itoa(req.PositionIndex)
-	if pos, err := ParseTagOrNumber(req.TagOrNumber); err != nil {
+	pos, err := ParseTagOrNumber(req.TagOrNumber)
+	if err != nil {
 		return "", err
-	} else {
-		reqp[3] = pos
 	}
 
-	resp, err := web3g.httpClient.PostAsResponse(PlatonGetStorageAt, reqp)
+	resp, err := web3g.httpClient.PostAsResponse(PlatonGetStorageAt, req.Address, req.PositionIndex, pos)
 	return ParseHttpResponseToString(resp, err)
 }
 
 func (web3g *Web3g) PlatonGetTransactionCount(req PlatonGetTransactionCountReq) (string, error) {
-	reqp := make([]string, 2)
-	reqp[0] = req.Address
-	if pos, err := ParseTagOrNumber(req.TagOrNumber); err != nil {
+	pos, err := ParseTagOrNumber(req.TagOrNumber)
+	if err != nil {
 		return "", err
-	} else {
-		reqp[1] = pos
 	}
 
-	resp, err := web3g.httpClient.PostAsResponse(PlatonGetTransactionCount, reqp)
+	resp, err := web3g.httpClient.PostAsResponse(PlatonGetTransactionCount, req.Address, pos)
 	return ParseHttpResponseToString(resp, err)
 }
 
@@ -109,14 +97,11 @@ func (web3g *Web3g) PlatonGetBlockTransactionCountByNumber(tagOrNumber interface
 }
 
 func (web3g *Web3g) PlatonGetCode(req PlatonGetCodeReq) (string, error) {
-	reqp := make([]string, 2)
-	reqp[0] = req.Address
-	if pos, err := ParseTagOrNumber(req.TagOrNumber); err != nil {
+	pos, err := ParseTagOrNumber(req.TagOrNumber)
+	if err != nil {
 		return "", err
-	} else {
-		reqp[1] = pos
 	}
-	resp, err := web3g.httpClient.PostAsResponse(PlatonGetCode, reqp)
+	resp, err := web3g.httpClient.PostAsResponse(PlatonGetCode, req.Address, pos)
 	return ParseHttpResponseToString(resp, err)
 }
 
@@ -149,7 +134,22 @@ func (web3g *Web3g) PlatonEstimateGas(req PlatonEstimateGasReq) (string, error) 
 	return ParseHttpResponseToString(resp, err)
 }
 
-func (web3g *Web3g) PlatonGetBlockByHash(blockHash string, showTxDetail bool) (string, error) {
+func (web3g *Web3g) PlatonGetBlockByHash(blockHash string, showTxDetail bool) (PlatonBlock, error) {
 	resp, err := web3g.httpClient.PostAsResponse(PlatonGetBlockByHash, blockHash, showTxDetail)
-	return ParseHttpResponseToString(resp, err)
+	if err != nil {
+		return PlatonBlock{}, err
+	}
+	var result PlatonBlock
+	e := json.Unmarshal(resp.Result, &result)
+	return result, e
+}
+
+func (web3g *Web3g) PlatonGetBlockByNumber(quantity interface{}, showTxDetail bool) (PlatonBlock, error) {
+	resp, err := web3g.httpClient.PostAsResponse(PlatonGetBlockByNumber, quantity, showTxDetail)
+	if err != nil {
+		return PlatonBlock{}, err
+	}
+	var result PlatonBlock
+	e := json.Unmarshal(resp.Result, &result)
+	return result, e
 }

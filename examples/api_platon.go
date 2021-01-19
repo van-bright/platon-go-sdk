@@ -20,12 +20,21 @@ func main() {
 	//	rsp, _ := geb3.PlatonBlockNumber()
 	//	fmt.Println("PlatonBlockNumber: ", rsp)
 	//}
+	//{
+	//	if rsp, err := geb3.PlatonGetBalance("atx1gp7h8k9ynm4ct5ev73j4qlwhr4g8zqxp0rc7ym", "latest"); err != nil {
+	//		fmt.Println("Error: ", err)
+	//	} else {
+	//		fmt.Println("PlatonBlockNumber: ", rsp)
+	//	}
+	//}
 	{
-		req := web3g.PlatonGetBalanceReq{"atx1gp7h8k9ynm4ct5ev73j4qlwhr4g8zqxp0rc7ym", "latest"}
-		if rsp, err := geb3.PlatonGetBalance(req); err != nil {
-			fmt.Println("Error: ", err)
-		} else {
-			fmt.Println("PlatonBlockNumber: ", rsp)
+		{
+			rsp, err := geb3.PlatonGetBlockByNumber("latest",true)
+			if err != nil {
+				fmt.Println("error: ", err);
+			} else {
+				fmt.Println("block by number: ", rsp)
+			}
 		}
 	}
 }

@@ -55,7 +55,6 @@ func (c *HttpClient) Post(method string, args ...interface{}) ([]byte, error) {
 		fmt.Println("marsh error: ", err)
 		return []byte(`""`),  err
 	}
-	fmt.Println("Message: ", jsonStr)
 	req, err := http.NewRequest(httpMethod, c.endPoint, bytes.NewBuffer(jsonStr))
 	if err != nil {
 		return []byte(`""`), err

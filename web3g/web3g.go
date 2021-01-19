@@ -1,6 +1,7 @@
 package web3g
 
 import (
+	"encoding/json"
 	"fmt"
 	"math/big"
 	"platon-go-sdk/rpc"
@@ -40,7 +41,10 @@ func ParseHttpResponseToString(resp *rpc.Response, err error) (string, error) {
 	if resp.Error != nil {
 		return "", fmt.Errorf("%s", resp.Error)
 	}
-	return resp.Result.(string), nil
+	//return resp.Result.(string), nil
+	var result string
+	e := json.Unmarshal(resp.Result, &result)
+	return result, e
 }
 
 // To get the client version of specific node.
