@@ -26,4 +26,12 @@ const (
 	PlatonEstimateGas     = "platon_estimateGas"
 	PlatonGetBlockByHash  = "platon_getBlockByHash"
 	PlatonGetBlockByNumber= "platon_getBlockByNumber"
+	PlatonGetTransactionByHash = "platon_getTransactionByHash"
+	PlatonGetTransactionByBlockHashAndIndex = "platon_getTransactionByBlockHashAndIndex"
+	PlatonGetTransactionByBlockNumberAndIndex = "platon_getTransactionByBlockNumberAndIndex"
+	PlatonGetTransactionReceipt = "platon_getTransactionReceipt"
+	PlatonNewFilter = "platon_newFilter"
+	PlatonNewBlockFilter = "platon_newBlockFilter"
+	PlatonNewPendingTransactionFilter = "platon_newPendingTransactionFilter"
+	PlatonUninstallFilter = "platon_uninstallFilter"
 )

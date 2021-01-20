@@ -29,11 +29,13 @@ func main() {
 	//}
 	{
 		{
-			rsp, err := geb3.PlatonGetBlockByNumber("latest",true)
+			rsp, err := geb3.PlatonGetBlockByNumber(
+				"0x1b4",true)
 			if err != nil {
 				fmt.Println("error: ", err);
 			} else {
-				fmt.Println("block by number: ", rsp)
+				//out, _ := json.Marshal(rsp)
+				fmt.Println("block by number: ",rsp.Number)
 			}
 		}
 	}

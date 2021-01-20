@@ -3,6 +3,7 @@ package web3g
 import (
 	"encoding/json"
 	"fmt"
+	"math/big"
 )
 
 func (web3g *Web3g) PlatonProtocolVersion() (string, error) {
@@ -111,8 +112,9 @@ func (web3g *Web3g) PlatonSign(req PlatonSignReq) (string, error) {
 }
 
 func (web3g *Web3g) PlatonSendTransaction(req PlatonSendTransactionReq) (string, error) {
-	if req.Gas == 0 {
-		req.Gas = 90000;
+	if req.Gas == nil {
+		req.Gas = (*BigInt)(big.NewInt(90000))
+
 	}
 
 	resp, err := web3g.httpClient.PostAsResponse(PlatonSendTransaction, req)
@@ -150,6 +152,86 @@ func (web3g *Web3g) PlatonGetBlockByNumber(quantity interface{}, showTxDetail bo
 		return PlatonBlock{}, err
 	}
 	var result PlatonBlock
+	e := json.Unmarshal(resp.Result, &result)
+	return result, e
+}
+
+func (web3g *Web3g) PlatonGetTransactionByHash(txHash string) (PlatonTransaction, error) {
+	resp, err := web3g.httpClient.PostAsResponse(PlatonGetTransactionByHash, txHash)
+	if err != nil {
+		return PlatonTransaction{}, err
+	}
+	var result PlatonTransaction
+	e := json.Unmarshal(resp.Result, &result)
+	return result, e
+}
+
+func (web3g *Web3g) PlatonGetTransactionByBlockHashAndIndex(txHash string, indexStr string) (PlatonTransaction, error) {
+	resp, err := web3g.httpClient.PostAsResponse(PlatonGetTransactionByBlockHashAndIndex, txHash, indexStr)
+	if err != nil {
+		return PlatonTransaction{}, err
+	}
+	var result PlatonTransaction
+	e := json.Unmarshal(resp.Result, &result)
+	return result, e
+}
+
+func (web3g *Web3g) PlatonGetTransactionByBlockNumberAndIndex(number string, indexStr string) (PlatonTransaction, error) {
+	resp, err := web3g.httpClient.PostAsResponse(PlatonGetTransactionByBlockNumberAndIndex, number, indexStr)
+	if err != nil {
+		return PlatonTransaction{}, err
+	}
+	var result PlatonTransaction
+	e := json.Unmarshal(resp.Result, &result)
+	return result, e
+}
+
+func (web3g *Web3g) PlatonGetTransactionReceipt(txHash string) (PlatonTransactionReceipt, error) {
+	resp, err := web3g.httpClient.PostAsResponse(PlatonGetTransactionReceipt, txHash)
+	if err != nil {
+		return PlatonTransactionReceipt{}, err
+	}
+	var result PlatonTransactionReceipt
+	e := json.Unmarshal(resp.Result, &result)
+	return result, e
+}
+
+func (web3g *Web3g) PlatonNewFilter(fromBlock interface{}, toBlock interface{}, address interface{}, topics interface{}) (*BigInt, error) {
+	resp, err := web3g.httpClient.PostAsResponse(PlatonNewFilter, fromBlock, toBlock, address, topics)
+	if err != nil {
+		return &BigInt{}, err
+	}
+	var result BigInt
+	e := json.Unmarshal(resp.Result, &result)
+	return &result, e
+}
+
+func (web3g *Web3g) PlatonNewBlockFilter() (*BigInt, error) {
+	resp, err := web3g.httpClient.PostAsResponse(PlatonNewBlockFilter, nil)
+	if err != nil {
+		return &BigInt{}, err
+	}
+	var result BigInt
+	e := json.Unmarshal(resp.Result, &result)
+	return &result, e
+}
+
+func (web3g *Web3g) PlatonNewPendingTransactionFilter() (*BigInt, error) {
+	resp, err := web3g.httpClient.PostAsResponse(PlatonNewPendingTransactionFilter, nil)
+	if err != nil {
+		return &BigInt{}, err
+	}
+	var result BigInt
+	e := json.Unmarshal(resp.Result, &result)
+	return &result, e
+}
+
+func (web3g *Web3g) PlatonUninstallFilter(filterId *BigInt) (bool, error) {
+	resp, err := web3g.httpClient.PostAsResponse(PlatonUninstallFilter, filterId)
+	if err != nil {
+		return false, err
+	}
+	var result bool
 	e := json.Unmarshal(resp.Result, &result)
 	return result, e
 }
