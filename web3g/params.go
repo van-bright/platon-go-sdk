@@ -124,3 +124,7 @@ type PlatonTransactionReceipt struct {
 	ContractAddress string `json:"contractAddress"`
 	Logs []PlatonTransactionLog `json:"logs"`
 }
+
+type PlatonGetLogsReq struct {
+	Topics []interface{} `json:"topics"`
+}

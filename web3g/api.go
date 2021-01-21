@@ -34,4 +34,15 @@ const (
 	PlatonNewBlockFilter = "platon_newBlockFilter"
 	PlatonNewPendingTransactionFilter = "platon_newPendingTransactionFilter"
 	PlatonUninstallFilter = "platon_uninstallFilter"
+	PlatonGetFilterChanges = "platon_getFilterChanges"
+	PlatonGetFilterLogs = "platon_getFilterLogs"
+	PlatonGetLogs = "platon_getLogs"
+	PlatonEvidences = "platon_evidences"
+
+	AdminAddPeer = "admin_addPeer"
+	AdminNodeInfo = "admin_nodeInfo"
+	AdminPeers = "admin_peers"
+	AdminGetProgramVersion = "admin_getProgramVersion"
+	AdminGetSchnorrNIZKProve = "admin_getSchnorrNIZKProve"
+	AdminDatadir = "admin_datadir"
 )

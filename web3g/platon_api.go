@@ -235,3 +235,38 @@ func (web3g *Web3g) PlatonUninstallFilter(filterId *BigInt) (bool, error) {
 	e := json.Unmarshal(resp.Result, &result)
 	return result, e
 }
+
+func (web3g *Web3g) PlatonGetFilterChanges(filterId *BigInt) (*PlatonTransactionLog, error) {
+	resp, err := web3g.httpClient.PostAsResponse(PlatonGetFilterChanges, filterId)
+	if err != nil {
+		return &PlatonTransactionLog{}, err
+	}
+	var result PlatonTransactionLog
+	e := json.Unmarshal(resp.Result, &result)
+	return &result, e
+}
+
+func (web3g *Web3g) PlatonGetFilterLogs(filterId *BigInt) (*PlatonTransactionLog, error) {
+	resp, err := web3g.httpClient.PostAsResponse(PlatonGetFilterLogs, filterId)
+	if err != nil {
+		return &PlatonTransactionLog{}, err
+	}
+	var result PlatonTransactionLog
+	e := json.Unmarshal(resp.Result, &result)
+	return &result, e
+}
+
+func (web3g *Web3g) PlatonGetLogs(topics *PlatonGetLogsReq) (*PlatonTransactionLog, error) {
+	resp, err := web3g.httpClient.PostAsResponse(PlatonGetLogs, topics)
+	if err != nil {
+		return &PlatonTransactionLog{}, err
+	}
+	var result PlatonTransactionLog
+	e := json.Unmarshal(resp.Result, &result)
+	return &result, e
+}
+
+func (web3g *Web3g) PlatonEvidences() (string, error) {
+	resp, err := web3g.httpClient.PostAsResponse(PlatonEvidences, nil)
+	return ParseHttpResponseToString(resp, err)
+}
