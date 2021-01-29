@@ -14,13 +14,8 @@ const charset = "qpzry9x8gf2tvdw0s3jn54khce6mua7l"
 
 var gen = []int{0x3b6a57b2, 0x26508e6d, 0x1ea119fa, 0x3d4233dd, 0x2a1462b3}
 
-type NetworkType string
-const (
-	MainNet NetworkType = "atx"
-	TestNet NetworkType = "atp"
-)
 // 将以太坊公钥表示的地址, 转换成bech32格式
-func EncodeAddress(hrp NetworkType, hexStr string) (string, error) {
+func EncodeAddress(hrp string, hexStr string) (string, error) {
 	if strings.HasPrefix(hexStr, "0x") || strings.HasPrefix(hexStr, "0X") {
 		hexStr = hexStr[2:]
 	}
@@ -42,7 +37,7 @@ func EncodeAddress(hrp NetworkType, hexStr string) (string, error) {
 	return encoded, nil
 }
 // 将Bech32编码的地址, 转换为以太坊方式编码的公钥地址
-func DecodeAddress(address string) (NetworkType, string, error) {
+func DecodeAddress(address string) (string, string, error) {
 	hrp, data, err := Decode(address)
 	if err != nil { return "", "", err }
 
@@ -51,7 +46,7 @@ func DecodeAddress(address string) (NetworkType, string, error) {
 
 	hexStr := hex.EncodeToString(rconv)
 
-	return NetworkType(hrp), hexStr, nil
+	return hrp, hexStr, nil
 }
 // 检查一个Bech32地址是否合法
 func IsBech32Valid(bech32Address string) bool {
@@ -295,4 +290,29 @@ func bech32VerifyChecksum(hrp string, data []byte) bool {
 	}
 	concat := append(bech32HrpExpand(hrp), integers...)
 	return bech32Polymod(concat) == 1
+}
+
+//ConvertAndEncode converts from a base64 encoded byte string to base32 encoded byte string and then to bech32
+func ConvertAndEncode(hrp string, data []byte) (string, error) {
+	//this is base32
+	converted, err := ConvertBits(data, 8, 5, true)
+
+	if err != nil {
+		return "", err
+	}
+	return Encode(hrp, converted)
+
+}
+
+//DecodeAndConvert decodes a bech32 encoded string and converts to base64 encoded bytes
+func DecodeAndConvert(bech string) (string, []byte, error) {
+	hrp, data, err := Decode(bech)
+	if err != nil {
+		return "", nil, err
+	}
+	converted, err := ConvertBits(data, 5, 8, false)
+	if err != nil {
+		return "", nil, err
+	}
+	return hrp, converted, nil
 }
