@@ -14,14 +14,29 @@ func (web3g *Web3g) AdminAddPeer(data string) (bool, error) {
 	return result, e
 }
 
-func (web3g *Web3g) AdminNodeInfo() (string, error) {
+// NodeInfo represents a short summary of the information known about the host.
+type NodeInfo struct {
+	ID     string `json:"id"`        // Unique node identifier (also the encryption key)
+	Name   string `json:"name"`      // Name of the node, including client type, version, OS, custom data
+	BlsPub string `json:"blsPubKey"` // BLS public key
+	Enode  string `json:"enode"`     // Enode URL for adding this peer from remote peers
+	IP     string `json:"ip"`        // IP address of the node
+	Ports  struct {
+		Discovery int `json:"discovery"` // UDP listening port for discovery protocol
+		Listener  int `json:"listener"`  // TCP listening port for RLPx
+	} `json:"ports"`
+	ListenAddr string                 `json:"listenAddr"`
+	Protocols  map[string]interface{} `json:"protocols,omitempty"`
+}
+
+func (web3g *Web3g) AdminNodeInfo() (*NodeInfo, error) {
 	resp, err := web3g.httpClient.PostAsResponse(AdminNodeInfo, nil)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	var result string
+	var result NodeInfo
 	e := json.Unmarshal(resp.Result, &result)
-	return result, e
+	return &result, e
 }
 
 func (web3g *Web3g) AdminPeers() (string, error) {
@@ -34,14 +49,18 @@ func (web3g *Web3g) AdminPeers() (string, error) {
 	return result, e
 }
 
-func (web3g *Web3g) AdminGetProgramVersion() (string, error) {
+type ProgramVersion struct {
+	Version uint32
+	Sign    string
+}
+func (web3g *Web3g) AdminGetProgramVersion() (*ProgramVersion, error) {
 	resp, err := web3g.httpClient.PostAsResponse(AdminGetProgramVersion, nil)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	var result string
+	var result ProgramVersion
 	e := json.Unmarshal(resp.Result, &result)
-	return result, e
+	return &result, e
 }
 
 func (web3g *Web3g) AdminGetSchnorrNIZKProve() (string, error) {
@@ -54,8 +73,8 @@ func (web3g *Web3g) AdminGetSchnorrNIZKProve() (string, error) {
 	return result, e
 }
 
-func (web3g *Web3g) AdminDatadir() (string, error) {
-	resp, err := web3g.httpClient.PostAsResponse(AdminDatadir, nil)
+func (web3g *Web3g) AdminDataDir() (string, error) {
+	resp, err := web3g.httpClient.PostAsResponse(AdminDataDir, nil)
 	if err != nil {
 		return "", err
 	}

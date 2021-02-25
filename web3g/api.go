@@ -39,10 +39,10 @@ const (
 	PlatonGetLogs = "platon_getLogs"
 	PlatonEvidences = "platon_evidences"
 
-	AdminAddPeer = "admin_addPeer"
-	AdminNodeInfo = "admin_nodeInfo"
-	AdminPeers = "admin_peers"
-	AdminGetProgramVersion = "admin_getProgramVersion"
+	AdminAddPeer             = "admin_addPeer"
+	AdminNodeInfo            = "admin_nodeInfo"
+	AdminPeers               = "admin_peers"
+	AdminGetProgramVersion   = "admin_getProgramVersion"
 	AdminGetSchnorrNIZKProve = "admin_getSchnorrNIZKProve"
-	AdminDatadir = "admin_datadir"
+	AdminDataDir             = "admin_datadir"
 )

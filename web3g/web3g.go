@@ -30,27 +30,30 @@ func ParseTagOrNumber(qt interface{}) (string, error) {
 		if ipos.BitLen() == 0 {
 			return "0x0", nil
 		}
-		return fmt.Sprintf("%#x", ipos), nil
+		//return ipos.Text(16), nil
+		return fmt.Sprintf("0x%x", &ipos), nil
 	}
 }
 
-func ParseHttpResponseToString(resp *rpc.Response, err error) (string, error) {
+func ParseHttpResponseToResult(resp *rpc.Response, result interface{}, err error) error {
 	if err != nil {
-		return "", err
+		return err
 	}
 	if resp.Error != nil {
-		return "", fmt.Errorf("%s", resp.Error)
+		return fmt.Errorf("%s", resp.Error)
 	}
-	//return resp.Result.(string), nil
-	var result string
+
 	e := json.Unmarshal(resp.Result, &result)
-	return result, e
+	return e
 }
 
 // To get the client version of specific node.
 func (web3g *Web3g) ClientVersion() (string, error) {
 	resp, err := web3g.httpClient.PostAsResponse(Web3ClientVersion, nil)
-	return ParseHttpResponseToString(resp, err)
+
+	var version string
+	err = ParseHttpResponseToResult(resp, &version, err)
+	return version, err
 }
 // To get a hash of given hex string which starts with '0x',
 // and the hash algorithm is 'keccak-256'
@@ -58,5 +61,7 @@ func (web3g *Web3g) Sha3(dates string) (string, error) {
 	reqData := make([]string, 1)
 	reqData[0] = dates
 	resp, err := web3g.httpClient.PostAsResponse(Web3Sha3, reqData);
-	return ParseHttpResponseToString(resp, err)
+	var sha3 string
+	err = ParseHttpResponseToResult(resp, &sha3, err)
+	return sha3, err
 }
