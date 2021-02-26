@@ -22,7 +22,7 @@ var (
 
 var (
 	bytesT  = reflect.TypeOf(Bytes(nil))
-	bigT    = reflect.TypeOf((*BigInt)(nil))
+	//bigT    = reflect.TypeOf((*BigInt)(nil))
 	uintT   = reflect.TypeOf(Uint(0))
 	uint64T = reflect.TypeOf(Uint64(0))
 )
@@ -30,7 +30,7 @@ var (
 type decError struct{ msg string }
 func (err decError) Error() string { return err.msg }
 
-type BigInt big.Int
+//type BigInt big.Int
 type Bytes []byte
 type Uint uint
 type Uint64 uint64
@@ -98,58 +98,58 @@ func EncodeBig(bigint *big.Int) string {
 }
 
 // ToInt converts b to a big.Int.
-func (b *BigInt) ToInt() *big.Int {
-	return (*big.Int)(b)
-}
-
-// String returns the hex encoding of b.
-func (b *BigInt) String() string {
-	return EncodeBig(b.ToInt())
-}
+//func (b *BigInt) ToInt() *big.Int {
+//	return (*big.Int)(b)
+//}
+//
+//// String returns the hex encoding of b.
+//func (b *BigInt) String() string {
+//	return EncodeBig(b.ToInt())
+//}
 
 // UnmarshalJSON implements json.Unmarshaler.
-func (b *BigInt) UnmarshalJSON(input []byte) error {
-	if !isString(input) {
-		return errNonString(bigT)
-	}
-	return wrapTypeError(b.UnmarshalText(input[1:len(input)-1]), bigT)
-}
+//func (b *BigInt) UnmarshalJSON(input []byte) error {
+//	if !isString(input) {
+//		return errNonString(bigT)
+//	}
+//	return wrapTypeError(b.UnmarshalText(input[1:len(input)-1]), bigT)
+//}
 
 //func (b *BigInt) MarshalJSON() ([]byte, error) {
 //	return []byte(b.String()), nil
 //}
 
 // UnmarshalText implements encoding.TextUnmarshaler
-func (b *BigInt) UnmarshalText(input []byte) error {
-	raw, err := checkNumberText(input)
-	if err != nil {
-		return err
-	}
-	if len(raw) > 64 {
-		return ErrBig256Range
-	}
-	words := make([]big.Word, len(raw)/bigWordNibbles+1)
-	end := len(raw)
-	for i := range words {
-		start := end - bigWordNibbles
-		if start < 0 {
-			start = 0
-		}
-		for ri := start; ri < end; ri++ {
-			nib := decodeNibble(raw[ri])
-			if nib == badNibble {
-				return ErrSyntax
-			}
-			words[i] *= 16
-			words[i] += big.Word(nib)
-		}
-		end = start
-	}
-	var dec big.Int
-	dec.SetBits(words)
-	*b = (BigInt)(dec)
-	return nil
-}
+//func (b *BigInt) UnmarshalText(input []byte) error {
+//	raw, err := checkNumberText(input)
+//	if err != nil {
+//		return err
+//	}
+//	if len(raw) > 64 {
+//		return ErrBig256Range
+//	}
+//	words := make([]big.Word, len(raw)/bigWordNibbles+1)
+//	end := len(raw)
+//	for i := range words {
+//		start := end - bigWordNibbles
+//		if start < 0 {
+//			start = 0
+//		}
+//		for ri := start; ri < end; ri++ {
+//			nib := decodeNibble(raw[ri])
+//			if nib == badNibble {
+//				return ErrSyntax
+//			}
+//			words[i] *= 16
+//			words[i] += big.Word(nib)
+//		}
+//		end = start
+//	}
+//	var dec big.Int
+//	dec.SetBits(words)
+//	*b = (BigInt)(dec)
+//	return nil
+//}
 
 const badNibble = ^uint64(0)
 
@@ -166,14 +166,15 @@ func decodeNibble(in byte) uint64 {
 	}
 }
 
-func (trl *PlatonTransactionLog) UnmarshalJSON(input []byte) error {
-	var logs []string
-	err := json.Unmarshal(input, &logs);
-	if err == nil {
-		trl.Hashes = logs
-	} else {
-		err = json.Unmarshal(input, trl)
-	}
-
-	return err
-}
+//func (trl *PlatonTransactionLog) UnmarshalJSON(input []byte) error {
+//	var logs []string
+//	err := json.Unmarshal(input, &logs);
+//	if err == nil {
+//		trl.Hashes = logs
+//	} else {
+//		var pt PlatonTransactionLog
+//		err = json.Unmarshal(input, &pt)
+//	}
+//
+//	return err
+//}

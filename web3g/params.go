@@ -1,5 +1,7 @@
 package web3g
 
+import "math/big"
+
 type SyncingInfo struct {
 	StartingBlock string
 	CurrentBlock  string
@@ -18,7 +20,7 @@ type PlatonGetBalanceReq struct {
 
 type PlatonGetStorageAtReq struct {
 	Address       string
-	PositionIndex *BigInt
+	PositionIndex *big.Int
 	TagOrNumber   interface{}
 }
 
@@ -40,11 +42,11 @@ type PlatonSignReq struct {
 type PlatonSendTransactionReq struct {
 	From     string `json:"from"`
 	To       string `json:"to"`
-	Gas      *BigInt `json:"gas"`
-	GasPrice *BigInt `json:"gasPrice"`
-	Value    *BigInt `json:"value"`
+	Gas      *big.Int `json:"gas"`
+	GasPrice *big.Int `json:"gasPrice"`
+	Value    *big.Int `json:"value"`
 	Data     string `json:"data"`
-	Nonce    *BigInt `json:"nonce"`
+	Nonce    *big.Int `json:"nonce"`
 }
 
 type PlatonSendRawTransactionReq struct {
@@ -54,9 +56,9 @@ type PlatonSendRawTransactionReq struct {
 type PlatonCallReq struct {
 	From     string `json:"from"`
 	To       string `json:"to"`
-	Gas      *BigInt `json:"gas"`
-	GasPrice *BigInt `json:"gasPrice"`
-	Value    *BigInt `json:"value"`
+	Gas      *big.Int `json:"gas"`
+	GasPrice *big.Int `json:"gasPrice"`
+	Value    *big.Int `json:"value"`
 	Data     string `json:"data"`
 	// FIXME(liangqin.fan): TagOrNumber 的json名称是什么?
 	TagOrNumber interface{} `json:"number"`
@@ -66,20 +68,20 @@ type PlatonEstimateGasReq PlatonCallReq
 
 type PlatonTransaction struct {
 	Hash string `json:"hash"`
-	Nonce *BigInt `json:"nonce,omitempty"`
+	Nonce *big.Int `json:"nonce,omitempty"`
 	BlockHash string `json:"blockHash,omitempty"`
-	BlockNumber *BigInt `json:"blockNumber,omitempty"`
-	TransactionIndex *BigInt `json:"transactionIndex,omitempty"`
+	BlockNumber *big.Int `json:"blockNumber,omitempty"`
+	TransactionIndex *big.Int `json:"transactionIndex,omitempty"`
 	From string `json:"from,omitempty"`
 	To string `json:"to,omitempty"`
-	Value *BigInt `json:"value,omitempty"`
-	Gas *BigInt `json:"gas,omitempty"`
-	GasPrice *BigInt `json:"gasPrice,omitempty"`
+	Value *big.Int `json:"value,omitempty"`
+	Gas *big.Int `json:"gas,omitempty"`
+	GasPrice *big.Int `json:"gasPrice,omitempty"`
 	Input string `json:"input,omitempty"`
 }
 
 type PlatonBlock struct {
-	Number *BigInt `json:"number,omitempty"`
+	Number *big.Int `json:"number,omitempty"`
 	Hash   string `json:"hash,omitempty"`
 	ParentHash string `json:"parentHash"`
 	Nonce      string `json:"nonce,omitempty"`
@@ -89,13 +91,13 @@ type PlatonBlock struct {
 	StateRoot  string                `json:"stateRoot"`
 	ReceiptsRoot string              `json:"receiptsRoot"`
 	Miner        string              `json:"miner"`
-	Difficulty *BigInt                `json:"difficulty,omitempty"`
-	TotalDifficulty *BigInt           `json:"totalDifficulty,omitempty"`
+	Difficulty *big.Int                `json:"difficulty,omitempty"`
+	TotalDifficulty *big.Int           `json:"totalDifficulty,omitempty"`
 	ExtraData string                 `json:"extraData"`
-	Size      *BigInt                 `json:"size"`
-	GasLimit  *BigInt                 `json:"gasLimit"`
-	GasUsed   *BigInt                 `json:"gasUsed"`
-	Timestamp *BigInt                 `json:"timestamp"`
+	Size      *big.Int                 `json:"size"`
+	GasLimit  *big.Int                 `json:"gasLimit"`
+	GasUsed   *big.Int                 `json:"gasUsed"`
+	Timestamp *big.Int                 `json:"timestamp"`
 	Transactions []PlatonTransaction `json:"transactions"`
 	Uncles    []string               `json:"uncles,omitempty"`
 }
@@ -104,11 +106,11 @@ type PlatonBlock struct {
 type PlatonTransactionLog  struct {
 	Hashes []string `json:"hashes,omitempty"`
 	Type string `json:"type,omitempty"`
-	LogIndex *BigInt `json:"logIndex,omitempty"`
-	TransactionIndex *BigInt `json:"transactionIndex,omitempty"`
+	LogIndex *big.Int `json:"logIndex,omitempty"`
+	TransactionIndex *big.Int `json:"transactionIndex,omitempty"`
 	TransactionHash string `json:"transactionHash,omitempty"`
 	BlockHash string `json:"blockHash,omitempty"`
-	BlockNumber *BigInt `json:"blockNumber,omitempty"`
+	BlockNumber *big.Int `json:"blockNumber,omitempty"`
 	Address string `json:"address,omitempty"`
 	Data string `json:"data,omitempty"`
 	Topics []string `json:"topics,omitempty"`
@@ -116,11 +118,11 @@ type PlatonTransactionLog  struct {
 
 type PlatonTransactionReceipt struct {
 	TransactionHash string `json:"transactionHash"`
-	TransactionIndex *BigInt `json:"transactionIndex"`
+	TransactionIndex *big.Int `json:"transactionIndex"`
 	BlockHash string `json:"blockHash"`
-	BlockNumber *BigInt `json:"blockNumber"`
-	CumulativeGasUsed *BigInt `json:"cumulativeGasUsed"`
-	GasUsed *BigInt `json:"gasUsed"`
+	BlockNumber *big.Int `json:"blockNumber"`
+	CumulativeGasUsed *big.Int `json:"cumulativeGasUsed"`
+	GasUsed *big.Int `json:"gasUsed"`
 	ContractAddress string `json:"contractAddress"`
 	Logs []PlatonTransactionLog `json:"logs"`
 }

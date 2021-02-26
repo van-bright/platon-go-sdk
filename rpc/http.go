@@ -45,7 +45,7 @@ func (c *HttpClient)newMessage(method string, paramsIn ...interface{}) ([]byte, 
 	if err != nil {
 		return nil, err
 	}
-	c.nextId++;
+	c.nextId++
 	return json.Marshal(JsonRequest{Version: "2.0", Id: c.nextId, Method:  method, Payload: params})
 }
 
