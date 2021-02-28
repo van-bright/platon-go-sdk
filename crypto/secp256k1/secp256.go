@@ -173,6 +173,5 @@ func PubkeyNotInfinity(x, y *big.Int) bool {
 	math.ReadBits(y, point[32:])
 	pointPtr := (*C.uchar)(unsafe.Pointer(&point[0]))
 	res := C.secp256k1_pubkey_is_infinity(context, pointPtr)
-	return  res ==0
+	return res == 0
 }
-

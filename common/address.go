@@ -29,13 +29,12 @@ const (
 	ExtraSeal              = 65
 )
 
-
 var (
 	hashT    = reflect.TypeOf(Hash{})
 	addressT = reflect.TypeOf(Address{})
 
-	ZeroHash     = HexToHash(Hash{}.String())
-	ZeroAddr     = Address{}
+	ZeroHash = HexToHash(Hash{}.String())
+	ZeroAddr = Address{}
 )
 
 var currentAddressPrefix string

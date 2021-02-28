@@ -8,6 +8,7 @@ import (
 )
 
 const uintBits = 32 << (uint64(^uint(0)) >> 63)
+
 var (
 	ErrEmptyString   = &decError{"empty hex string"}
 	ErrSyntax        = &decError{"invalid hex string"}
@@ -21,13 +22,14 @@ var (
 )
 
 var (
-	bytesT  = reflect.TypeOf(Bytes(nil))
+	bytesT = reflect.TypeOf(Bytes(nil))
 	//bigT    = reflect.TypeOf((*BigInt)(nil))
 	uintT   = reflect.TypeOf(Uint(0))
 	uint64T = reflect.TypeOf(Uint64(0))
 )
 
 type decError struct{ msg string }
+
 func (err decError) Error() string { return err.msg }
 
 //type BigInt big.Int

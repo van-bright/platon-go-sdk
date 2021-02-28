@@ -38,6 +38,7 @@ func CreateAlayaWalletByMnemonic(mnemonic string) (*AlayaWallet, error) {
 	wallet.Mnemonics = mnemonic
 	return wallet, nil
 }
+
 // To create an Alaya wallet with mnemonic.
 func CreateAlayaWalletWithMnemonic() (*AlayaWallet, error) {
 	entropy, err := bip39.NewEntropy(128)
@@ -97,16 +98,16 @@ func (w *AlayaWallet) TestNetAccount(account accounts.Account) (string, error) {
 }
 
 type ExportedAccount struct {
-	PrivateKey string `json:"private-key"`
-	EthAccounts string `json:"eth-address"`
+	PrivateKey      string `json:"private-key"`
+	EthAccounts     string `json:"eth-address"`
 	MainNetAccounts string `json:"mainnet-addresses"`
 	TestNetAccounts string `json:"testnet-addresses"`
 	Path            string `json:"path"`
 }
 
 type AlayaAccounts struct {
-	Mnemonics string `json:"mnemonics"`
-	Accounts []ExportedAccount `json:"accounts"`
+	Mnemonics string            `json:"mnemonics"`
+	Accounts  []ExportedAccount `json:"accounts"`
 }
 
 func (w *AlayaWallet) Export() *AlayaAccounts {
@@ -119,7 +120,7 @@ func (w *AlayaWallet) Export() *AlayaAccounts {
 
 	for i, acc := range accounts {
 		expAccounts[i].PrivateKey, _ = w.PrivateKeyHex(acc)
-		expAccounts[i].EthAccounts , _ = w.EthAccount(acc)
+		expAccounts[i].EthAccounts, _ = w.EthAccount(acc)
 		expAccounts[i].MainNetAccounts, _ = w.MainNetAccount(acc)
 		expAccounts[i].TestNetAccounts, _ = w.TestNetAccount(acc)
 		expAccounts[i].Path, _ = w.Path(acc)

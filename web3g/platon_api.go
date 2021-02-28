@@ -42,7 +42,7 @@ func (web3g *Web3g) PlatonSyncing() (*PlatonSyncingResp, error) {
 func (web3g *Web3g) PlatonGasPrice() (*big.Int, error) {
 	resp, err := web3g.httpClient.PostAsResponse(PlatonGasPrice, nil)
 	var price big.Int
-	err =  ParseHttpResponseToResult(resp, &price, err)
+	err = ParseHttpResponseToResult(resp, &price, err)
 	return &price, err
 }
 
@@ -126,7 +126,7 @@ func (web3g *Web3g) PlatonGetCode(req *PlatonGetCodeReq) ([]byte, error) {
 	}
 	resp, err := web3g.httpClient.PostAsResponse(PlatonGetCode, req.Address, pos)
 	var code []byte
-	err =  ParseHttpResponseToResult(resp, &code, err)
+	err = ParseHttpResponseToResult(resp, &code, err)
 	return code, err
 }
 
@@ -134,7 +134,7 @@ func (web3g *Web3g) PlatonSign(req *PlatonSignReq) (string, error) {
 	resp, err := web3g.httpClient.PostAsResponse(PlatonSign, req.Address, req.Data)
 
 	var sign string
-	err =  ParseHttpResponseToResult(resp, &sign, err)
+	err = ParseHttpResponseToResult(resp, &sign, err)
 	return sign, err
 }
 

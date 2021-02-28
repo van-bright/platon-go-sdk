@@ -16,7 +16,7 @@ func TestWeb3g_PlatonAccounts(t *testing.T) {
 			t.Errorf("PlatonAccounts failed.")
 		}
 
-		for  i := 0; i < len(expect); i++ {
+		for i := 0; i < len(expect); i++ {
 			if expect[i] != resp[i] {
 				t.Errorf("PlatonAccounts item failed.")
 			}
@@ -506,7 +506,7 @@ func TestWeb3g_PlatonNewFilter(t *testing.T) {
 	var execFunc ExecFunc = func(geb3 *Web3g) {
 		resp, _ := geb3.PlatonNewFilter("12345", "latest", "atp00000000000000", "abcde")
 
-		if  resp.Cmp(expect) != 0 {
+		if resp.Cmp(expect) != 0 {
 			t.Errorf("PlatonNewFilter failed.")
 		}
 	}
@@ -520,7 +520,7 @@ func TestWeb3g_PlatonNewPendingTransactionFilter(t *testing.T) {
 	var execFunc ExecFunc = func(geb3 *Web3g) {
 		resp, _ := geb3.PlatonNewPendingTransactionFilter()
 
-		if  resp.Cmp(expect) != 0 {
+		if resp.Cmp(expect) != 0 {
 			t.Errorf("PlatonNewPendingTransactionFilter failed.")
 		}
 	}
@@ -602,7 +602,7 @@ func TestWeb3g_PlatonSign(t *testing.T) {
 
 func TestWeb3g_PlatonSyncing(t *testing.T) {
 	var expect = SyncingInfo{
-		"","", "",
+		"", "", "",
 	}
 	var respFunc = GenRespFunction(expect)
 	var execFunc ExecFunc = func(geb3 *Web3g) {

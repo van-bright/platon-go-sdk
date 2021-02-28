@@ -10,9 +10,9 @@ import (
 	"crypto/elliptic"
 	"crypto/rand"
 	"encoding/hex"
+	"fmt"
 	"io"
 	"testing"
-	"fmt"
 )
 
 const TestCount = 1000
@@ -218,12 +218,12 @@ func TestRecoverSanity(t *testing.T) {
 }
 
 func TestSecp256k1_NotInfinity(t *testing.T) {
-	sk,err := ecdsa.GenerateKey(S256(), rand.Reader)
+	sk, err := ecdsa.GenerateKey(S256(), rand.Reader)
 	if err != nil {
 		t.Fatal(err)
 	}
 	fmt.Printf("sk=%x\n", sk.D.Bytes())
-	res := PubkeyNotInfinity(sk.X,sk.Y)
+	res := PubkeyNotInfinity(sk.X, sk.Y)
 	fmt.Println(res)
 }
 

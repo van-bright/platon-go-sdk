@@ -25,35 +25,35 @@ import (
 )
 
 const (
-	contentType             = "application/json"
-	httpMethod              = http.MethodPost
+	contentType = "application/json"
+	httpMethod  = http.MethodPost
 )
 
 type HttpClient struct {
 	endPoint string
-	client *http.Client
-	nextId uint64
+	client   *http.Client
+	nextId   uint64
 }
 
-func NewHttpClient(url string) (*HttpClient) {
+func NewHttpClient(url string) *HttpClient {
 	return &HttpClient{url, &http.Client{}, 0}
 }
 
-func (c *HttpClient)newMessage(method string, paramsIn ...interface{}) ([]byte, error) {
+func (c *HttpClient) newMessage(method string, paramsIn ...interface{}) ([]byte, error) {
 
 	params, err := json.Marshal(paramsIn)
 	if err != nil {
 		return nil, err
 	}
 	c.nextId++
-	return json.Marshal(JsonRequest{Version: "2.0", Id: c.nextId, Method:  method, Payload: params})
+	return json.Marshal(JsonRequest{Version: "2.0", Id: c.nextId, Method: method, Payload: params})
 }
 
 func (c *HttpClient) Post(method string, args ...interface{}) ([]byte, error) {
 	jsonStr, err := c.newMessage(method, args...)
 	if err != nil {
 		fmt.Println("marsh error: ", err)
-		return []byte(`""`),  err
+		return []byte(`""`), err
 	}
 	req, err := http.NewRequest(httpMethod, c.endPoint, bytes.NewBuffer(jsonStr))
 	if err != nil {

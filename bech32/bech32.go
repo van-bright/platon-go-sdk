@@ -36,18 +36,24 @@ func EncodeAddress(hrp string, hexStr string) (string, error) {
 
 	return encoded, nil
 }
+
 // 将Bech32编码的地址, 转换为以太坊方式编码的公钥地址
 func DecodeAddress(address string) (string, string, error) {
 	hrp, data, err := Decode(address)
-	if err != nil { return "", "", err }
+	if err != nil {
+		return "", "", err
+	}
 
 	rconv, err := ConvertBits(data, 5, 8, true)
-	if err != nil { return "", "", err }
+	if err != nil {
+		return "", "", err
+	}
 
 	hexStr := hex.EncodeToString(rconv)
 
 	return hrp, hexStr, nil
 }
+
 // 检查一个Bech32地址是否合法
 func IsBech32Valid(bech32Address string) bool {
 	_, _, err := Decode(bech32Address)

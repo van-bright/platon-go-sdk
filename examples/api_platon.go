@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"platon-go-sdk/web3g"
 )
+
 func main() {
 	const alayaEndpoint = "https://openapi.alaya.network/rpc"
 	var geb3 = web3g.New(alayaEndpoint)
@@ -30,12 +31,12 @@ func main() {
 	{
 		{
 			rsp, err := geb3.PlatonGetBlockByNumber(
-				"0x1b4",true)
+				"0x1b4", true)
 			if err != nil {
-				fmt.Println("error: ", err);
+				fmt.Println("error: ", err)
 			} else {
 				//out, _ := json.Marshal(rsp)
-				fmt.Println("block by number: ",rsp.Number)
+				fmt.Println("block by number: ", rsp.Number)
 			}
 		}
 	}

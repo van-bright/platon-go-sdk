@@ -53,6 +53,7 @@ type ProgramVersion struct {
 	Version uint32
 	Sign    string
 }
+
 func (web3g *Web3g) AdminGetProgramVersion() (*ProgramVersion, error) {
 	resp, err := web3g.httpClient.PostAsResponse(AdminGetProgramVersion, nil)
 	if err != nil {

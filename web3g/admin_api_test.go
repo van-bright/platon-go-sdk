@@ -8,9 +8,9 @@ import (
 )
 
 type TResponse struct {
-	ID int `json:"id"`
-	JsonRpc string `json:"jsonrpc"`
-	Result interface{} `json:"result"`
+	ID      int         `json:"id"`
+	JsonRpc string      `json:"jsonrpc"`
+	Result  interface{} `json:"result"`
 }
 
 type ExecFunc func(geb3 *Web3g)
@@ -116,7 +116,7 @@ func TestWeb3g_AdminNodeInfo(t *testing.T) {
 
 func TestWeb3g_AdminGetProgramVersion(t *testing.T) {
 	expect := ProgramVersion{
-		Sign: "0x34b844edd4cdede3a56309148c2b4dfaf4addd787d58c78fca59c29ccfd67baa4f454175e4cd5339a62835490990476f82b17c6ef1edd166ca0d2617e38809b900",
+		Sign:    "0x34b844edd4cdede3a56309148c2b4dfaf4addd787d58c78fca59c29ccfd67baa4f454175e4cd5339a62835490990476f82b17c6ef1edd166ca0d2617e38809b900",
 		Version: 3840,
 	}
 
