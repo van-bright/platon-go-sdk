@@ -14,7 +14,7 @@ type AlayaWallet struct {
 	Mnemonics string
 }
 
-func createWalletBySeed(seed []byte) (*AlayaWallet, error) {
+func importPrivateKey(seed []byte) (*AlayaWallet, error) {
 	wallet, err := hdwallet.NewFromSeed(seed)
 	if err != nil {
 		return &AlayaWallet{}, err
@@ -23,24 +23,18 @@ func createWalletBySeed(seed []byte) (*AlayaWallet, error) {
 	return &AlayaWallet{Wallet: wallet}, nil
 }
 
-// Create an Alaya account, and store it to KeyStore file
-func CreateAlayaWalletBySeed(seed []byte) (*AlayaWallet, error) {
-	return createWalletBySeed(seed)
+// 打开指定keystore文件的钱包
+func Open(ksPath string, passphrase string) (*AlayaWallet, error) {
+	return nil, nil
 }
 
-func CreateAlayaWalletByMnemonic(mnemonic string) (*AlayaWallet, error) {
-	seed := bip39.NewSeed(mnemonic, "")
-	wallet, err := createWalletBySeed(seed)
-	if err != nil {
-		return &AlayaWallet{}, err
-	}
+// 保存keystore文件到指定地址
+func Save(ksPath string, passphrase string) {
 
-	wallet.Mnemonics = mnemonic
-	return wallet, nil
 }
 
-// To create an Alaya wallet with mnemonic.
-func CreateAlayaWalletWithMnemonic() (*AlayaWallet, error) {
+// 创建一个钱包, 并生成一组助记词
+func Create() (*AlayaWallet, error) {
 	entropy, err := bip39.NewEntropy(128)
 	if err != nil {
 		return &AlayaWallet{}, err
@@ -51,7 +45,24 @@ func CreateAlayaWalletWithMnemonic() (*AlayaWallet, error) {
 		return &AlayaWallet{}, err
 	}
 
-	return CreateAlayaWalletByMnemonic(mnemonic)
+	return ImportMnemonic(mnemonic)
+}
+
+// 通过助记词导入钱包
+func ImportMnemonic(mnemonic string) (*AlayaWallet, error) {
+	seed := bip39.NewSeed(mnemonic, "")
+	wallet, err := importPrivateKey(seed)
+	if err != nil {
+		return &AlayaWallet{}, err
+	}
+
+	wallet.Mnemonics = mnemonic
+	return wallet, nil
+}
+
+//
+func ImportPrivateKey(seed []byte) (*AlayaWallet, error) {
+	return importPrivateKey(seed)
 }
 
 func (w *AlayaWallet) CreateAccount(pathIndex int32) (accounts.Account, error) {
@@ -64,13 +75,13 @@ func (w *AlayaWallet) CreateAccount(pathIndex int32) (accounts.Account, error) {
 	return account, nil
 }
 
-func (w *AlayaWallet) EthAccount(account accounts.Account) (string, error) {
+func (w *AlayaWallet) RawAccount(account accounts.Account) (string, error) {
 	address := account.Address.Hex()
 	return address, nil
 }
 
 func (w *AlayaWallet) MainNetAccount(account accounts.Account) (string, error) {
-	ethAccount, err := w.EthAccount(account)
+	ethAccount, err := w.RawAccount(account)
 	if err != nil {
 		return "", err
 	}
@@ -84,7 +95,7 @@ func (w *AlayaWallet) MainNetAccount(account accounts.Account) (string, error) {
 }
 
 func (w *AlayaWallet) TestNetAccount(account accounts.Account) (string, error) {
-	ethAccount, err := w.EthAccount(account)
+	ethAccount, err := w.RawAccount(account)
 	if err != nil {
 		return "", err
 	}
@@ -105,13 +116,13 @@ type ExportedAccount struct {
 	Path            string `json:"path"`
 }
 
-type AlayaAccounts struct {
+type ExportedWallet struct {
 	Mnemonics string            `json:"mnemonics"`
 	Accounts  []ExportedAccount `json:"accounts"`
 }
 
-func (w *AlayaWallet) Export() *AlayaAccounts {
-	tAccounts := &AlayaAccounts{}
+func (w *AlayaWallet) Export() *ExportedWallet {
+	tAccounts := &ExportedWallet{}
 	tAccounts.Mnemonics = w.Mnemonics
 	//tAccounts.seed =
 
@@ -120,7 +131,7 @@ func (w *AlayaWallet) Export() *AlayaAccounts {
 
 	for i, acc := range accounts {
 		expAccounts[i].PrivateKey, _ = w.PrivateKeyHex(acc)
-		expAccounts[i].EthAccounts, _ = w.EthAccount(acc)
+		expAccounts[i].EthAccounts, _ = w.RawAccount(acc)
 		expAccounts[i].MainNetAccounts, _ = w.MainNetAccount(acc)
 		expAccounts[i].TestNetAccounts, _ = w.TestNetAccount(acc)
 		expAccounts[i].Path, _ = w.Path(acc)

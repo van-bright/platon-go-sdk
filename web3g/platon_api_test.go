@@ -49,9 +49,9 @@ func TestWeb3g_PlatonCall(t *testing.T) {
 		var req = PlatonCallReq{
 			From:        "atp1",
 			To:          "atp2",
-			Gas:         gas,
-			GasPrice:    big.NewInt(1000000000),
-			Value:       big.NewInt(9527),
+			Gas:         (*BigInt)(gas),
+			GasPrice:    (*BigInt)(big.NewInt(1000000000)),
+			Value:       (*BigInt)(big.NewInt(9527)),
 			Data:        "",
 			TagOrNumber: nil,
 		}
@@ -73,9 +73,9 @@ func TestWeb3g_PlatonEstimateGas(t *testing.T) {
 		req := PlatonEstimateGasReq{
 			From:        "atp1",
 			To:          "atp2",
-			Gas:         big.NewInt(8888),
-			GasPrice:    big.NewInt(1000000000),
-			Value:       big.NewInt(9527),
+			Gas:         (*BigInt)(big.NewInt(8888)),
+			GasPrice:    (*BigInt)(big.NewInt(1000000000)),
+			Value:       (*BigInt)(big.NewInt(9527)),
 			Data:        "",
 			TagOrNumber: nil,
 		}
@@ -318,11 +318,11 @@ func TestWeb3g_PlatonGetLogs(t *testing.T) {
 	expect := PlatonTransactionLog{
 		Hashes:           []string{"0x0001", "0x0002"},
 		Type:             "",
-		LogIndex:         big.NewInt(0),
-		TransactionIndex: big.NewInt(0),
+		LogIndex:         (*BigInt)(big.NewInt(0)),
+		TransactionIndex: (*BigInt)(big.NewInt(0)),
 		TransactionHash:  "",
 		BlockHash:        "",
-		BlockNumber:      big.NewInt(0),
+		BlockNumber:      (*BigInt)(big.NewInt(0)),
 		Address:          "",
 		Data:             "",
 		Topics:           []string{"0xabc"},
@@ -348,7 +348,7 @@ func TestWeb3g_PlatonGetStorageAt(t *testing.T) {
 	var execFunc ExecFunc = func(geb3 *Web3g) {
 		req := PlatonGetStorageAtReq{
 			Address:       "atp00000000",
-			PositionIndex: big.NewInt(10),
+			PositionIndex: (*BigInt)(big.NewInt(10)),
 			TagOrNumber:   "latest",
 		}
 		resp, _ := geb3.PlatonGetStorageAt(&req)

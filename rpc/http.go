@@ -89,5 +89,7 @@ func (c *HttpClient) PostAsResponse(method string, args ...interface{}) (*Respon
 	if err := json.Unmarshal(bytes, resp); err != nil {
 		return nil, err
 	}
+	s, _ := json.Marshal(resp)
+	fmt.Println("Post Response Response: ", string(s))
 	return resp, nil
 }

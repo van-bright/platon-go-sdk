@@ -16,7 +16,7 @@ func TestCreateAlayaWalletWithMnemonic(t *testing.T) {
 }
 
 func TestCreateAlayaWalletByMnemonic(t *testing.T) {
-	alayawallet, err := CreateAlayaWalletByMnemonic(mnemonic)
+	alayawallet, err := ImportMnemonic(mnemonic)
 
 	if err != nil {
 		t.Fatal("create alaya wallet failed")

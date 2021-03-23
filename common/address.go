@@ -76,7 +76,6 @@ func BytesToAddress(b []byte) Address {
 // If b is larger than len(h), b will be cropped from the left.
 func BigToAddress(b *big.Int) Address { return BytesToAddress(b.Bytes()) }
 
-// Deprecated: address to string is use bech32 now
 // HexToAddress returns Address with byte values of s.
 // If s is larger than len(h), s will be cropped from the left.
 func HexToAddress(s string) Address { return BytesToAddress(FromHex(s)) }
@@ -101,6 +100,8 @@ func Bech32ToAddress(s string) (Address, error) {
 	if !CheckAddressPrefix(hrpDecode) {
 		return Address{}, fmt.Errorf("the address prefix not compare right,input:%s", s)
 	}
+
+	SetAddressPrefix(hrpDecode)
 
 	var a Address
 	a.SetBytes(converted)

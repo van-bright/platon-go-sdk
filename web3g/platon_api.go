@@ -41,9 +41,9 @@ func (web3g *Web3g) PlatonSyncing() (*PlatonSyncingResp, error) {
 
 func (web3g *Web3g) PlatonGasPrice() (*big.Int, error) {
 	resp, err := web3g.httpClient.PostAsResponse(PlatonGasPrice, nil)
-	var price big.Int
+	var price BigInt
 	err = ParseHttpResponseToResult(resp, &price, err)
-	return &price, err
+	return price.ToInt(), err
 }
 
 func (web3g *Web3g) PlatonAccounts() ([]string, error) {
@@ -72,9 +72,9 @@ func (web3g *Web3g) PlatonBlockNumber() (uint64, error) {
 func (web3g *Web3g) PlatonGetBalance(address string, pos interface{}) (*big.Int, error) {
 	resp, err := web3g.httpClient.PostAsResponse(PlatonGetBalance, address, pos)
 
-	var balance big.Int
+	var balance BigInt
 	err = ParseHttpResponseToResult(resp, &balance, err)
-	return &balance, err
+	return balance.ToInt(), err
 }
 
 func (web3g *Web3g) PlatonGetStorageAt(req *PlatonGetStorageAtReq) ([]byte, error) {
@@ -139,9 +139,8 @@ func (web3g *Web3g) PlatonSign(req *PlatonSignReq) (string, error) {
 }
 
 func (web3g *Web3g) PlatonSendTransaction(req *PlatonSendTransactionReq) (string, error) {
-	if req.Gas == nil {
-		req.Gas = big.NewInt(90000)
-
+	if req.Gas.ToInt() == big.NewInt(0) {
+		req.Gas = (*BigInt)(big.NewInt(90000))
 	}
 
 	resp, err := web3g.httpClient.PostAsResponse(PlatonSendTransaction, req)
@@ -237,9 +236,9 @@ func (web3g *Web3g) PlatonNewFilter(fromBlock interface{}, toBlock interface{}, 
 	if err != nil {
 		return nil, err
 	}
-	var result big.Int
+	var result BigInt
 	e := json.Unmarshal(resp.Result, &result)
-	return &result, e
+	return result.ToInt(), e
 }
 
 func (web3g *Web3g) PlatonNewBlockFilter() (*big.Int, error) {
@@ -247,9 +246,9 @@ func (web3g *Web3g) PlatonNewBlockFilter() (*big.Int, error) {
 	if err != nil {
 		return nil, err
 	}
-	var result big.Int
+	var result BigInt
 	e := json.Unmarshal(resp.Result, &result)
-	return &result, e
+	return result.ToInt(), e
 }
 
 func (web3g *Web3g) PlatonNewPendingTransactionFilter() (*big.Int, error) {
@@ -257,9 +256,9 @@ func (web3g *Web3g) PlatonNewPendingTransactionFilter() (*big.Int, error) {
 	if err != nil {
 		return nil, err
 	}
-	var result big.Int
+	var result BigInt
 	e := json.Unmarshal(resp.Result, &result)
-	return &result, e
+	return result.ToInt(), e
 }
 
 func (web3g *Web3g) PlatonUninstallFilter(filterId *big.Int) (bool, error) {
