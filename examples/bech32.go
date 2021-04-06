@@ -2,14 +2,16 @@ package main
 
 import (
 	"fmt"
-	"platon-go-sdk/bech32"
 	"platon-go-sdk/common"
+	"platon-go-sdk/common/bech32util"
+	"platon-go-sdk/common/hexutil"
 )
 
 func main() {
-	b32Addr, _ := bech32.EncodeAddress(common.MainNetAddressPrefix, "0x1963dd5b88accDA8F86C0D9A487c36cCDC0Aba0F")
+	bytes, _ := hexutil.Decode("0x1963dd5b88accDA8F86C0D9A487c36cCDC0Aba0F")
+	b32Addr, _ := bech32util.ConvertAndEncode(common.MainNetAddressPrefix, bytes)
 	fmt.Println("bech32 addr: ", b32Addr)
 
-	hrp, ethAddr, _ := bech32.DecodeAddress(b32Addr)
-	fmt.Printf("eth hrp: %s, hex: %s\n", hrp, ethAddr)
+	hrp, ethAddr, _ := bech32util.DecodeAndConvert(b32Addr)
+	fmt.Printf("eth hrp: %s, hex: %s\n", hrp, hexutil.Encode(ethAddr))
 }

@@ -7,34 +7,19 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
-	"platon-go-sdk/bech32"
+	"strings"
+
+	"github.com/btcsuite/btcutil/bech32"
+
+	"platon-go-sdk/common/bech32util"
 	"platon-go-sdk/common/hexutil"
 	"platon-go-sdk/crypto/sha3"
-	"reflect"
-	"strings"
+	"platon-go-sdk/log"
 )
 
 const (
 	MainNetAddressPrefix = "atp"
 	TestNetAddressPrefix = "atx"
-)
-
-const (
-	// HashLength is the expected length of the hash
-	HashLength        = 32
-	VersionSignLength = 65
-	// AddressLength is the expected length of the address
-	AddressLength          = 20
-	BlockConfirmSignLength = 65
-	ExtraSeal              = 65
-)
-
-var (
-	hashT    = reflect.TypeOf(Hash{})
-	addressT = reflect.TypeOf(Address{})
-
-	ZeroHash = HexToHash(Hash{}.String())
-	ZeroAddr = Address{}
 )
 
 var currentAddressPrefix string
@@ -76,6 +61,7 @@ func BytesToAddress(b []byte) Address {
 // If b is larger than len(h), b will be cropped from the left.
 func BigToAddress(b *big.Int) Address { return BytesToAddress(b.Bytes()) }
 
+// Deprecated: address to string is use bech32 now
 // HexToAddress returns Address with byte values of s.
 // If s is larger than len(h), s will be cropped from the left.
 func HexToAddress(s string) Address { return BytesToAddress(FromHex(s)) }
@@ -85,6 +71,7 @@ func HexToAddress(s string) Address { return BytesToAddress(FromHex(s)) }
 func MustBech32ToAddress(s string) Address {
 	add, err := Bech32ToAddress(s)
 	if err != nil {
+		log.Error("must Bech32ToAddress fail", "err", err)
 		panic(err)
 	}
 	return add
@@ -93,7 +80,7 @@ func MustBech32ToAddress(s string) Address {
 // MustBech32ToAddress returns Address with byte values of s.
 // If s is Decode fail, it will return zero address.
 func Bech32ToAddress(s string) (Address, error) {
-	hrpDecode, converted, err := bech32.DecodeAndConvert(s)
+	hrpDecode, converted, err := bech32util.DecodeAndConvert(s)
 	if err != nil {
 		return Address{}, err
 	}
@@ -101,8 +88,11 @@ func Bech32ToAddress(s string) (Address, error) {
 		return Address{}, fmt.Errorf("the address prefix not compare right,input:%s", s)
 	}
 
-	SetAddressPrefix(hrpDecode)
-
+	if currentAddressPrefix == "" {
+		log.Warn("the address prefix not set yet", "input", s)
+	} else if currentAddressPrefix != hrpDecode {
+		log.Warn("the address not compare current net", "want", currentAddressPrefix, "input", s)
+	}
 	var a Address
 	a.SetBytes(converted)
 	return a, nil
@@ -193,7 +183,8 @@ func (a Address) Bech32() string {
 }
 
 func (a Address) Bech32WithPrefix(prefix string) string {
-	if v, err := bech32.ConvertAndEncode(prefix, a.Bytes()); err != nil {
+	if v, err := bech32util.ConvertAndEncode(prefix, a.Bytes()); err != nil {
+		log.Error("address can't ConvertAndEncode to string", "err", err, "add", a.Bytes())
 		return ""
 	} else {
 		return v
@@ -222,7 +213,7 @@ func (a *Address) SetBytes(b []byte) {
 
 // MarshalText returns the hex representation of a.
 func (a Address) MarshalText() ([]byte, error) {
-	v, err := bech32.ConvertAndEncode(GetAddressPrefix(), a.Bytes())
+	v, err := bech32util.ConvertAndEncode(GetAddressPrefix(), a.Bytes())
 	if err != nil {
 		return nil, err
 	}
@@ -231,7 +222,7 @@ func (a Address) MarshalText() ([]byte, error) {
 
 // UnmarshalText parses a hash in hex syntax.
 func (a *Address) UnmarshalText(input []byte) error {
-	hrpDecode, converted, err := bech32.DecodeAndConvert(string(input))
+	hrpDecode, converted, err := bech32util.DecodeAndConvert(string(input))
 	if err != nil {
 		return err
 	}
@@ -247,7 +238,7 @@ func (a *Address) UnmarshalJSON(input []byte) error {
 	if !isString(input) {
 		return &json.UnmarshalTypeError{Value: "non-string", Type: addressT}
 	}
-	hrpDecode, v, err := bech32.DecodeAndConvert(string(input[1 : len(input)-1]))
+	hrpDecode, v, err := bech32util.DecodeAndConvert(string(input[1 : len(input)-1]))
 	if err != nil {
 		return &json.UnmarshalTypeError{Value: err.Error(), Type: addressT}
 	}
