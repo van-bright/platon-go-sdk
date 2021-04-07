@@ -2,15 +2,20 @@ package web3go
 
 import (
 	"fmt"
+	"math/big"
+	"platon-go-sdk/common"
+	"platon-go-sdk/common/hexutil"
+	"platon-go-sdk/crypto"
 	"testing"
+	"time"
 )
 
 var (
-	mnemonic   = "bounce half kite tuition catalog buffalo void awesome drink bunker guard vapor"
-	privateKey = "7544e3822955215e1a02deeda52cccdbf3b57a015dda815ad6dd21716960d763"
-	ethAccount = "0x5C267019f2022e6968CD790775f30Ac981896D4C"
-	atpAccount = "atp1tsn8qx0jqghxj6xd0yrhtuc2exqcjm2vh04lhp"
-	atxAccount = "atx1tsn8qx0jqghxj6xd0yrhtuc2exqcjm2vaff4yt"
+	mnemonic   = "prevent scissors box assist enroll bean cup mushroom tragic steel best move"
+	seed = "0x9dfc7e3f52c4438d04db5488e13672faa37920ec62bacdc333a83974cb07bfdd893bfd46940dedfeb7ef30a142c4d07d552dd6589b40d3a58b941b7e9d6dae7e"
+	privateKey = "ed72066fa30607420635be56785595ccf935675a890bef7c808afc1537f52281"
+	atpAccount = "atp1v0jmfxmmq4mhv97rt5x8pwsfmd67594g5jrl72"
+	atxAccount = "atx1v0jmfxmmq4mhv97rt5x8pwsfmd67594g75l4dq"
 	path       = "m/44'/60'/0'/0/0"
 )
 
@@ -25,3 +30,158 @@ func TestNewWalletByMnemonics(t *testing.T) {
 		t.Error("main net failed.")
 	}
 }
+
+func TestNewWallet(t *testing.T) {
+	w, _ := NewWallet()
+
+	defaultAccount := w.Accounts()
+
+	fmt.Println("new wallet: ", w.ExportHdWallet())
+	if len(defaultAccount) != 1 {
+		t.Error("new wallet failed.")
+	}
+}
+
+func TestNewWalletBySeed(t *testing.T) {
+	seedBytes, _ := hexutil.Decode(seed)
+	w, _ := NewWalletBySeed(seedBytes)
+
+	account := w.Accounts()[0]
+	atp, _ := account.ToMainNetAddress()
+
+	if atp != atpAccount {
+		t.Error("wallet generate default account failed.")
+	}
+}
+
+func TestAlayaWallet_Accounts(t *testing.T) {
+	w, _ := NewWallet()
+	w.NewAccount(1)
+	w.ImportPrivateKey(crypto.HexMustToECDSA(privateKey), "./tmp", "123")
+
+	accounts := w.Accounts()
+
+	if len(accounts) != 3 {
+		t.Error("list accounts of wallet failed.")
+	}
+}
+
+func TestAlayaWallet_BalanceOf(t *testing.T) {
+	w, _ := NewWalletByMnemonics(mnemonic)
+	w.SetNetworkCfg(&DefaultTestNetCfg)
+
+	addr := common.MustBech32ToAddress("atp1zl2vnznf6q2puwr3ue4l0yrfvglacgtqypk432")
+
+	balance, _ := w.BalanceOf(addr)
+	if balance.Cmp(big.NewInt(0)) == 0 {
+		t.Error("read balance of atp1zl2vnznf6q2puwr3ue4l0yrfvglacgtqypk432 failed.")
+	}
+}
+
+func TestAlayaWallet_Export(t *testing.T) {
+	w, _ := NewWalletByMnemonics(mnemonic)
+	info := w.ExportHdWallet()
+
+	if len(info) == 0 {
+		t.Error("export hd wallet failed.")
+	}
+}
+
+func TestAlayaWallet_ExportMnemonic(t *testing.T) {
+	w, _ := NewWalletByMnemonics(mnemonic)
+	info, _ := w.ExportMnemonic()
+	if info != mnemonic {
+		t.Error("export mnemonic failed.")
+	}
+}
+
+func TestAlayaWallet_ExportPrivateKey(t *testing.T) {
+	w, _ := NewWalletByMnemonics(mnemonic)
+
+	a, err := w.AccountByBech32("atp1v0jmfxmmq4mhv97rt5x8pwsfmd67594g5jrl72")
+	if err != nil {
+		t.Error("find account failed: ", err)
+	}
+
+	pk, err := w.ExportPrivateKey(a, "")
+	if err != nil {
+		t.Error("export private key failed: ", err)
+	}
+
+	pkStr := hexutil.Encode(crypto.FromECDSA(pk))[2:]
+
+	if pkStr != privateKey {
+		t.Error("export private key failed")
+	}
+}
+
+func TestAlayaWallet_ImportPrivateKey(t *testing.T) {
+	w, _ := NewWallet()
+	a, _ := w.ImportPrivateKey(crypto.HexMustToECDSA("ed72066fa30607420635be56785595ccf935675a890bef7c808afc1537f52281"), "./", "")
+
+	pk, _ := w.ExportPrivateKey(a, "")
+	pkStr := hexutil.Encode(crypto.FromECDSA(pk))[2:]
+	if pkStr != privateKey {
+		t.Error("import private key failed.")
+	}
+}
+
+func TestAlayaWallet_MainNetAddress(t *testing.T) {
+	w, _ := NewWalletByMnemonics(mnemonic)
+	a := w.Accounts()[0]
+
+	mainAddress, _ := a.ToMainNetAddress()
+	if mainAddress != atpAccount {
+		t.Error("export main net address failed.")
+	}
+}
+
+func TestAlayaWallet_NewAccount(t *testing.T) {
+	w, _ := NewWalletByMnemonics(mnemonic)
+	a, _ := w.NewAccount(1)
+
+	aInfo := w.ToString(a)
+
+	if len(aInfo) == 0 {
+		t.Error("new account failed.")
+	}
+}
+
+func TestAlayaWallet_TestNetAddress(t *testing.T) {
+	w, _ := NewWalletByMnemonics(mnemonic)
+	a := w.Accounts()[0]
+
+	testAddress, _ := a.ToTestNetAddress()
+	if testAddress != atxAccount {
+		t.Error("export main net address failed.")
+	}
+}
+
+func TestAlayaWallet_Transfer(t *testing.T) {
+	w, _ := NewWalletByMnemonics(mnemonic)
+	w.SetNetworkCfg(&DefaultTestNetCfg)
+
+	fromPrivateKey := crypto.HexMustToECDSA("b72faaa798c44d2359d0ccb35dd39446c9c18905fdcecede42a6570ff177ae08")
+
+	w.ImportPrivateKey(fromPrivateKey, "./", "")
+
+	from := common.MustBech32ToAddress("atp1zl2vnznf6q2puwr3ue4l0yrfvglacgtqypk432")
+
+	to := common.MustBech32ToAddress("atp1v0jmfxmmq4mhv97rt5x8pwsfmd67594g5jrl72")
+
+	balanceBefore, _ := w.BalanceOf(from)
+	_, err := w.Transfer(from, to, big.NewInt(1000000))
+	if err != nil {
+		t.Error("transfer error: ", err)
+	}
+	time.Sleep(4 * time.Second)
+
+	balanceAfter, _ := w.BalanceOf(from)
+
+	diff := big.NewInt(0).Sub(balanceBefore, balanceAfter)
+	// transfer value + transfer fee
+	if diff.Cmp(big.NewInt(21000001000000)) != 0 {
+		t.Error("transfer balance failed.")
+	}
+}
+

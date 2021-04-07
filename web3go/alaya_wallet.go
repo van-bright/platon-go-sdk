@@ -1,6 +1,7 @@
 package web3go
 
 import (
+	"bytes"
 	"context"
 	"crypto/ecdsa"
 	"encoding/json"
@@ -75,7 +76,7 @@ func (w *AlayaWallet) ToString(account accounts.Account) string {
 	return string(jsonStr)
 }
 
-func (w *AlayaWallet) Export() string {
+func (w *AlayaWallet) ExportHdWallet() string {
 	result := WalletExport{}
 	result.Mnemonic = w.hd.Mnemonic()
 	result.Seed = hexutil.Encode(w.hd.Seed())
@@ -99,6 +100,18 @@ func (w *AlayaWallet) Accounts() []accounts.Account {
 	}
 
 	return accounts
+}
+
+func (w *AlayaWallet) AccountByBech32(bech32addr string) (accounts.Account, error) {
+	walletAccounts := w.Accounts()
+	findAddr := common.MustBech32ToAddress(bech32addr)
+	for _, a := range walletAccounts {
+		if bytes.Compare(a.Address.Bytes(), findAddr.Bytes()) == 0 {
+			return a, nil
+		}
+	}
+
+	return accounts.Account{}, fmt.Errorf("account not found")
 }
 
 // MainNetAddress convert to main net address with prefix 'atp'
@@ -256,14 +269,25 @@ func (w *AlayaWallet) Transfer(from common.Address, to common.Address, value *bi
 	gasLimit := uint64(21000)
 
 	tx := types.NewTransaction(nonce, to, value, gasLimit, gasPrice, nil)
-	signer, err := w.hd.Account(from)
-	if err != nil {
-		return "", err
-	}
 
-	signedTx, err := w.hd.SignTx(signer, tx, w.networkCfg.ChainId)
-	if err != nil {
-		return "", err
+	fromAccount, _ := w.AccountByBech32(fromAddr)
+
+	var signedTx *types.Transaction
+
+	switch {
+	case w.isHdAccount(fromAccount):
+		signedTx, err = w.hd.SignTx(fromAccount, tx, w.networkCfg.ChainId)
+		if err != nil {
+			return "", err
+		}
+	case w.isKsAccount(fromAccount):
+		w.ks.Unlock(fromAccount, "")
+		signedTx, err = w.ks.SignTx(fromAccount, tx, w.networkCfg.ChainId)
+		if err != nil {
+			return "", err
+		}
+	default:
+		return "", fmt.Errorf("unknown from account")
 	}
 
 	err = client.SendRawTransaction(ctx, signedTx)
@@ -271,6 +295,39 @@ func (w *AlayaWallet) Transfer(from common.Address, to common.Address, value *bi
 	return signedTx.Hash().Hex(),  err
 }
 
+// Lock lock an account
+func (w *AlayaWallet) Lock(account accounts.Account) error {
+	if w.isKsAccount(account) {
+		return w.ks.Lock(account.Address)
+	}
+
+	return nil
+}
+// LockBech32 to lock an account with bech32 format.
+func (w *AlayaWallet) LockBech32(bech32Address string) error {
+	account, err := w.AccountByBech32(bech32Address)
+	if err != nil {
+		return err
+	}
+
+	return w.Lock(account)
+}
+// Unlock to unlock an account with wallet passphrase.
+func (w *AlayaWallet) Unlock(account accounts.Account, passphrase string) error {
+	if w.isKsAccount(account) {
+		return w.ks.Unlock(account, passphrase)
+	}
+	return nil
+}
+// UnlockBech32 to unlock a bech32 format account
+func (w *AlayaWallet) UnlockBech32(bech32Address string , passphrase string) error {
+	account, err := w.AccountByBech32(bech32Address)
+	if err != nil {
+		return err
+	}
+
+	return w.Unlock(account, passphrase)
+}
 // NewWallet create a new Alaya wallet with mnemonic
 func NewWallet() (*AlayaWallet, error) {
 	mnemonic, err := hdwallet.NewMnemonic(128)
@@ -296,8 +353,8 @@ func NewWalletByMnemonics(mnemonics string) (*AlayaWallet, error) {
 	return aw, nil
 }
 
-// NewWalletByPrivateKey create a Alaya wallet by private key of wallet.
-func NewWalletByMasterKey(seed []byte) (*AlayaWallet, error) {
+// NewWalletBySeed create a Alaya wallet by seed of wallet.
+func NewWalletBySeed(seed []byte) (*AlayaWallet, error) {
 	w, err := hdwallet.NewFromSeed(seed)
 	if err != nil {
 		return nil, err
