@@ -281,7 +281,6 @@ func (w *AlayaWallet) Transfer(from common.Address, to common.Address, value *bi
 			return "", err
 		}
 	case w.isKsAccount(fromAccount):
-		w.ks.Unlock(fromAccount, "")
 		signedTx, err = w.ks.SignTx(fromAccount, tx, w.networkCfg.ChainId)
 		if err != nil {
 			return "", err

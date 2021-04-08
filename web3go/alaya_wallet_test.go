@@ -166,14 +166,16 @@ func TestAlayaWallet_Transfer(t *testing.T) {
 	w.ImportPrivateKey(fromPrivateKey, "./", "")
 
 	from := common.MustBech32ToAddress("atp1zl2vnznf6q2puwr3ue4l0yrfvglacgtqypk432")
-
 	to := common.MustBech32ToAddress("atp1v0jmfxmmq4mhv97rt5x8pwsfmd67594g5jrl72")
 
 	balanceBefore, _ := w.BalanceOf(from)
+
+	w.UnlockBech32("atp1zl2vnznf6q2puwr3ue4l0yrfvglacgtqypk432", "")
 	_, err := w.Transfer(from, to, big.NewInt(1000000))
 	if err != nil {
 		t.Error("transfer error: ", err)
 	}
+
 	time.Sleep(4 * time.Second)
 
 	balanceAfter, _ := w.BalanceOf(from)
