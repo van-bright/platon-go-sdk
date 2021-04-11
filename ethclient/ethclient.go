@@ -591,11 +591,11 @@ func (ec *Client) AdminAddPeer(ctx context.Context, peer string) (bool, error) {
 }
 
 func (ec *Client) AdminNodeInfo(ctx context.Context) (string, error) {
-	var nodeInfo string
+	var nodeInfo json.RawMessage
 	if err := ec.c.CallContext(ctx, &nodeInfo, "admin_nodeInfo"); err != nil {
 		return "", err
 	}
-	return nodeInfo, nil
+	return string(nodeInfo), nil
 }
 
 func (ec *Client) Sign(ctx context.Context, req *platon.SignReq) (string, error) {

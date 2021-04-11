@@ -272,26 +272,35 @@ func (w *AlayaWallet) Transfer(from common.Address, to common.Address, value *bi
 
 	fromAccount, _ := w.AccountByBech32(fromAddr)
 
-	var signedTx *types.Transaction
-
-	switch {
-	case w.isHdAccount(fromAccount):
-		signedTx, err = w.hd.SignTx(fromAccount, tx, w.networkCfg.ChainId)
-		if err != nil {
-			return "", err
-		}
-	case w.isKsAccount(fromAccount):
-		signedTx, err = w.ks.SignTx(fromAccount, tx, w.networkCfg.ChainId)
-		if err != nil {
-			return "", err
-		}
-	default:
-		return "", fmt.Errorf("unknown from account")
+	signedTx, err := w.SignTx(tx, fromAccount)
+	if err != nil {
+		return "", err
 	}
 
 	err = client.SendRawTransaction(ctx, signedTx)
 
 	return signedTx.Hash().Hex(),  err
+}
+
+func (w *AlayaWallet) SignTx(tx *types.Transaction, fromAccount accounts.Account) (*types.Transaction, error) {
+	var signedTx *types.Transaction
+	var err error
+
+	switch {
+	case w.isHdAccount(fromAccount):
+		signedTx, err = w.hd.SignTx(fromAccount, tx, w.networkCfg.ChainId)
+		if err != nil {
+			return nil, err
+		}
+	case w.isKsAccount(fromAccount):
+		signedTx, err = w.ks.SignTx(fromAccount, tx, w.networkCfg.ChainId)
+		if err != nil {
+			return nil, err
+		}
+	default:
+		return nil, fmt.Errorf("unknown from account")
+	}
+	return signedTx, nil
 }
 
 // Lock lock an account
