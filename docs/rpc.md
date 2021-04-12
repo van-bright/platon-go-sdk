@@ -9,7 +9,6 @@ web3g, err := web3go.New(alayaEndpoint)
 ```
 所有的接口, 都通过`web3g`对象进行操作.
 
-## 查询类接口
 ### Accounts
 查询当前client的账号
 ```go
@@ -217,6 +216,3 @@ fmt.Println("admin node info: ", info, err)
 }
 ```
 
-### 
-## 交易类接口
-## 监控类接口 

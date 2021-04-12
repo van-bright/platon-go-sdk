@@ -1,10 +1,12 @@
 package web3go
 
 import (
+	"encoding/json"
 	"fmt"
 	"math/big"
 	"platon-go-sdk/common"
 	"platon-go-sdk/common/hexutil"
+	"platon-go-sdk/core/types"
 	"platon-go-sdk/crypto"
 	"testing"
 	"time"
@@ -187,3 +189,20 @@ func TestAlayaWallet_Transfer(t *testing.T) {
 	}
 }
 
+func TestAlayaWallet_SignTx(t *testing.T) {
+	w, _ := NewWalletByMnemonics(mnemonic)
+	w.NewAccount(1)
+	fromAccount := w.Accounts()[0]
+	toAccount := w.Accounts()[1]
+
+	nonce := uint64(1)
+	gasLimit := uint64(21000)
+	gasPrice := big.NewInt(5000000000)
+	tx := types.NewTransaction(nonce, toAccount.Address, big.NewInt(100000), gasLimit, gasPrice, nil)
+
+	signedTx, _ := w.SignTx(tx, fromAccount)
+
+	s, _ := json.Marshal(signedTx)
+
+	fmt.Println("signed Tx: ", string(s))
+}

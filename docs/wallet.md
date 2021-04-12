@@ -20,10 +20,18 @@ account0, _ := w.Accounts()[0]  // go the default 0 account
 ```
 * `NewWalletByMnemonic`方法:  
 调用该方法用来通过助记词导入钱包.
+```go
+mnemonic := "always brick access science decade nasty marriage attack fame topple pen add"
+w, err := NewWalletByMnemonic(mnemonic)
+```
 
 * `NewWalletBySeed`方法:  
 调用该方法用来通过钱包的seed导入钱包.
-
+```go
+seed := "0x9dfc7e3f52c4438d04db5488e13672faa37920ec62bacdc333a83974cb07bfdd893bfd46940dedfeb7ef30a142c4d07d552dd6589b40d3a58b941b7e9d6dae7e"
+seedBytes, _ := hexutil.Decode(seed)
+w, _ := NewWalletBySeed(seedBytes)
+```
   
   下面的接口中, 我们默认已经通过上面的方法, 成功创建了一个钱包`w`.
 ## 创建新的账号
@@ -95,3 +103,35 @@ const mnemonic = "always brick access science decade nasty marriage attack fame 
 在`Transfer`方法的说明中, 当我们进行转账操作的时候, 默认会通过`rpc.SendRawTransaction`方法, 将交易广播到网络中.
 如果我们只需要签名但是无需广播到网络中, 则可以使用`SignTx(tx *types.Transaction, fromAccount accounts.Account) (*types.Transaction, error)`
 方法对交易进行签名, 但是不广播到网络中, 同时获取签名之后的`V`, `R`, `S`数据.
+```go
+w, _ := NewWalletByMnemonics(mnemonic)
+	w.NewAccount(1)
+	fromAccount := w.Accounts()[0]
+	toAccount := w.Accounts()[1]
+
+	nonce := uint64(1)
+	gasLimit := uint64(21000)
+	gasPrice := big.NewInt(5000000000)
+	tx := types.NewTransaction(nonce, toAccount.Address, big.NewInt(100000), gasLimit, gasPrice, nil)
+
+	signedTx, _ := w.SignTx(tx, fromAccount)
+
+	s, _ := json.Marshal(signedTx)
+
+	fmt.Println("signed Tx: ", string(s))
+```
+上面的代码将产生类似的输出:
+```json
+{
+    "nonce":"0x1",
+    "gasPrice":"0x12a05f200",
+    "gas":"0x5208",
+    "to":"atx1u6vtwsz2fqw5ufnm3tm070k43scxhhc8r3nnts",
+    "value":"0x186a0",
+    "input":"0x",
+    "v":"0x62297",
+    "r":"0xd6904b0251615d525f6b3c699047977676baf2ba385f3ec8737e1a530c88796d",
+    "s":"0x796efcf6b6bede3a49ec6c7969136d50a8fcbb5f43a8d8595e77c6b2b813732b",
+    "hash":"0x3b8c1ef129e4b1e65ed527cbae7718c32a0a80c8a432d3c8b5c083e613485139"
+}
+```
