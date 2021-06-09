@@ -638,7 +638,7 @@ func TestWeb3g_SendRawTransaction(t *testing.T) {
 		req := types.Transaction{
 
 		}
-		err := geb3.SendRawTransaction(&req)
+		_, err := geb3.SendRawTransaction(&req)
 
 		if err != nil {
 			t.Errorf("SendRawTransaction failed.")
@@ -653,7 +653,7 @@ func TestWeb3g_SendTransaction(t *testing.T) {
 	var respFunc = GenRespFunction(expect)
 	var execFunc ExecFunc = func(geb3 Geb3) {
 		req := types.Transaction{}
-		err := geb3.SendTransaction(&req)
+		_, err := geb3.SendTransaction(&req)
 
 		if err != nil {
 			t.Errorf("PlatonSendTransaction failed.")

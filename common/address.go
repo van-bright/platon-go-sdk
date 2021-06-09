@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"platon-go-sdk/network"
 	"strings"
 
 	"github.com/btcsuite/btcutil/bech32"
@@ -17,16 +18,11 @@ import (
 	"platon-go-sdk/log"
 )
 
-const (
-	MainNetAddressPrefix = "atp"
-	TestNetAddressPrefix = "atx"
-)
-
 var currentAddressPrefix string
 
 func GetAddressPrefix() string {
 	if currentAddressPrefix == "" {
-		return TestNetAddressPrefix
+		return network.TestNetHrp
 	}
 	return currentAddressPrefix
 }
@@ -37,7 +33,7 @@ func SetAddressPrefix(s string) {
 
 func CheckAddressPrefix(s string) bool {
 	switch s {
-	case MainNetAddressPrefix, TestNetAddressPrefix:
+	case network.MainNetHrp, network.TestNetHrp:
 		return true
 	default:
 		return false
@@ -278,8 +274,8 @@ type AddressOutput struct {
 
 func NewAddressOutput(add Address) AddressOutput {
 	return AddressOutput{
-		add.Bech32WithPrefix(MainNetAddressPrefix),
-		add.Bech32WithPrefix(TestNetAddressPrefix),
+		add.Bech32WithPrefix(network.MainNetHrp),
+		add.Bech32WithPrefix(network.TestNetHrp),
 	}
 }
 

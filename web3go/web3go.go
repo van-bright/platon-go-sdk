@@ -1,6 +1,7 @@
 package web3go
 
 import (
+	"encoding/json"
 	"math/big"
 	platon "platon-go-sdk"
 	"platon-go-sdk/common"
@@ -63,9 +64,9 @@ type Geb3 interface {
 	// This CallMsg is never mined to block.
 	CallContract(msg platon.CallMsg, option interface{}) ([]byte, error)
 	// Send a raw transaction to pool to execute.
-	SendRawTransaction(tx *types.Transaction) error
+	SendRawTransaction(tx *types.Transaction) (json.RawMessage, error)
 	// Send a signed transaction to pool to execute.
-	SendTransaction(tx *types.Transaction) error
+	SendTransaction(tx *types.Transaction) (json.RawMessage, error)
 	// Query code version and signature.
 	AdminGetProgramVersion() (*params.ProgramVersion, error)
 	// Get the data directory.

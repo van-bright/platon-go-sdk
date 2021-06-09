@@ -457,20 +457,24 @@ func (ec *Client) EstimateGas(ctx context.Context, msg platon.CallMsg) (uint64, 
 //
 // If the transaction was a contract creation use the TransactionReceipt method to get the
 // contract address after the transaction has been mined.
-func (ec *Client) SendRawTransaction(ctx context.Context, tx *types.Transaction) error {
+func (ec *Client) SendRawTransaction(ctx context.Context, tx *types.Transaction) (json.RawMessage, error) {
 	data, err := rlp.EncodeToBytes(tx)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return ec.c.CallContext(ctx, nil, "platon_sendRawTransaction", common.ToHex(data))
+	var result json.RawMessage
+	err = ec.c.CallContext(ctx, &result, "platon_sendRawTransaction", common.ToHex(data))
+	return result, err
 }
 
-func (ec *Client) SendTransaction(ctx context.Context, tx *types.Transaction) error {
+func (ec *Client) SendTransaction(ctx context.Context, tx *types.Transaction) (json.RawMessage, error) {
 	data, err := rlp.EncodeToBytes(tx)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return ec.c.CallContext(ctx, nil, "platon_sendTransaction", data)
+	var result json.RawMessage
+	err = ec.c.CallContext(ctx, &result, "platon_sendTransaction", data)
+	return result, err
 }
 
 func (ec *Client) GetSchnorrNIZKProve(ctx context.Context) (string, error) {

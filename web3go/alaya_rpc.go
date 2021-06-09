@@ -2,6 +2,7 @@ package web3go
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"math/big"
 	platon "platon-go-sdk"
@@ -264,11 +265,11 @@ func (alaya *AlayaRPC) CallContract(msg platon.CallMsg, option interface{}) ([]b
 // notice this msg is never mined to block.
 // @param msg  the call message
 // @param option  the block number as bignumber, or 'latest', 'pending', 'earliest'.
-func (alaya *AlayaRPC) SendRawTransaction(tx *types.Transaction) error {
+func (alaya *AlayaRPC) SendRawTransaction(tx *types.Transaction) (json.RawMessage, error) {
 	return alaya.client.SendRawTransaction(ctx, tx)
 }
 
-func (alaya *AlayaRPC) SendTransaction(tx *types.Transaction) error {
+func (alaya *AlayaRPC) SendTransaction(tx *types.Transaction) (json.RawMessage, error) {
 	return alaya.client.SendTransaction(ctx, tx)
 }
 

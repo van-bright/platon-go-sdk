@@ -1,18 +1,6 @@
-package utils
+package network
 
 import "math/big"
-
-type PposNetworkParameters struct {
-	ChainId *big.Int
-	Hrp     string
-	RestrictingPlanContract string
-	StakingContract string
-	IncentivePoolContract string
-	SlashContract string
-	ProposalContract string
-	RewardContract string
-}
-
 
 const (
 	MainNetHrp = "atp"
@@ -20,13 +8,34 @@ const (
 )
 
 var (
-	MainNetChainId  = big.NewInt(201018)
+	MainNetChainId = big.NewInt(201018)
 	TestNetChainId = big.NewInt(201030)
 )
 
+type Config struct {
+	Url     string
+	ChainId *big.Int
+}
+
+var (
+	DefaultTestNetConfig = Config{"http://47.241.91.2:6789", TestNetChainId}
+	DefaultMainNetConfig = Config{"https://openapi.alaya.network/rpc", MainNetChainId}
+)
+
+type PposNetworkParameters struct {
+	Config
+	Hrp                     string
+	RestrictingPlanContract string
+	StakingContract         string
+	IncentivePoolContract   string
+	SlashContract           string
+	ProposalContract        string
+	RewardContract          string
+}
+
 var (
 	MainNetParams = &PposNetworkParameters{
-		MainNetChainId,
+		DefaultMainNetConfig,
 		MainNetHrp,
 		"lat1zqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqp7pn3ep",
 		"lat1zqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzsjx8h7",
@@ -37,7 +46,7 @@ var (
 	}
 
 	TestNetParams = &PposNetworkParameters{
-		TestNetChainId,
+		DefaultTestNetConfig,
 		TestNetHrp,
 		"lax1zqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqp3yp7hw",
 		"lax1zqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzlh5ge3",

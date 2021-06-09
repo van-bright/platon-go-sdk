@@ -8,6 +8,7 @@ import (
 	"platon-go-sdk/common/hexutil"
 	"platon-go-sdk/core/types"
 	"platon-go-sdk/crypto"
+	"platon-go-sdk/network"
 	"testing"
 	"time"
 )
@@ -70,7 +71,7 @@ func TestAlayaWallet_Accounts(t *testing.T) {
 
 func TestAlayaWallet_BalanceOf(t *testing.T) {
 	w, _ := NewWalletByMnemonics(mnemonic)
-	w.SetNetworkCfg(&DefaultTestNetCfg)
+	w.SetNetworkCfg(&network.DefaultTestNetConfig)
 
 	addr := common.MustBech32ToAddress("atp1zl2vnznf6q2puwr3ue4l0yrfvglacgtqypk432")
 
@@ -161,7 +162,7 @@ func TestAlayaWallet_TestNetAddress(t *testing.T) {
 
 func TestAlayaWallet_Transfer(t *testing.T) {
 	w, _ := NewWalletByMnemonics(mnemonic)
-	w.SetNetworkCfg(&DefaultTestNetCfg)
+	w.SetNetworkCfg(&network.DefaultTestNetConfig)
 
 	fromPrivateKey := crypto.HexMustToECDSA("b72faaa798c44d2359d0ccb35dd39446c9c18905fdcecede42a6570ff177ae08")
 

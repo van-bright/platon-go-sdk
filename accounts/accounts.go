@@ -39,13 +39,13 @@ type Account struct {
 func (a Account) ToMainNetAddress() (string, error) {
 	publicKeyBytes := a.Address.Bytes()
 
-	return bech32util.ConvertAndEncode(common.MainNetAddressPrefix, publicKeyBytes)
+	return bech32util.ConvertAndEncode(common.MainNetHrp, publicKeyBytes)
 }
 
 func (a Account) ToTestNetAddress() (string, error) {
 	publicKeyBytes := a.Address.Bytes()
 
-	return bech32util.ConvertAndEncode(common.TestNetAddressPrefix, publicKeyBytes)
+	return bech32util.ConvertAndEncode(common.TestNetHrp, publicKeyBytes)
 }
 
 const (

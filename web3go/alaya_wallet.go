@@ -17,13 +17,14 @@ import (
 	"platon-go-sdk/core/types"
 	"platon-go-sdk/ethclient"
 	"platon-go-sdk/hdwallet"
+	"platon-go-sdk/network"
 	"strings"
 )
 
 type AlayaWallet struct {
 	hd         *hdwallet.Wallet
 	ks         *keystore.KeyStore
-	networkCfg *NetworkCfg
+	networkCfg *network.Config
 }
 
 type AccountInfo struct {
@@ -37,16 +38,6 @@ type WalletExport struct {
 	Seed     string   `json:"seed"`
 	Accounts []string `json:"accounts"`
 }
-
-type NetworkCfg struct {
-	Url     string
-	ChainId *big.Int
-}
-
-var (
-	DefaultTestNetCfg = NetworkCfg{"http://47.241.91.2:6789", big.NewInt(201030)}
-	DefaultMainNetCfg = NetworkCfg{"https://openapi.alaya.network/rpc", big.NewInt(201018)}
-)
 
 func (w *AlayaWallet) isHdAccount(account accounts.Account) bool {
 	isKeystore := strings.HasPrefix(account.URL.String(), "keystore")
@@ -151,7 +142,7 @@ func (w *AlayaWallet) ImportPrivateKey(key *ecdsa.PrivateKey, ksPath string, pas
 }
 
 // SetNetworkCfg set network config for wallet
-func (w *AlayaWallet) SetNetworkCfg(cfg *NetworkCfg) {
+func (w *AlayaWallet) SetNetworkCfg(cfg *network.Config) {
 	w.networkCfg = cfg
 }
 
@@ -234,7 +225,7 @@ func (w *AlayaWallet) BalanceOf(owner common.Address) (*big.Int, error) {
 		return nil, err
 	}
 
-	common.SetAddressPrefix(common.MainNetAddressPrefix)
+	common.SetAddressPrefix(network.MainNetHrp)
 	addr := owner.Bech32()
 
 	balance, err := client.BalanceAt(context.Background(), addr, "latest")
@@ -258,7 +249,7 @@ func (w *AlayaWallet) Transfer(from common.Address, to common.Address, value *bi
 	if err != nil {
 		return "", err
 	}
-	common.SetAddressPrefix(common.MainNetAddressPrefix)
+	common.SetAddressPrefix(network.MainNetHrp)
 	fromAddr := from.Bech32()
 
 	nonce, err := client.NonceAt(ctx, fromAddr, "pending")
@@ -277,7 +268,7 @@ func (w *AlayaWallet) Transfer(from common.Address, to common.Address, value *bi
 		return "", err
 	}
 
-	err = client.SendRawTransaction(ctx, signedTx)
+	_, err = client.SendRawTransaction(ctx, signedTx)
 
 	return signedTx.Hash().Hex(),  err
 }
@@ -353,7 +344,7 @@ func NewWalletByMnemonics(mnemonics string) (*AlayaWallet, error) {
 		return nil, err
 	}
 	// 默认生成0地址
-	aw := &AlayaWallet{w, nil, &DefaultMainNetCfg}
+	aw := &AlayaWallet{w, nil, &network.DefaultMainNetConfig}
 	_, err = aw.NewAccount(0)
 	if err != nil {
 		return nil, err
@@ -368,7 +359,7 @@ func NewWalletBySeed(seed []byte) (*AlayaWallet, error) {
 		return nil, err
 	}
 	// 默认生成0地址
-	aw := &AlayaWallet{w, nil, &DefaultMainNetCfg}
+	aw := &AlayaWallet{w, nil, &network.DefaultMainNetConfig}
 	_, err = aw.NewAccount(0)
 	if err != nil {
 		return nil, err
