@@ -1,6 +1,9 @@
 package resp
 
-import "math/big"
+import (
+	"math/big"
+	"platon-go-sdk/ppos/common"
+)
 
 type Proposal struct {
 
@@ -57,4 +60,32 @@ type Proposal struct {
 	 * 参数新值
 	 */
 	newValue string
+}
+
+func (p *Proposal) GetSubmitFunctionType() common.FunctionType{
+	switch p.ProposalType {
+	case common.TEXT_PROPOSAL:
+		return common.SUBMIT_TEXT_FUNC_TYPE
+	case common.VERSION_PROPOSAL:
+		return common.SUBMIT_VERSION_FUNC_TYPE
+	case common.CANCEL_PROPOSAL:
+		return common.SUBMIT_CANCEL_FUNC_TYPE
+	default:
+		return common.SUBMIT_PARAM_FUNCTION_TYPE
+	}
+}
+
+func (p *Proposal) GetSubmitInputParameters() []interface{} {
+	switch p.ProposalType {
+	case common.TEXT_PROPOSAL:
+		return []interface{}{p.verifier, p.PiPid}
+	case common.VERSION_PROPOSAL:
+		return []interface{}{p.verifier, p.PiPid, p.NewVersion, p.EndVotingBlock}
+	case common.CANCEL_PROPOSAL:
+		return []interface{}{p.verifier, p.PiPid, p.EndVotingBlock, p.ToBeCanceled}
+	case common.PARAM_PROPOSAL:
+		return []interface{}{p.verifier, p.PiPid, p.module, p.name, p.newValue}
+	default:
+		return []interface{}{}
+	}
 }

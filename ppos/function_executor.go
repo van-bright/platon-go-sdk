@@ -39,7 +39,7 @@ func (fe *FunctionExecutor) getDefaultGasPrice(f *common.Function) *big.Int {
 		price.SetString("1500000000000000", 10)
 	case common.SUBMIT_VERSION_FUNC_TYPE:
 		price.SetString("2100000000000000", 10)
-	case common.SUBMIR_PARAM_FUNCTION_TYPE:
+	case common.SUBMIT_PARAM_FUNCTION_TYPE:
 		price.SetString("2000000000000000", 10)
 	case common.SUBMIT_CANCEL_FUNC_TYPE:
 		price.SetString("3000000000000000", 10)

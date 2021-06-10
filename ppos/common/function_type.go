@@ -74,7 +74,7 @@ const (
 	/**
 	 * 提交参数提案
 	 */
-	SUBMIR_PARAM_FUNCTION_TYPE FunctionType = 2002
+	SUBMIT_PARAM_FUNCTION_TYPE FunctionType = 2002
 	/**
 	 * 给提案投票
 	 */
