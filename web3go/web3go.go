@@ -63,9 +63,9 @@ type Geb3 interface {
 	// Call a contract with CallMsg at specific block number or 'latest', 'pending', 'earliest'
 	// This CallMsg is never mined to block.
 	CallContract(msg platon.CallMsg, option interface{}) ([]byte, error)
-	// Send a raw transaction to pool to execute.
+	// SendWithRaw a raw transaction to pool to execute.
 	SendRawTransaction(tx *types.Transaction) (json.RawMessage, error)
-	// Send a signed transaction to pool to execute.
+	// SendWithRaw a signed transaction to pool to execute.
 	SendTransaction(tx *types.Transaction) (json.RawMessage, error)
 	// Query code version and signature.
 	AdminGetProgramVersion() (*params.ProgramVersion, error)

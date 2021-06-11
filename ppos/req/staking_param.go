@@ -58,3 +58,20 @@ type StakingParam struct {
 	 */
 	RewardPer *big.Int
 }
+
+func (sp StakingParam) SubmitInputParameters() []interface{} {
+	return []interface{} { sp.StakingAmountType.GetValue(),
+			sp.BenefitAddress,
+			sp.NodeId,
+			sp.ExternalId,
+			sp.NodeName,
+			sp.WebSite,
+			sp.Details,
+			sp.Amount,
+			sp.RewardPer,
+			sp.ProcessVersion.Version,
+			sp.ProcessVersion.Sign,
+			sp.BlsPubKey,
+			sp.BlsProof,
+		}
+}

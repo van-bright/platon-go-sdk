@@ -28,7 +28,7 @@ func TestFeedPanics(t *testing.T) {
 	{
 		var f Feed
 		f.Send(int(2))
-		want := feedTypeError{op: "Send", got: reflect.TypeOf(uint64(0)), want: reflect.TypeOf(int(0))}
+		want := feedTypeError{op: "SendWithRaw", got: reflect.TypeOf(uint64(0)), want: reflect.TypeOf(int(0))}
 		if err := checkPanic(want, func() { f.Send(uint64(2)) }); err != nil {
 			t.Error(err)
 		}
@@ -37,7 +37,7 @@ func TestFeedPanics(t *testing.T) {
 		var f Feed
 		ch := make(chan int)
 		f.Subscribe(ch)
-		want := feedTypeError{op: "Send", got: reflect.TypeOf(uint64(0)), want: reflect.TypeOf(int(0))}
+		want := feedTypeError{op: "SendWithRaw", got: reflect.TypeOf(uint64(0)), want: reflect.TypeOf(int(0))}
 		if err := checkPanic(want, func() { f.Send(uint64(2)) }); err != nil {
 			t.Error(err)
 		}
@@ -235,7 +235,7 @@ func TestFeedUnsubscribeBlockedPost(t *testing.T) {
 	wg.Wait()
 }
 
-// Checks that unsubscribing a channel during Send works even if that
+// Checks that unsubscribing a channel during SendWithRaw works even if that
 // channel has already been sent on.
 func TestFeedUnsubscribeSentChan(t *testing.T) {
 	var (
@@ -259,11 +259,11 @@ func TestFeedUnsubscribeSentChan(t *testing.T) {
 	// Unsubscribe ch1, removing it from the send cases.
 	sub1.Unsubscribe()
 
-	// Receive ch2, finishing Send.
+	// Receive ch2, finishing SendWithRaw.
 	<-ch2
 	wg.Wait()
 
-	// Send again. This should send to ch2 only, so the wait group will unblock
+	// SendWithRaw again. This should send to ch2 only, so the wait group will unblock
 	// as soon as a value is received on ch2.
 	wg.Add(1)
 	go func() {

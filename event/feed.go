@@ -86,7 +86,7 @@ func (f *Feed) Subscribe(channel interface{}) Subscription {
 		panic(feedTypeError{op: "Subscribe", got: chantyp, want: reflect.ChanOf(reflect.SendDir, f.etype)})
 	}
 	// Add the select case to the inbox.
-	// The next Send will add it to f.sendCases.
+	// The next SendWithRaw will add it to f.sendCases.
 	cas := reflect.SelectCase{Dir: reflect.SelectSend, Chan: chanval}
 	f.inbox = append(f.inbox, cas)
 	return sub
@@ -116,9 +116,9 @@ func (f *Feed) remove(sub *feedSub) {
 
 	select {
 	case f.removeSub <- ch:
-		// Send will remove the channel from f.sendCases.
+		// SendWithRaw will remove the channel from f.sendCases.
 	case <-f.sendLock:
-		// No Send is in progress, delete the channel now that we have the send lock.
+		// No SendWithRaw is in progress, delete the channel now that we have the send lock.
 		f.sendCases = f.sendCases.delete(f.sendCases.find(ch))
 		f.sendLock <- struct{}{}
 	}
@@ -139,7 +139,7 @@ func (f *Feed) Send(value interface{}) (nsent int) {
 
 	if !f.typecheck(rvalue.Type()) {
 		f.sendLock <- struct{}{}
-		panic(feedTypeError{op: "Send", got: rvalue.Type(), want: f.etype})
+		panic(feedTypeError{op: "SendWithRaw", got: rvalue.Type(), want: f.etype})
 	}
 	f.mu.Unlock()
 
@@ -148,7 +148,7 @@ func (f *Feed) Send(value interface{}) (nsent int) {
 		f.sendCases[i].Send = rvalue
 	}
 
-	// Send until all channels except removeSub have been chosen. 'cases' tracks a prefix
+	// SendWithRaw until all channels except removeSub have been chosen. 'cases' tracks a prefix
 	// of sendCases. When a send succeeds, the corresponding case moves to the end of
 	// 'cases' and it shrinks by one element.
 	cases := f.sendCases

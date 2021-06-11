@@ -23,7 +23,7 @@ import (
 )
 
 func ExampleFeed_acknowledgedEvents() {
-	// This example shows how the return value of Send can be used for request/reply
+	// This example shows how the return value of SendWithRaw can be used for request/reply
 	// interaction between event consumers and producers.
 	var feed event.Feed
 	type ackedEvent struct {

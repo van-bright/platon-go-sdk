@@ -46,7 +46,7 @@ func TestWaitDeployed(t *testing.T) {
 			close(mined)
 		}()
 
-		// Send and mine the transaction.
+		// SendWithRaw and mine the transaction.
 		backend.SendTransaction(ctx, tx)
 		backend.Commit()
 

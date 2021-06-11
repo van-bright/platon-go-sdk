@@ -21,26 +21,26 @@ type RestrictingInfo struct {
 	/**
 	 * 释放区块高度
 	 */
-	BlockNumber *big.Int
+	BlockNumber *big.Int `json:"BlockNumber"`
 	/**
 	 * 释放金额
 	 */
-	Amount *big.Int
+	Amount *big.Int `json:"Amount"`
 }
 
 type RestrictingItem struct {
 	/**
 	 * 锁仓余额
 	 */
-	Balance *big.Int
+	Balance *big.Int `json:"Balance"`
 	/**
 	 * 质押/抵押金额
 	 */
-	Pledge *big.Int
+	Pledge *big.Int `json:"Pledge"`
 	/**
 	 * 欠释放金额
 	 */
-	Debt *big.Int
+	Debt *big.Int `json:"Debt"`
 	/**
 	 * 锁仓分录信息
 	 */

@@ -18,7 +18,7 @@ type FunctionExecutor struct {
 	credentials  *common.Credentials
 }
 
-func (fe *FunctionExecutor) Send(f *common.Function) (json.RawMessage, error) {
+func (fe *FunctionExecutor) SendWithRaw(f *common.Function) (json.RawMessage, error) {
 	to := common2.MustBech32ToAddress(fe.contractAddr)
 	data, err := f.ToBytes()
 	if err != nil {
@@ -30,6 +30,16 @@ func (fe *FunctionExecutor) Send(f *common.Function) (json.RawMessage, error) {
 	chainId := fe.chainId
 
 	return fe.doSendRawTx(chainId, to, data, big.NewInt(0), gasPrice, gasLimit)
+}
+
+func (fe *FunctionExecutor) SendWithResult(f *common.Function, result interface{}) error {
+	raw, err := fe.SendWithRaw(f)
+	if err != nil {
+	return err
+	}
+
+	err = json.Unmarshal(raw, &result)
+	return err
 }
 
 func (fe *FunctionExecutor) getDefaultGasPrice(f *common.Function) *big.Int {

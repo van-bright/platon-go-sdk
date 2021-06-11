@@ -145,7 +145,7 @@ type LogFilterer interface {
 
 // TransactionSender wraps transaction sending. The SendTransaction method injects a
 // signed transaction into the pending transaction pool for execution. If the transaction
-// was a contract creation, the TransactionReceipt method can be used to retrieve the
+// was a contract creation, the TransactionHash method can be used to retrieve the
 // contract address after the transaction has been mined.
 //
 // The transaction must be signed and have a valid nonce to be included. Consumers of the

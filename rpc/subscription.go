@@ -140,7 +140,7 @@ func (n *Notifier) activate(id ID, namespace string) {
 		sub.namespace = namespace
 		n.active[id] = sub
 		delete(n.inactive, id)
-		// Send buffered notifications.
+		// SendWithRaw buffered notifications.
 		for _, data := range n.buffer[id] {
 			n.send(sub, data)
 		}

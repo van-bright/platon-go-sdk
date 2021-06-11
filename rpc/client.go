@@ -397,7 +397,7 @@ func (c *Client) Subscribe(ctx context.Context, namespace string, channel interf
 		sub:  newClientSubscription(c, namespace, chanVal),
 	}
 
-	// Send the subscription request.
+	// SendWithRaw the subscription request.
 	// The arrival and validity of the response is signaled on sub.quit.
 	if err := c.send(ctx, op, msg); err != nil {
 		return nil, err
@@ -546,7 +546,7 @@ func (c *Client) dispatch(conn net.Conn) {
 			reading = true
 			conn = newconn
 
-		// Send path.
+		// SendWithRaw path.
 		case op := <-requestOpLock:
 			// Stop listening for further send ops until the current one is done.
 			requestOpLock = nil

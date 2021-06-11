@@ -34,3 +34,14 @@ type UpdateStakingParam struct {
 	 */
 	RewardPer *big.Int
 }
+
+func (usp UpdateStakingParam) SubmitInputParameters() []interface{} {
+	return []interface{}{usp.BenifitAddress,
+		usp.NodeId,
+		usp.RewardPer,
+		usp.ExternalId,
+		usp.NodeName,
+		usp.WebSite,
+		usp.Details,
+	}
+}

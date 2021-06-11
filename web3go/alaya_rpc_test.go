@@ -561,7 +561,7 @@ func TestWeb3g_TransactionReceipt(t *testing.T) {
 		resp, _ := geb3.TransactionReceipt(common.HexToHash("0x00000000000000000000"))
 
 		if resp.TxHash != expect.TxHash {
-			t.Errorf("TransactionReceipt failed.")
+			t.Errorf("TransactionHash failed.")
 		}
 	}
 
