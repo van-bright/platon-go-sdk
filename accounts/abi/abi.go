@@ -145,14 +145,14 @@ func (abi *ABI) UnmarshalJSON(data []byte) error {
 			name := abi.overloadedMethodName(field.Name)
 			abi.Methods[name] = NewMethod(name, field.Name, Function, field.StateMutability, field.Constant, field.Payable, field.Inputs, field.Outputs)
 		case "fallback":
-			// New introduced function type in v0.6.0, check more detail
+			// NewCredential introduced function type in v0.6.0, check more detail
 			// here https://solidity.readthedocs.io/en/v0.6.0/contracts.html#fallback-function
 			if abi.HasFallback() {
 				return errors.New("only single fallback is allowed")
 			}
 			abi.Fallback = NewMethod("", "", Fallback, field.StateMutability, field.Constant, field.Payable, nil, nil)
 		case "receive":
-			// New introduced function type in v0.6.0, check more detail
+			// NewCredential introduced function type in v0.6.0, check more detail
 			// here https://solidity.readthedocs.io/en/v0.6.0/contracts.html#fallback-function
 			if abi.HasReceive() {
 				return errors.New("only single receive is allowed")

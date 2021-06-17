@@ -32,6 +32,6 @@ type ParamValue struct {
 }
 
 type GovernParam struct {
-	ParamItem ParamItem `json:"ParamItem"`
+	ParamItem  ParamItem  `json:"ParamItem"`
 	ParamValue ParamValue `json:"ParamValue"`
 }

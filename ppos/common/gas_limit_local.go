@@ -42,7 +42,7 @@ func IsLocalSupportFunction(ftype FunctionType) bool {
 
 func GetGasLimit(f *Function) uint64 {
 	if IsLocalSupportFunction(f.Type) {
-		bytes, _ := f.ToBytes()
+		bytes := f.ToBytes()
 		return BASE_DEFAULT_GAS_LIMIT +
 			getContractGasLimit(f.Type) +
 			getFunctionGasLimit(f.Type) +

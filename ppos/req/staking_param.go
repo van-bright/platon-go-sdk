@@ -60,18 +60,18 @@ type StakingParam struct {
 }
 
 func (sp StakingParam) SubmitInputParameters() []interface{} {
-	return []interface{} { sp.StakingAmountType.GetValue(),
-			sp.BenefitAddress,
-			sp.NodeId,
-			sp.ExternalId,
-			sp.NodeName,
-			sp.WebSite,
-			sp.Details,
-			sp.Amount,
-			sp.RewardPer,
-			sp.ProcessVersion.Version,
-			sp.ProcessVersion.Sign,
-			sp.BlsPubKey,
-			sp.BlsProof,
-		}
+	return []interface{}{sp.StakingAmountType.GetValue(),
+		sp.BenefitAddress,
+		sp.NodeId,
+		sp.ExternalId,
+		sp.NodeName,
+		sp.WebSite,
+		sp.Details,
+		sp.Amount,
+		sp.RewardPer,
+		sp.ProcessVersion.Version,
+		sp.ProcessVersion.Sign,
+		sp.BlsPubKey,
+		sp.BlsProof,
+	}
 }

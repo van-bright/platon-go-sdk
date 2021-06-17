@@ -270,7 +270,7 @@ func (w *AlayaWallet) Transfer(from common.Address, to common.Address, value *bi
 
 	_, err = client.SendRawTransaction(ctx, signedTx)
 
-	return signedTx.Hash().Hex(),  err
+	return signedTx.Hash().Hex(), err
 }
 
 func (w *AlayaWallet) SignTx(tx *types.Transaction, fromAccount accounts.Account) (*types.Transaction, error) {
@@ -302,6 +302,7 @@ func (w *AlayaWallet) Lock(account accounts.Account) error {
 
 	return nil
 }
+
 // LockBech32 to lock an account with bech32 format.
 func (w *AlayaWallet) LockBech32(bech32Address string) error {
 	account, err := w.AccountByBech32(bech32Address)
@@ -311,6 +312,7 @@ func (w *AlayaWallet) LockBech32(bech32Address string) error {
 
 	return w.Lock(account)
 }
+
 // Unlock to unlock an account with wallet passphrase.
 func (w *AlayaWallet) Unlock(account accounts.Account, passphrase string) error {
 	if w.isKsAccount(account) {
@@ -318,8 +320,9 @@ func (w *AlayaWallet) Unlock(account accounts.Account, passphrase string) error 
 	}
 	return nil
 }
+
 // UnlockBech32 to unlock a bech32 format account
-func (w *AlayaWallet) UnlockBech32(bech32Address string , passphrase string) error {
+func (w *AlayaWallet) UnlockBech32(bech32Address string, passphrase string) error {
 	account, err := w.AccountByBech32(bech32Address)
 	if err != nil {
 		return err
@@ -327,6 +330,7 @@ func (w *AlayaWallet) UnlockBech32(bech32Address string , passphrase string) err
 
 	return w.Unlock(account, passphrase)
 }
+
 // NewWallet create a new Alaya wallet with mnemonic
 func NewWallet() (*AlayaWallet, error) {
 	mnemonic, err := hdwallet.NewMnemonic(128)

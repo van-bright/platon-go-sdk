@@ -62,7 +62,7 @@ type Proposal struct {
 	newValue string
 }
 
-func (p *Proposal) GetSubmitFunctionType() common.FunctionType{
+func (p *Proposal) GetSubmitFunctionType() common.FunctionType {
 	switch p.ProposalType {
 	case common.TEXT_PROPOSAL:
 		return common.SUBMIT_TEXT_FUNC_TYPE

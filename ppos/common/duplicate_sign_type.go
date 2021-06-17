@@ -1,6 +1,7 @@
 package common
 
 type DuplicateSignType int
+
 const (
 	PREPARE_BLOCK DuplicateSignType = 1
 	PREPARE_VOTE  DuplicateSignType = 2

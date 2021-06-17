@@ -117,6 +117,7 @@ func (sc *StakingContract) UpdateStakingInfo(updateStakingParam req.UpdateStakin
 	err := sc.executor.SendWithResult(f, &receipt)
 	return receipt, err
 }
+
 /**
  * 增持质押
  *
@@ -125,7 +126,7 @@ func (sc *StakingContract) UpdateStakingInfo(updateStakingParam req.UpdateStakin
  * @param amount            增持的von
  * @return
  */
-func (sc *StakingContract)AddStaking(nodeId string,  stakingAmountType common.StakingAmountType, amount *big.Int) (common.TransactionHash, error) {
+func (sc *StakingContract) AddStaking(nodeId string, stakingAmountType common.StakingAmountType, amount *big.Int) (common.TransactionHash, error) {
 	params := []interface{}{nodeId, stakingAmountType.GetValue(), amount}
 	f := common.NewFunction(common.ADD_STAKING_FUNC_TYPE, params)
 

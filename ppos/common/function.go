@@ -1,9 +1,13 @@
 package common
 
-import "platon-go-sdk/rlp"
+import (
+	"fmt"
+	"platon-go-sdk/common/hexutil"
+	"platon-go-sdk/ppos/codec"
+)
 
 type Function struct {
-	Type FunctionType
+	Type        FunctionType
 	InputParams []interface{}
 }
 
@@ -11,19 +15,28 @@ func NewFunction(typ FunctionType, params []interface{}) *Function {
 	return &Function{typ, params}
 }
 
-func (f *Function) ToBytes() ([]byte, error) {
-	data, err := rlp.EncodeToBytes(f.Type.GetType())
-	if err != nil {
-		return nil, err
-	}
+func (f *Function) encodeType() codec.BytesSlice {
+	typ := f.Type.GetType()
+	encoded := codec.MinimalByteArray(typ)
+	//fmt.Println("ftype0: " + hexutil.Encode(encoded))
+	b := codec.EncodeBytes(encoded, codec.OFFSET_SHORT_STRING)
+	//fmt.Println("ftype1: " + hexutil.Encode(b))
+	return b
+}
 
-	for i := 0; i < len(f.InputParams); i++ {
-		d, err := rlp.EncodeToBytes(f.InputParams[i])
-		if err != nil {
-			return nil, err
-		}
-		data = append(data, d...)
-	}
+func (f *Function) encodeParams() []codec.BytesSlice {
+	return []codec.BytesSlice{}
+}
 
-	return data, nil
- }
+func (f *Function) ToBytes() []byte {
+	ftype := f.encodeType()
+	params := f.encodeParams()
+
+	argsList := append([]codec.BytesSlice{ftype}, params...)
+	argsBytes := codec.EncodeBytesSlice(argsList)
+
+	data := hexutil.Encode(argsBytes)
+	fmt.Println("encode type: " + data)
+
+	return argsBytes
+}

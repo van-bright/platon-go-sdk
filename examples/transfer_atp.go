@@ -35,7 +35,7 @@ const AlayaEndpoint = "http://47.241.91.2:6789"
 func main() {
 	geb3, err := web3go.New(AlayaEndpoint)
 	if err != nil {
-		log.Fatal("New error:", err)
+		log.Fatal("NewCredential error:", err)
 	}
 
 	privateKey, err := crypto.HexToECDSA("b72faaa798c44d2359d0ccb35dd39446c9c18905fdcecede42a6570ff177ae08")

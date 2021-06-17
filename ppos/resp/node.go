@@ -3,8 +3,9 @@ package resp
 import "math/big"
 
 type Node struct {
-
 	NodeId string `json:"NodeId"`
+
+	BlsPubKey string `json:"BlsPubKey"`
 
 	StakingAddress string `json:"StakingAddress"`
 
@@ -24,15 +25,23 @@ type Node struct {
 
 	StakingBlockNum *big.Int `json:"StakingBlockNum"`
 
-	Shares *big.Int `json:"Shares"`
+	Shares string `json:"Shares"`
 
-	Released *big.Int `json:"Released"`
+	Released string `json:"Released"`
 
-	ReleasedHes *big.Int `json:"ReleasedHes"`
+	ReleasedHes string `json:"ReleasedHes"`
 
-	RestrictingPlan *big.Int `json:"RestrictingPlan"`
+	RestrictingPlan string `json:"RestrictingPlan"`
 
-	RestrictingPlanHes *big.Int `json:"RestrictingPlanHes"`
+	RestrictingPlanHes string `json:"RestrictingPlanHes"`
+
+	DelegateEpoch *big.Int `json:"DelegateEpoch"`
+
+	DelegateTotal string `json:"DelegateTotal"`
+
+	DelegateTotalHes string `json:"DelegateTotalHes"`
+
+	DelegateRewardTotal string `json:"DelegateRewardTotal"`
 
 	ExternalId string `json:"ExternalId"`
 
@@ -42,13 +51,5 @@ type Node struct {
 
 	Details string `json:"Details"`
 
-	ValidatorTerm *big.Int `json:"ValidatorTerm"`
-
-	DelegateEpoch *big.Int `json:"DelegateEpoch"`
-
-	DelegateTotal *big.Int `json:"DelegateTotal"`
-
-	DelegateTotalHes *big.Int `json:"DelegateTotalHes"`
-
-	DelegateRewardTotal *big.Int `json:"DelegateRewardTotal"`
+	//ValidatorTerm *big.Int `json:"ValidatorTerm"`
 }

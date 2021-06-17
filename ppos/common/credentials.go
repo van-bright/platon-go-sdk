@@ -12,10 +12,10 @@ import (
 
 type Credentials struct {
 	privateKey *ecdsa.PrivateKey
-	hrp string
+	hrp        string
 }
 
-func New(hexPrivateKeyStr string, hrp string) (*Credentials, error) {
+func NewCredential(hexPrivateKeyStr string, hrp string) (*Credentials, error) {
 	if len(hexPrivateKeyStr) < 64 {
 		return nil, fmt.Errorf("length of private key is not fullfilled")
 	}
@@ -50,4 +50,9 @@ func (c *Credentials) SignTx(tx *types.Transaction, chainID *big.Int) (*types.Tr
 	}
 
 	return signedTx, nil
+}
+
+func (c *Credentials) MustBech32ToAddress(addr string) common.Address {
+	common.SetAddressPrefix(c.hrp)
+	return common.MustBech32ToAddress(addr)
 }

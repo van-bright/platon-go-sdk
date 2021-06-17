@@ -15,7 +15,7 @@ import (
 
 var (
 	mnemonic   = "prevent scissors box assist enroll bean cup mushroom tragic steel best move"
-	seed = "0x9dfc7e3f52c4438d04db5488e13672faa37920ec62bacdc333a83974cb07bfdd893bfd46940dedfeb7ef30a142c4d07d552dd6589b40d3a58b941b7e9d6dae7e"
+	seed       = "0x9dfc7e3f52c4438d04db5488e13672faa37920ec62bacdc333a83974cb07bfdd893bfd46940dedfeb7ef30a142c4d07d552dd6589b40d3a58b941b7e9d6dae7e"
 	privateKey = "ed72066fa30607420635be56785595ccf935675a890bef7c808afc1537f52281"
 	atpAccount = "atp1v0jmfxmmq4mhv97rt5x8pwsfmd67594g5jrl72"
 	atxAccount = "atx1v0jmfxmmq4mhv97rt5x8pwsfmd67594g75l4dq"

@@ -1,6 +1,5 @@
 package web3go
 
-
 import (
 	"bytes"
 	"encoding/json"
@@ -176,7 +175,6 @@ func TestWeb3g_AdminPeers(t *testing.T) {
 	DoBridgeHttpTest(respFunc, execFunc)
 }
 
-
 func TestWeb3g_NetListening(t *testing.T) {
 	expect := true
 	var respFunc = GenRespFunction(expect)
@@ -222,7 +220,6 @@ func TestWeb3g_NetPeerCount(t *testing.T) {
 	DoBridgeHttpTest(respFunc, execFunc)
 }
 
-
 func TestWeb3g_Accounts(t *testing.T) {
 	expect := []string{"atp123456", "atp891011"}
 	var respFunc = GenRespFunction(expect)
@@ -266,12 +263,12 @@ func TestWeb3g_CallContract(t *testing.T) {
 		gas := uint64(1000)
 		to := common.MustBech32ToAddress("atp2")
 		var req = platon_go_sdk.CallMsg{
-			From:        common.MustBech32ToAddress("atp1"),
-			To:          &to,
-			Gas:         gas,
-			GasPrice:    big.NewInt(1000000000),
-			Value:       big.NewInt(9527),
-			Data:        []byte(""),
+			From:     common.MustBech32ToAddress("atp1"),
+			To:       &to,
+			Gas:      gas,
+			GasPrice: big.NewInt(1000000000),
+			Value:    big.NewInt(9527),
+			Data:     []byte(""),
 		}
 		resp, _ := geb3.CallContract(req, "latest")
 
@@ -291,12 +288,12 @@ func TestWeb3g_EstimateGas(t *testing.T) {
 		gas := uint64(1000)
 		to := common.MustBech32ToAddress("atp2")
 		var req = platon_go_sdk.CallMsg{
-			From:        common.MustBech32ToAddress("atp1"),
-			To:          &to,
-			Gas:         gas,
-			GasPrice:    big.NewInt(1000000000),
-			Value:       big.NewInt(9527),
-			Data:        []byte(""),
+			From:     common.MustBech32ToAddress("atp1"),
+			To:       &to,
+			Gas:      gas,
+			GasPrice: big.NewInt(1000000000),
+			Value:    big.NewInt(9527),
+			Data:     []byte(""),
 		}
 		resp, _ := geb3.EstimateGasLimit(req)
 
@@ -354,7 +351,7 @@ func TestWeb3g_PlatonGetBalance(t *testing.T) {
 }
 
 func TestWeb3g_PlatonGetBlockByHash(t *testing.T) {
-	expect := types.Block{	}
+	expect := types.Block{}
 
 	var respFunc = GenRespFunction(expect)
 
@@ -371,7 +368,6 @@ func TestWeb3g_PlatonGetBlockByHash(t *testing.T) {
 
 func TestWeb3g_PlatonGetBlockByNumber(t *testing.T) {
 	expect := types.Block{}
-
 
 	var respFunc = GenRespFunction(expect)
 
@@ -553,7 +549,6 @@ func TestWeb3g_TransactionByHash(t *testing.T) {
 	DoBridgeHttpTest(respFunc, execFunc)
 }
 
-
 func TestWeb3g_TransactionReceipt(t *testing.T) {
 	expect := types.Receipt{}
 	var respFunc = GenRespFunction(expect)
@@ -635,9 +630,7 @@ func TestWeb3g_SendRawTransaction(t *testing.T) {
 	expect := "send raw transaction success"
 	var respFunc = GenRespFunction(expect)
 	var execFunc ExecFunc = func(geb3 Geb3) {
-		req := types.Transaction{
-
-		}
+		req := types.Transaction{}
 		_, err := geb3.SendRawTransaction(&req)
 
 		if err != nil {
@@ -669,7 +662,7 @@ func TestWeb3g_PlatonSign(t *testing.T) {
 	var execFunc ExecFunc = func(geb3 Geb3) {
 		req := platon_go_sdk.SignReq{
 			Signer: "atx16xk7yhxd842s5l44x2k8t89v00sfcfcewjsd7z",
-			Data:    "SchoolBus",
+			Data:   "SchoolBus",
 		}
 		resp, _ := geb3.Sign(&req)
 

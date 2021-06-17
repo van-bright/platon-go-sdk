@@ -7,7 +7,6 @@ import (
 	"platon-go-sdk/web3go"
 )
 
-
 func main() {
 	const mnemonic = "always brick access science decade nasty marriage attack fame topple pen add"
 	w, err := web3go.NewWalletByMnemonics(mnemonic)

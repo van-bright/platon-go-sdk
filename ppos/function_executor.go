@@ -19,11 +19,8 @@ type FunctionExecutor struct {
 }
 
 func (fe *FunctionExecutor) SendWithRaw(f *common.Function) (json.RawMessage, error) {
-	to := common2.MustBech32ToAddress(fe.contractAddr)
-	data, err := f.ToBytes()
-	if err != nil {
-		return nil, err
-	}
+	to := fe.credentials.MustBech32ToAddress(fe.contractAddr)
+	data := f.ToBytes()
 
 	gasPrice := fe.getDefaultGasPrice(f)
 	gasLimit := fe.getDefaultGasLimit(f)
@@ -35,7 +32,7 @@ func (fe *FunctionExecutor) SendWithRaw(f *common.Function) (json.RawMessage, er
 func (fe *FunctionExecutor) SendWithResult(f *common.Function, result interface{}) error {
 	raw, err := fe.SendWithRaw(f)
 	if err != nil {
-	return err
+		return err
 	}
 
 	err = json.Unmarshal(raw, &result)
@@ -91,7 +88,7 @@ func (fe *FunctionExecutor) doSendRawTx(chainId *big.Int, to common2.Address, da
 		msg := platongosdk.CallMsg{
 			From:     fe.credentials.Address(),
 			To:       &to,
-			Gas:      nil,
+			Gas:      0,
 			GasPrice: gasPrice,
 			Value:    big.NewInt(0),
 			Data:     data,
@@ -109,4 +106,40 @@ func (fe *FunctionExecutor) doSendRawTx(chainId *big.Int, to common2.Address, da
 	}
 
 	return client.SendRawTransaction(ctx, signedTx)
+}
+
+func (fe *FunctionExecutor) CallWithRaw(f *common.Function) ([]byte, error) {
+	to := fe.credentials.MustBech32ToAddress(fe.contractAddr)
+	data := f.ToBytes()
+
+	return fe.doCallRawTx(to, data)
+}
+
+func (fe *FunctionExecutor) CallWithResult(f *common.Function, result interface{}) error {
+	raw, err := fe.CallWithRaw(f)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(raw, &result)
+	return err
+}
+
+func (fe *FunctionExecutor) doCallRawTx(to common2.Address, data []byte) ([]byte, error) {
+	client, err := ethclient.Dial(fe.httpEntry)
+	if err != nil {
+		return nil, err
+	}
+	ctx := context.Background()
+
+	msg := platongosdk.CallMsg{
+		From:     fe.credentials.Address(),
+		To:       &to,
+		Gas:      0,
+		GasPrice: nil,
+		Value:    nil,
+		Data:     data,
+	}
+
+	return client.CallContract(ctx, msg, "latest")
 }

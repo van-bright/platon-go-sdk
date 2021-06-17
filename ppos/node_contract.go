@@ -11,6 +11,11 @@ type NodeContract struct {
 	executor *FunctionExecutor
 }
 
+type RpcNodeListResp struct {
+	Code uint64      `json:"Code"`
+	Ret  []resp.Node `json:"Ret"`
+}
+
 func NewNodeContract(pposConfig *network.PposNetworkParameters, credentials *common.Credentials) *NodeContract {
 	executor := &FunctionExecutor{
 		httpEntry:    pposConfig.Url,
@@ -22,19 +27,20 @@ func NewNodeContract(pposConfig *network.PposNetworkParameters, credentials *com
 }
 
 func (nc *NodeContract) doExecuteFunction(f *common.Function) ([]resp.Node, error) {
-	raw, err := nc.executor.SendWithRaw(f)
+	raw, err := nc.executor.CallWithRaw(f)
 	if err != nil {
 		return nil, err
 	}
 
-	var nodes []resp.Node
+	//fmt.Println("rawMessage: " + string(raw))
+	var nodeList RpcNodeListResp
 
-	err = json.Unmarshal(raw, &nodes)
+	err = json.Unmarshal(raw, &nodeList)
 	if err != nil {
 		return nil, err
 	}
 
-	return nodes, nil
+	return nodeList.Ret, nil
 }
 
 /**
