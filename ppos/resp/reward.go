@@ -1,9 +1,11 @@
 package resp
 
-import "math/big"
+import (
+	"platon-go-sdk/common/hexutil"
+)
 
 type Reward struct {
-	NodeId     string
-	StakingNum *big.Int
-	Reward     *big.Int
+	NodeId     string       `json:"nodeId"`
+	StakingNum int          `json:"stakingNum"`
+	Reward     *hexutil.Big `json:"reward"`
 }

@@ -3,6 +3,7 @@ package ppos
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"math/big"
 	platongosdk "platon-go-sdk"
 	common2 "platon-go-sdk/common"
@@ -18,6 +19,11 @@ type FunctionExecutor struct {
 	credentials  *common.Credentials
 }
 
+type CallResponse struct {
+	Code uint64          `json:"Code"`
+	Ret  json.RawMessage `json:"Ret"`
+}
+
 func (fe *FunctionExecutor) SendWithRaw(f *common.Function) (json.RawMessage, error) {
 	to := fe.credentials.MustBech32ToAddress(fe.contractAddr)
 	data := f.ToBytes()
@@ -26,7 +32,13 @@ func (fe *FunctionExecutor) SendWithRaw(f *common.Function) (json.RawMessage, er
 	gasLimit := fe.getDefaultGasLimit(f)
 	chainId := fe.chainId
 
-	return fe.doSendRawTx(chainId, to, data, big.NewInt(0), gasPrice, gasLimit)
+	r, err := fe.doSendRawTx(chainId, to, data, nil, gasPrice, gasLimit)
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println("[SendWithRaw] Http Response: " + string(r))
+	return r, nil
+	//return fe.doSendRawTx(chainId, to, data, big.NewInt(0), gasPrice, gasLimit)
 }
 
 func (fe *FunctionExecutor) SendWithResult(f *common.Function, result interface{}) error {
@@ -90,7 +102,7 @@ func (fe *FunctionExecutor) doSendRawTx(chainId *big.Int, to common2.Address, da
 			To:       &to,
 			Gas:      0,
 			GasPrice: gasPrice,
-			Value:    big.NewInt(0),
+			Value:    value,
 			Data:     data,
 		}
 		gasLimit, err = client.EstimateGas(ctx, msg)
@@ -141,5 +153,15 @@ func (fe *FunctionExecutor) doCallRawTx(to common2.Address, data []byte) ([]byte
 		Data:     data,
 	}
 
-	return client.CallContract(ctx, msg, "latest")
+	b, err := client.CallContract(ctx, msg, "latest")
+	fmt.Println("[doCallRawTx] HTTP RESPONSE: " + string(b))
+	if err != nil {
+		return nil, err
+	}
+	var callRsp CallResponse
+	err = json.Unmarshal(b, &callRsp)
+	if err != nil {
+		return nil, err
+	}
+	return callRsp.Ret, nil
 }

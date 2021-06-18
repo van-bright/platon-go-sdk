@@ -1,6 +1,8 @@
 package resp
 
-import "math/big"
+import (
+	"platon-go-sdk/common/hexutil"
+)
 
 type Node struct {
 	NodeId string `json:"NodeId"`
@@ -11,37 +13,37 @@ type Node struct {
 
 	BenefitAddress string `json:"BenefitAddress"`
 
-	RewardPer *big.Int `json:"RewardPer"`
+	RewardPer int `json:"RewardPer"`
 
-	NextRewardPer *big.Int `json:"NextRewardPer"`
+	NextRewardPer int `json:"NextRewardPer"`
 
-	StakingTxIndex *big.Int `json:"StakingTxIndex"`
+	StakingTxIndex int `json:"StakingTxIndex"`
 
-	ProgramVersion *big.Int `json:"ProgramVersion"`
+	ProgramVersion int `json:"ProgramVersion"`
 
-	Status *big.Int `json:"Status"`
+	Status int `json:"Status"`
 
-	StakingEpoch *big.Int `json:"StakingEpoch"`
+	StakingEpoch int `json:"StakingEpoch"`
 
-	StakingBlockNum *big.Int `json:"StakingBlockNum"`
+	StakingBlockNum uint64 `json:"StakingBlockNum"`
 
-	Shares string `json:"Shares"`
+	Shares *hexutil.Big `json:"Shares"`
 
-	Released string `json:"Released"`
+	Released *hexutil.Big `json:"Released"`
 
-	ReleasedHes string `json:"ReleasedHes"`
+	ReleasedHes *hexutil.Big `json:"ReleasedHes"`
 
-	RestrictingPlan string `json:"RestrictingPlan"`
+	RestrictingPlan *hexutil.Big `json:"RestrictingPlan"`
 
-	RestrictingPlanHes string `json:"RestrictingPlanHes"`
+	RestrictingPlanHes *hexutil.Big `json:"RestrictingPlanHes"`
 
-	DelegateEpoch *big.Int `json:"DelegateEpoch"`
+	DelegateEpoch int `json:"DelegateEpoch"`
 
-	DelegateTotal string `json:"DelegateTotal"`
+	DelegateTotal *hexutil.Big `json:"DelegateTotal"`
 
-	DelegateTotalHes string `json:"DelegateTotalHes"`
+	DelegateTotalHes *hexutil.Big `json:"DelegateTotalHes"`
 
-	DelegateRewardTotal string `json:"DelegateRewardTotal"`
+	DelegateRewardTotal *hexutil.Big `json:"DelegateRewardTotal"`
 
 	ExternalId string `json:"ExternalId"`
 
