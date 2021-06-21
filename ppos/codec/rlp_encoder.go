@@ -44,6 +44,10 @@ const (
 
 type BytesSlice []byte
 
+type ByteEncoder interface {
+	ByteEncode() BytesSlice
+}
+
 func ToByteArray(value int) []byte {
 	return []byte{
 		byte((value >> 24) & 0xff),

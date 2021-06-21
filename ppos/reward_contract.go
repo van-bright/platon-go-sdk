@@ -2,7 +2,6 @@ package ppos
 
 import (
 	common2 "platon-go-sdk/common"
-	"platon-go-sdk/common/hexutil"
 	"platon-go-sdk/network"
 	"platon-go-sdk/ppos/codec"
 	"platon-go-sdk/ppos/common"
@@ -44,16 +43,12 @@ func (rc *RewardContract) WithdrawDelegateReward() (common.TransactionHash, erro
  * @return
  */
 func (rc *RewardContract) GetDelegateReward(address common2.Address, nodeIdList []string) ([]resp.Reward, error) {
-	var custom []codec.BytesSlice
-	for _, nodeId := range nodeIdList {
-		bs, err := hexutil.Decode(nodeId)
-		if err != nil {
-			return nil, err
-		}
-		custom = append(custom, bs)
+	var nodeIds []codec.NodeId
+	for _, n := range nodeIdList {
+		nodeIds = append(nodeIds, codec.NodeId{HexStringId: n})
 	}
 
-	params := []interface{}{address, custom}
+	params := []interface{}{address, nodeIds}
 	f := common.NewFunction(common.GET_DELEGATE_REWARD_FUNC_TYPE, params)
 
 	var rewards []resp.Reward

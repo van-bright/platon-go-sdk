@@ -26,26 +26,38 @@ func (f *Function) encodeType() codec.BytesSlice {
 }
 
 func (f *Function) encodeParams() []codec.BytesSlice {
-	params := f.InputParams
-	var result []codec.BytesSlice
-	for _, p := range params {
-		//result = append(result, p.(codec.BytesSlice))
+	var encodeParamItem func(p interface{}) []byte
+	encodeParamItem = func(p interface{}) []byte {
 		switch p.(type) {
 		case []byte, codec.BytesSlice:
-			result = append(result, codec.EncodeBytes(p.([]byte), codec.OFFSET_SHORT_STRING))
+			return codec.EncodeBytes(p.([]byte), codec.OFFSET_SHORT_STRING)
 		case common.Address:
-			r := codec.EncodeBytes(p.(common.Address).Bytes(), codec.OFFSET_SHORT_STRING)
-			result = append(result, r)
+			return codec.EncodeBytes(p.(common.Address).Bytes(), codec.OFFSET_SHORT_STRING)
+		case codec.NodeId:
+			return codec.EncodeBytes(p.(codec.NodeId).ByteEncode(), codec.OFFSET_SHORT_STRING)
+		case []codec.NodeId:
+			var r []byte
+			for _, it := range p.([]codec.NodeId) {
+				r = append(r, encodeParamItem(it)...)
+			}
+			r = codec.EncodeBytes(r, codec.OFFSET_SHORT_LIST)
+			return r
 		case []codec.BytesSlice:
 			var r []byte
 			for _, it := range p.([]codec.BytesSlice) {
-				r = append(r, codec.EncodeBytes(it, codec.OFFSET_SHORT_STRING)...)
+				r = append(r, encodeParamItem(it)...)
 			}
 			r = codec.EncodeBytes(r, codec.OFFSET_SHORT_LIST)
-			result = append(result, r)
+			return r
 		default:
-			fmt.Println("function parameters with not support type")
+			panic("function parameters with not support type")
 		}
+	}
+
+	params := f.InputParams
+	var result []codec.BytesSlice
+	for _, p := range params {
+		result = append(result, encodeParamItem(p))
 	}
 	return result
 }
