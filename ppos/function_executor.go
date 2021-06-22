@@ -162,5 +162,8 @@ func (fe *FunctionExecutor) doCallRawTx(to common2.Address, data []byte) ([]byte
 	if err != nil {
 		return nil, err
 	}
+	if callRsp.Code != 0 {
+		return nil, fmt.Errorf(string(callRsp.Ret))
+	}
 	return callRsp.Ret, nil
 }

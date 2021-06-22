@@ -44,8 +44,8 @@ const (
 
 type BytesSlice []byte
 
-type ByteEncoder interface {
-	ByteEncode() BytesSlice
+type ParamEncoder interface {
+	GetEncodeData() BytesSlice
 }
 
 func ToByteArray(value int) []byte {
@@ -93,4 +93,38 @@ func EncodeBytesSlice(list []BytesSlice) BytesSlice {
 		}
 		return EncodeBytes(r, OFFSET_SHORT_LIST)
 	}
+}
+
+type RlpEncoder struct{}
+
+func encodeInterface(intf interface{}) []byte {
+	switch intf.(type) {
+	case RlpString:
+		return encodeRlpString(intf.(RlpString))
+	case RlpList:
+		return encodeRlpList(intf.(RlpList))
+	default:
+		panic("not support parameter type for RlpEncoder")
+	}
+}
+
+func encodeRlpString(v RlpString) []byte {
+	return EncodeBytes(v.GetBytes(), OFFSET_SHORT_STRING)
+}
+
+func encodeRlpList(v RlpList) []byte {
+	values := v.GetValues()
+	if len(values) == 0 {
+		return EncodeBytes([]byte{}, OFFSET_SHORT_LIST)
+	} else {
+		var result []byte
+		for _, it := range values {
+			result = append(result, encodeInterface(it)...)
+		}
+		return EncodeBytes(result, OFFSET_SHORT_LIST)
+	}
+}
+
+func (re RlpEncoder) Encode(intf interface{}) []byte {
+	return encodeInterface(intf)
 }

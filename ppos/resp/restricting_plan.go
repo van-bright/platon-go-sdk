@@ -1,6 +1,9 @@
 package resp
 
-import "math/big"
+import (
+	"math/big"
+	"platon-go-sdk/ppos/codec"
+)
 
 type RestrictingPlan struct {
 
@@ -14,6 +17,12 @@ type RestrictingPlan struct {
 	 * 表示目标区块上待释放的金额
 	 */
 	Amount *big.Int `json:"Amount"`
+}
+
+func (rp RestrictingPlan) GetRlpEncodeData() codec.RlpList {
+	rl := &codec.RlpList{}
+	rl.Append(codec.RlpStringFromBig(rp.Epoch), codec.RlpStringFromBig(rp.Amount))
+	return *rl
 }
 
 type RestrictingInfo struct {

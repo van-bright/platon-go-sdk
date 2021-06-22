@@ -11,7 +11,7 @@ type UInt16 struct {
 	ValueInner uint16
 }
 
-func (u16 UInt16) ByteEncode() BytesSlice {
+func (u16 UInt16) GetEncodeData() BytesSlice {
 	b, err := rlp.EncodeToBytes(u16.ValueInner)
 	if err != nil {
 		panic(err)
@@ -24,7 +24,7 @@ type UInt32 struct {
 	ValueInner *big.Int
 }
 
-func (u32 UInt32) ByteEncode() BytesSlice {
+func (u32 UInt32) GetEncodeData() BytesSlice {
 	b, err := rlp.EncodeToBytes(u32.ValueInner)
 	if err != nil {
 		panic(err)
@@ -36,7 +36,7 @@ type UInt256 struct {
 	ValueInner *big.Int
 }
 
-func (u256 UInt256) ByteEncode() BytesSlice {
+func (u256 UInt256) GetEncodeData() BytesSlice {
 	b, err := rlp.EncodeToBytes(u256.ValueInner)
 	if err != nil {
 		panic(err)
@@ -48,7 +48,7 @@ type UInt64 struct {
 	ValueInner *big.Int
 }
 
-func (u64 UInt64) ByteEncode() BytesSlice {
+func (u64 UInt64) GetEncodeData() BytesSlice {
 	b, err := rlp.EncodeToBytes(u64.ValueInner)
 	if err != nil {
 		panic(err)

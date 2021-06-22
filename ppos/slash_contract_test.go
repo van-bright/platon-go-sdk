@@ -24,7 +24,12 @@ func TestSlashContract_CheckDoubleSign(t *testing.T) {
 	if err != nil {
 		t.Errorf("Marshal of list failed: %s", err)
 	}
-
+	// Expect Output:
+	//820bb9
+	//01
+	//b84077fffc999d9f9403b65009f1eb27bae65774e2d8ea36f7b20a89f82642a5067557430e6edfe5320bb81c3666a19cf4a5172d6533117d7ebcd0f2c82055499050
+	//8308e8a8
+	//Function Data is: f84e83820bb901b842b84077fffc999d9f9403b65009f1eb27bae65774e2d8ea36f7b20a89f82642a5067557430e6edfe5320bb81c3666a19cf4a5172d6533117d7ebcd0f2c82055499050848308e8a8
 	fmt.Println(string(result))
 }
 

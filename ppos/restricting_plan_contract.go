@@ -3,6 +3,7 @@ package ppos
 import (
 	common2 "platon-go-sdk/common"
 	"platon-go-sdk/network"
+	"platon-go-sdk/ppos/codec"
 	"platon-go-sdk/ppos/common"
 	"platon-go-sdk/ppos/resp"
 )
@@ -31,7 +32,12 @@ func NewRestrictingPlanContract(pposConfig *network.PposNetworkParameters, crede
  * @return
  */
 func (rc *RestrictingPlanContract) CreateRestrictingPlan(account common2.Address, restrictingPlanList []resp.RestrictingPlan) (common.TransactionHash, error) {
-	params := []interface{}{account, restrictingPlanList}
+	list := codec.RlpList{}
+	for _, p := range restrictingPlanList {
+		list.Append(p.GetRlpEncodeData())
+	}
+
+	params := []interface{}{account, list}
 	f := common.NewFunction(common.CREATE_RESTRICTINGPLAN_FUNC_TYPE, params)
 
 	var receipt common.TransactionHash
@@ -48,6 +54,6 @@ func (rc *RestrictingPlanContract) CreateRestrictingPlan(account common2.Address
 func (rc *RestrictingPlanContract) GetRestrictingInfo(account common2.Address) (resp.RestrictingItem, error) {
 	f := common.NewFunction(common.GET_RESTRICTINGINFO_FUNC_TYPE, []interface{}{account})
 	var item resp.RestrictingItem
-	err := rc.executor.SendWithResult(f, &item)
+	err := rc.executor.CallWithResult(f, &item)
 	return item, err
 }

@@ -29,24 +29,23 @@ func (f *Function) encodeParams() []codec.BytesSlice {
 	var encodeParamItem func(p interface{}) []byte
 	encodeParamItem = func(p interface{}) []byte {
 		switch p.(type) {
-		case []byte, codec.BytesSlice:
+		case []byte:
 			return codec.EncodeBytes(p.([]byte), codec.OFFSET_SHORT_STRING)
+		case codec.BytesSlice:
+			return codec.EncodeBytes(p.(codec.BytesSlice), codec.OFFSET_SHORT_STRING)
 		case common.Address:
 			return codec.EncodeBytes(p.(common.Address).Bytes(), codec.OFFSET_SHORT_STRING)
 		case codec.NodeId:
-			return p.(codec.NodeId).ByteEncode()
+			return p.(codec.NodeId).GetEncodeData()
 		case codec.HexStringParam:
-			return p.(codec.HexStringParam).ByteEncode()
+			return p.(codec.HexStringParam).GetEncodeData()
 		case codec.Utf8String:
-			return p.(codec.Utf8String).ByteEncode()
-		case codec.UInt16:
-			return p.(codec.UInt16).ByteEncode()
-		case codec.UInt32:
-			return p.(codec.UInt32).ByteEncode()
-		case codec.UInt64:
-			return p.(codec.UInt64).ByteEncode()
-		case codec.UInt256:
-			return p.(codec.UInt256).ByteEncode()
+			return p.(codec.Utf8String).GetEncodeData()
+		case codec.UInt16, codec.UInt32, codec.UInt64, codec.UInt256:
+			return p.(codec.ParamEncoder).GetEncodeData()
+		case codec.RlpList:
+			encoder := codec.RlpEncoder{}
+			return encoder.Encode(p.(codec.RlpList))
 		case []codec.NodeId:
 			var r []byte
 			for _, it := range p.([]codec.NodeId) {

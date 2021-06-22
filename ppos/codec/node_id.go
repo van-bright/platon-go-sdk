@@ -9,15 +9,15 @@ type NodeId struct {
 	HexStringId string
 }
 
-func (ni NodeId) ByteEncode() BytesSlice {
-	return HexStringParam{ni.HexStringId}.ByteEncode()
+func (ni NodeId) GetEncodeData() BytesSlice {
+	return HexStringParam{ni.HexStringId}.GetEncodeData()
 }
 
 type HexStringParam struct {
 	HexStringValue string
 }
 
-func (hsp HexStringParam) ByteEncode() BytesSlice {
+func (hsp HexStringParam) GetEncodeData() BytesSlice {
 	bs, err := hexutil.Decode(hsp.HexStringValue)
 	if err != nil {
 		panic(err)
@@ -34,7 +34,7 @@ type Utf8String struct {
 	ValueInner string
 }
 
-func (u8str Utf8String) ByteEncode() BytesSlice {
+func (u8str Utf8String) GetEncodeData() BytesSlice {
 	bs, err := rlp.EncodeToBytes(u8str.ValueInner)
 	if err != nil {
 		panic(err)
