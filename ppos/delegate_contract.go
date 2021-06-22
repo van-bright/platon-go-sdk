@@ -3,6 +3,7 @@ package ppos
 import (
 	"math/big"
 	"platon-go-sdk/network"
+	"platon-go-sdk/ppos/codec"
 	"platon-go-sdk/ppos/common"
 )
 
@@ -29,7 +30,7 @@ func NewDelegateContract(pposConfig *network.PposNetworkParameters, credentials 
  * @return
  */
 func (dc *DelegateContract) Delegate(nodeId string, stakingAmountType common.StakingAmountType, amount *big.Int) (common.TransactionHash, error) {
-	params := []interface{}{nodeId, stakingAmountType, amount}
+	params := []interface{}{codec.UInt16{ValueInner: stakingAmountType.GetValue()}, codec.NodeId{HexStringId: nodeId}, codec.UInt256{ValueInner: amount}}
 	function := common.NewFunction(common.DELEGATE_FUNC_TYPE, params)
 
 	var receipt common.TransactionHash
@@ -46,7 +47,7 @@ func (dc *DelegateContract) Delegate(nodeId string, stakingAmountType common.Sta
  * @return
  */
 func (dc *DelegateContract) UnDelegate(nodeId string, stakingBlockNum *big.Int, amount *big.Int) (common.TransactionHash, error) {
-	params := []interface{}{nodeId, stakingBlockNum, amount}
+	params := []interface{}{codec.UInt64{ValueInner: stakingBlockNum}, codec.NodeId{HexStringId: nodeId}, codec.UInt256{ValueInner: amount}}
 	function := common.NewFunction(common.WITHDREW_DELEGATE_FUNC_TYPE, params)
 
 	var receipt common.TransactionHash

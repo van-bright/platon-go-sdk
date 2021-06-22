@@ -2,6 +2,7 @@ package codec
 
 import (
 	"platon-go-sdk/common/hexutil"
+	"platon-go-sdk/rlp"
 )
 
 type NodeId struct {
@@ -13,5 +14,10 @@ func (ni NodeId) ByteEncode() BytesSlice {
 	if err != nil {
 		panic(err)
 	}
-	return bs
+
+	ebs, err := rlp.EncodeToBytes(bs)
+	if err != nil {
+		panic(err)
+	}
+	return ebs
 }

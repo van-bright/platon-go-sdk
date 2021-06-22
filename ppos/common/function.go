@@ -34,7 +34,13 @@ func (f *Function) encodeParams() []codec.BytesSlice {
 		case common.Address:
 			return codec.EncodeBytes(p.(common.Address).Bytes(), codec.OFFSET_SHORT_STRING)
 		case codec.NodeId:
-			return codec.EncodeBytes(p.(codec.NodeId).ByteEncode(), codec.OFFSET_SHORT_STRING)
+			return p.(codec.NodeId).ByteEncode()
+		case codec.UInt16:
+			return p.(codec.UInt16).ByteEncode()
+		case codec.UInt64:
+			return p.(codec.UInt64).ByteEncode()
+		case codec.UInt256:
+			return p.(codec.UInt256).ByteEncode()
 		case []codec.NodeId:
 			var r []byte
 			for _, it := range p.([]codec.NodeId) {
@@ -75,7 +81,7 @@ func (f *Function) ToBytes() []byte {
 	argsBytes := codec.EncodeBytesSlice(argsList)
 
 	data := hexutil.Encode(argsBytes)
-	fmt.Println("encode type: " + data)
+	fmt.Println("Function Data is: " + data[2:])
 
 	return argsBytes
 }
