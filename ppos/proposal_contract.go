@@ -3,6 +3,7 @@ package ppos
 import (
 	"math/big"
 	"platon-go-sdk/network"
+	"platon-go-sdk/ppos/codec"
 	"platon-go-sdk/ppos/common"
 	"platon-go-sdk/ppos/resp"
 )
@@ -89,7 +90,7 @@ func (pc *ProposalContract) Vote(programVersion common.ProgramVersion, voteOptio
  * @return
  */
 func (pc *ProposalContract) DeclareVersion(programVersion common.ProgramVersion, verifier string) (common.TransactionHash, error) {
-	params := []interface{}{verifier, programVersion.Version, programVersion.Sign}
+	params := []interface{}{codec.HexStringParam{HexStringValue: verifier}, codec.UInt32{ValueInner: programVersion.Version}, codec.HexStringParam{HexStringValue: programVersion.Sign}}
 	f := common.NewFunction(common.DECLARE_VERSION_FUNC_TYPE, params)
 
 	var receipt common.TransactionHash

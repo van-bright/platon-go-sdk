@@ -1,5 +1,7 @@
 package common
 
+import "math/big"
+
 type DuplicateSignType int
 
 const (
@@ -8,6 +10,6 @@ const (
 	VIEW_CHANGE   DuplicateSignType = 3
 )
 
-func (dst DuplicateSignType) GetValue() int {
-	return int(dst)
+func (dst DuplicateSignType) GetValue() *big.Int {
+	return big.NewInt(int64(dst))
 }

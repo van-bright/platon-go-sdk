@@ -35,8 +35,14 @@ func (f *Function) encodeParams() []codec.BytesSlice {
 			return codec.EncodeBytes(p.(common.Address).Bytes(), codec.OFFSET_SHORT_STRING)
 		case codec.NodeId:
 			return p.(codec.NodeId).ByteEncode()
+		case codec.HexStringParam:
+			return p.(codec.HexStringParam).ByteEncode()
+		case codec.Utf8String:
+			return p.(codec.Utf8String).ByteEncode()
 		case codec.UInt16:
 			return p.(codec.UInt16).ByteEncode()
+		case codec.UInt32:
+			return p.(codec.UInt32).ByteEncode()
 		case codec.UInt64:
 			return p.(codec.UInt64).ByteEncode()
 		case codec.UInt256:

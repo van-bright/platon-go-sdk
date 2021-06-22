@@ -3,6 +3,7 @@ package ppos
 import (
 	"math/big"
 	"platon-go-sdk/network"
+	"platon-go-sdk/ppos/codec"
 	"platon-go-sdk/ppos/common"
 )
 
@@ -27,7 +28,7 @@ func NewSlashContract(pposConfig *network.PposNetworkParameters, credentials *co
  * @return
  */
 func (sc *SlashContract) ReportDoubleSign(duplicateSignType common.DuplicateSignType, data string) (common.TransactionHash, error) {
-	params := []interface{}{duplicateSignType.GetValue(), data}
+	params := []interface{}{codec.UInt32{ValueInner: duplicateSignType.GetValue()}, codec.Utf8String{ValueInner: data}}
 	f := common.NewFunction(common.REPORT_DOUBLESIGN_FUNC_TYPE, params)
 
 	var receipt common.TransactionHash
@@ -44,10 +45,10 @@ func (sc *SlashContract) ReportDoubleSign(duplicateSignType common.DuplicateSign
  * @return
  */
 func (sc *SlashContract) CheckDoubleSign(doubleSignType common.DuplicateSignType, nodeId string, blockNumber *big.Int) (string, error) {
-	params := []interface{}{doubleSignType.GetValue(), nodeId, blockNumber}
+	params := []interface{}{codec.UInt32{ValueInner: doubleSignType.GetValue()}, codec.NodeId{HexStringId: nodeId}, codec.UInt64{ValueInner: blockNumber}}
 	f := common.NewFunction(common.CHECK_DOUBLESIGN_FUNC_TYPE, params)
 
 	var result string
-	err := sc.executor.SendWithResult(f, &result)
+	err := sc.executor.CallWithResult(f, &result)
 	return result, err
 }

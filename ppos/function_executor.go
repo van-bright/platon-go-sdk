@@ -38,7 +38,6 @@ func (fe *FunctionExecutor) SendWithRaw(f *common.Function) (json.RawMessage, er
 	}
 	fmt.Println("[SendWithRaw] Http Response: " + string(r))
 	return r, nil
-	//return fe.doSendRawTx(chainId, to, data, big.NewInt(0), gasPrice, gasLimit)
 }
 
 func (fe *FunctionExecutor) SendWithResult(f *common.Function, result interface{}) error {

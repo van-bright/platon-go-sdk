@@ -20,6 +20,18 @@ func (u16 UInt16) ByteEncode() BytesSlice {
 	return b
 }
 
+type UInt32 struct {
+	ValueInner *big.Int
+}
+
+func (u32 UInt32) ByteEncode() BytesSlice {
+	b, err := rlp.EncodeToBytes(u32.ValueInner)
+	if err != nil {
+		panic(err)
+	}
+	return b
+}
+
 type UInt256 struct {
 	ValueInner *big.Int
 }
