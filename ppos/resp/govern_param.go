@@ -28,7 +28,7 @@ type ParamValue struct {
 	/**
 	 * 块高。(>=ActiveBLock，将取Value;否则取StaleValue)
 	 */
-	ActiveBlock string `json:"ActiveBlock"`
+	ActiveBlock uint64 `json:"ActiveBlock"`
 }
 
 type GovernParam struct {

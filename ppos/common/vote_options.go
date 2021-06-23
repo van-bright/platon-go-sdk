@@ -1,6 +1,6 @@
 package common
 
-type VoteOption int
+type VoteOption uint16
 
 const (
 	YEAS        VoteOption = 1
@@ -8,6 +8,6 @@ const (
 	ABSTENTIONS VoteOption = 3
 )
 
-func (vo VoteOption) GetValue() int {
-	return int(vo)
+func (vo VoteOption) GetValue() uint16 {
+	return uint16(vo)
 }

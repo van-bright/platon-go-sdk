@@ -2,6 +2,7 @@ package ppos
 
 import (
 	"math/big"
+	"platon-go-sdk/common/hexutil"
 	"platon-go-sdk/network"
 	"platon-go-sdk/ppos/codec"
 	"platon-go-sdk/ppos/common"
@@ -29,10 +30,10 @@ func NewProposalContract(pposConfig *network.PposNetworkParameters, credentials 
  * @return
  */
 func (pc *ProposalContract) GetProposal(proposalId string) (resp.Proposal, error) {
-	f := common.NewFunction(common.GET_PROPOSAL_FUNC_TYPE, []interface{}{proposalId})
+	f := common.NewFunction(common.GET_PROPOSAL_FUNC_TYPE, []interface{}{codec.HexStringParam{HexStringValue: proposalId}})
 
 	var proposal resp.Proposal
-	err := pc.executor.SendWithResult(f, &proposal)
+	err := pc.executor.CallWithResult(f, &proposal)
 	return proposal, err
 }
 
@@ -43,10 +44,10 @@ func (pc *ProposalContract) GetProposal(proposalId string) (resp.Proposal, error
  * @return
  */
 func (pc *ProposalContract) GetTallyResult(proposalId string) (resp.TallyResult, error) {
-	f := common.NewFunction(common.GET_TALLY_RESULT_FUNC_TYPE, []interface{}{proposalId})
+	f := common.NewFunction(common.GET_TALLY_RESULT_FUNC_TYPE, []interface{}{codec.HexStringParam{HexStringValue: proposalId}})
 
 	var tallyResult resp.TallyResult
-	err := pc.executor.SendWithResult(f, &tallyResult)
+	err := pc.executor.CallWithResult(f, &tallyResult)
 	return tallyResult, err
 }
 
@@ -59,7 +60,7 @@ func (pc *ProposalContract) GetProposalList() ([]resp.Proposal, error) {
 	f := common.NewFunction(common.GET_PROPOSAL_LIST_FUNC_TYPE, nil)
 
 	var proposals []resp.Proposal
-	err := pc.executor.SendWithResult(f, &proposals)
+	err := pc.executor.CallWithResult(f, &proposals)
 	return proposals, err
 }
 
@@ -72,8 +73,14 @@ func (pc *ProposalContract) GetProposalList() ([]resp.Proposal, error) {
  * @param verifier       投票验证人
  * @return
  */
-func (pc *ProposalContract) Vote(programVersion common.ProgramVersion, voteOption common.VoteOption, proposalID string, verifier string) (common.TransactionHash, error) {
-	params := []interface{}{verifier, proposalID, programVersion, voteOption.GetValue(), programVersion.Version, programVersion.Sign}
+func (pc *ProposalContract) Vote(programVersion common.ProgramVersion, voteOption common.VoteOption, proposalID string, nodeId string) (common.TransactionHash, error) {
+	params := []interface{}{
+		codec.HexStringParam{HexStringValue: nodeId},
+		codec.HexStringParam{HexStringValue: proposalID},
+		codec.UInt16{ValueInner: voteOption.GetValue()},
+		codec.UInt32{ValueInner: programVersion.Version},
+		codec.HexStringParam{HexStringValue: programVersion.Sign},
+	}
 	f := common.NewFunction(common.VOTE_FUNC_TYPE, params)
 
 	var receipt common.TransactionHash
@@ -117,11 +124,11 @@ func (pc *ProposalContract) SubmitProposal(proposal *resp.Proposal) (common.Tran
  *
  * @return
  */
-func (pc *ProposalContract) GetActiveVersion() (*big.Int, error) {
+func (pc *ProposalContract) GetActiveVersion() (uint64, error) {
 	f := common.NewFunction(common.GET_ACTIVE_VERSION, nil)
 
-	var ver = big.NewInt(0)
-	err := pc.executor.SendWithResult(f, &ver)
+	var ver uint64
+	err := pc.executor.CallWithResult(f, &ver)
 	return ver, err
 }
 
@@ -133,11 +140,11 @@ func (pc *ProposalContract) GetActiveVersion() (*big.Int, error) {
  * @return
  */
 func (pc *ProposalContract) GetGovernParamValue(module string, name string) (string, error) {
-	params := []interface{}{module, name}
+	params := []interface{}{codec.Utf8String{ValueInner: module}, codec.Utf8String{ValueInner: name}}
 	f := common.NewFunction(common.GET_GOVERN_PARAM_VALUE, params)
 
 	var value string
-	err := pc.executor.SendWithResult(f, &value)
+	err := pc.executor.CallWithResult(f, &value)
 	return value, err
 }
 
@@ -149,12 +156,12 @@ func (pc *ProposalContract) GetGovernParamValue(module string, name string) (str
  * @return
  */
 func (pc *ProposalContract) GetAccuVerifiersCount(proposalId string, blockHash string) (*big.Int, error) {
-	params := []interface{}{proposalId, blockHash}
+	params := []interface{}{codec.HexStringParam{HexStringValue: proposalId}, codec.HexStringParam{HexStringValue: blockHash}}
 	f := common.NewFunction(common.GET_ACCUVERIFIERS_COUNT, params)
 
-	var value = big.NewInt(0)
-	err := pc.executor.SendWithResult(f, &value)
-	return value, err
+	var value *hexutil.Big
+	err := pc.executor.CallWithResult(f, &value)
+	return value.ToInt(), err
 }
 
 /**
@@ -162,10 +169,10 @@ func (pc *ProposalContract) GetAccuVerifiersCount(proposalId string, blockHash s
  *
  */
 func (pc *ProposalContract) GetParamList(module string) ([]resp.GovernParam, error) {
-	params := []interface{}{module}
+	params := []interface{}{codec.Utf8String{ValueInner: module}}
 	f := common.NewFunction(common.GET_PARAM_LIST, params)
 
 	var value []resp.GovernParam
-	err := pc.executor.SendWithResult(f, &value)
+	err := pc.executor.CallWithResult(f, &value)
 	return value, err
 }

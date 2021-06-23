@@ -2,6 +2,7 @@ package resp
 
 import (
 	"math/big"
+	"platon-go-sdk/ppos/codec"
 	"platon-go-sdk/ppos/common"
 )
 
@@ -47,19 +48,91 @@ type Proposal struct {
 	/**
 	 * 提交提案的验证人
 	 */
-	verifier string
+	Verifier string
 	/**
 	 * 参数模块
 	 */
-	module string
+	Module string
 	/**
 	 * 参数名称
 	 */
-	name string
+	Name string
 	/**
 	 * 参数新值
 	 */
-	newValue string
+	NewValue string
+}
+
+func CreateTextProposal(verifier string, piPid string) *Proposal {
+	return &Proposal{
+		ProposalId:     "",
+		Proposer:       "",
+		ProposalType:   common.TEXT_PROPOSAL,
+		PiPid:          piPid,
+		SubmitBlock:    nil,
+		EndVotingBlock: nil,
+		NewVersion:     nil,
+		ToBeCanceled:   "",
+		ActiveBlock:    nil,
+		Verifier:       verifier,
+		Module:         "",
+		Name:           "",
+		NewValue:       "",
+	}
+}
+
+func CreateVersionProposal(verifier string, pIDID string, newVersion *big.Int, endVotingRounds *big.Int) *Proposal {
+	return &Proposal{
+		ProposalId:     "",
+		Proposer:       "",
+		ProposalType:   common.VERSION_PROPOSAL,
+		PiPid:          pIDID,
+		SubmitBlock:    nil,
+		EndVotingBlock: endVotingRounds,
+		NewVersion:     newVersion,
+		ToBeCanceled:   "",
+		ActiveBlock:    nil,
+		Verifier:       verifier,
+		Module:         "",
+		Name:           "",
+		NewValue:       "",
+	}
+}
+
+func CreateCancelProposal(verifier string, pIDID string, endVotingRounds *big.Int, tobeCanceledProposalID string) *Proposal {
+	return &Proposal{
+		ProposalId:     "",
+		Proposer:       "",
+		ProposalType:   common.CANCEL_PROPOSAL,
+		PiPid:          pIDID,
+		SubmitBlock:    nil,
+		EndVotingBlock: endVotingRounds,
+		NewVersion:     nil,
+		ToBeCanceled:   tobeCanceledProposalID,
+		ActiveBlock:    nil,
+		Verifier:       verifier,
+		Module:         "",
+		Name:           "",
+		NewValue:       "",
+	}
+}
+
+func CreateParamProposal(verifier string, pIDID string, module string, name string, newValue string) *Proposal {
+	return &Proposal{
+		ProposalId:     "",
+		Proposer:       "",
+		ProposalType:   common.PARAM_PROPOSAL,
+		PiPid:          pIDID,
+		SubmitBlock:    nil,
+		EndVotingBlock: nil,
+		NewVersion:     nil,
+		ToBeCanceled:   "",
+		ActiveBlock:    nil,
+		Verifier:       verifier,
+		Module:         module,
+		Name:           name,
+		NewValue:       newValue,
+	}
 }
 
 func (p *Proposal) GetSubmitFunctionType() common.FunctionType {
@@ -78,14 +151,31 @@ func (p *Proposal) GetSubmitFunctionType() common.FunctionType {
 func (p *Proposal) GetSubmitInputParameters() []interface{} {
 	switch p.ProposalType {
 	case common.TEXT_PROPOSAL:
-		return []interface{}{p.verifier, p.PiPid}
+		return []interface{}{
+			codec.HexStringParam{HexStringValue: p.Verifier},
+			codec.Utf8String{ValueInner: p.PiPid},
+		}
 	case common.VERSION_PROPOSAL:
-		return []interface{}{p.verifier, p.PiPid, p.NewVersion, p.EndVotingBlock}
+		return []interface{}{
+			codec.HexStringParam{HexStringValue: p.Verifier},
+			codec.Utf8String{ValueInner: p.PiPid},
+			codec.UInt32{ValueInner: p.NewVersion},
+			codec.UInt64{ValueInner: p.EndVotingBlock},
+		}
 	case common.CANCEL_PROPOSAL:
-		return []interface{}{p.verifier, p.PiPid, p.EndVotingBlock, p.ToBeCanceled}
-	case common.PARAM_PROPOSAL:
-		return []interface{}{p.verifier, p.PiPid, p.module, p.name, p.newValue}
-	default:
-		return []interface{}{}
+		return []interface{}{
+			codec.HexStringParam{HexStringValue: p.Verifier},
+			codec.Utf8String{ValueInner: p.PiPid},
+			codec.UInt64{ValueInner: p.EndVotingBlock},
+			codec.HexStringParam{HexStringValue: p.ToBeCanceled},
+		}
+	default: // common.PARAM_PROPOSAL:
+		return []interface{}{
+			codec.HexStringParam{HexStringValue: p.Verifier},
+			codec.Utf8String{ValueInner: p.PiPid},
+			codec.Utf8String{ValueInner: p.Module},
+			codec.Utf8String{ValueInner: p.Name},
+			codec.Utf8String{ValueInner: p.NewValue},
+		}
 	}
 }
