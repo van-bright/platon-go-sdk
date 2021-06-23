@@ -2,7 +2,9 @@ package ppos
 
 import (
 	"math/big"
+	"platon-go-sdk/common/hexutil"
 	"platon-go-sdk/network"
+	"platon-go-sdk/ppos/codec"
 	"platon-go-sdk/ppos/common"
 	"platon-go-sdk/ppos/req"
 	"platon-go-sdk/ppos/resp"
@@ -29,10 +31,10 @@ func NewStakingContract(pposConfig *network.PposNetworkParameters, credentials *
  * @return
  */
 func (sc *StakingContract) GetStakingInfo(nodeId string) (resp.Node, error) {
-	f := common.NewFunction(common.GET_STAKINGINFO_FUNC_TYPE, []interface{}{nodeId})
+	f := common.NewFunction(common.GET_STAKINGINFO_FUNC_TYPE, []interface{}{codec.NodeId{HexStringId: nodeId}})
 
 	var node resp.Node
-	err := sc.executor.SendWithResult(f, &node)
+	err := sc.executor.CallWithResult(f, &node)
 	return node, err
 }
 
@@ -44,9 +46,9 @@ func (sc *StakingContract) GetStakingInfo(nodeId string) (resp.Node, error) {
 func (sc *StakingContract) GetPackageReward() (*big.Int, error) {
 	f := common.NewFunction(common.GET_PACKAGEREWARD_FUNC_TYPE, nil)
 
-	var reward = big.NewInt(0)
-	err := sc.executor.SendWithResult(f, &reward)
-	return reward, err
+	var reward *hexutil.Big
+	err := sc.executor.CallWithResult(f, &reward)
+	return reward.ToInt(), err
 }
 
 /**
@@ -57,9 +59,9 @@ func (sc *StakingContract) GetPackageReward() (*big.Int, error) {
 func (sc *StakingContract) GetStakingReward() (*big.Int, error) {
 	f := common.NewFunction(common.GET_STAKINGREWARD_FUNC_TYPE, nil)
 
-	var reward = big.NewInt(0)
-	err := sc.executor.SendWithResult(f, &reward)
-	return reward, err
+	var reward *hexutil.Big
+	err := sc.executor.CallWithResult(f, &reward)
+	return reward.ToInt(), err
 }
 
 /**
@@ -71,7 +73,7 @@ func (sc *StakingContract) GetAvgPackTime() (*big.Int, error) {
 	f := common.NewFunction(common.GET_AVGPACKTIME_FUNC_TYPE, nil)
 
 	var reward = big.NewInt(0)
-	err := sc.executor.SendWithResult(f, &reward)
+	err := sc.executor.CallWithResult(f, &reward)
 	return reward, err
 }
 
@@ -97,7 +99,7 @@ func (sc *StakingContract) Staking(stakingParam req.StakingParam) (common.Transa
  * @return
  */
 func (sc *StakingContract) UnStaking(nodeId string) (common.TransactionHash, error) {
-	f := common.NewFunction(common.WITHDREW_STAKING_FUNC_TYPE, []interface{}{nodeId})
+	f := common.NewFunction(common.WITHDREW_STAKING_FUNC_TYPE, []interface{}{codec.NodeId{HexStringId: nodeId}})
 
 	var receipt common.TransactionHash
 	err := sc.executor.SendWithResult(f, &receipt)
@@ -111,7 +113,7 @@ func (sc *StakingContract) UnStaking(nodeId string) (common.TransactionHash, err
  * @return
  */
 func (sc *StakingContract) UpdateStakingInfo(updateStakingParam req.UpdateStakingParam) (common.TransactionHash, error) {
-	f := common.NewFunction(common.WITHDREW_STAKING_FUNC_TYPE, updateStakingParam.SubmitInputParameters())
+	f := common.NewFunction(common.UPDATE_STAKING_INFO_FUNC_TYPE, updateStakingParam.SubmitInputParameters())
 
 	var receipt common.TransactionHash
 	err := sc.executor.SendWithResult(f, &receipt)
@@ -127,7 +129,7 @@ func (sc *StakingContract) UpdateStakingInfo(updateStakingParam req.UpdateStakin
  * @return
  */
 func (sc *StakingContract) AddStaking(nodeId string, stakingAmountType common.StakingAmountType, amount *big.Int) (common.TransactionHash, error) {
-	params := []interface{}{nodeId, stakingAmountType.GetValue(), amount}
+	params := []interface{}{codec.NodeId{HexStringId: nodeId}, codec.UInt16{ValueInner: stakingAmountType.GetValue()}, codec.UInt256{ValueInner: amount}}
 	f := common.NewFunction(common.ADD_STAKING_FUNC_TYPE, params)
 
 	var receipt common.TransactionHash

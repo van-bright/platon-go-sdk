@@ -1,9 +1,7 @@
 package codec
 
 import (
-	"fmt"
 	"math/big"
-	"platon-go-sdk/common/hexutil"
 	"platon-go-sdk/rlp"
 )
 
@@ -16,7 +14,7 @@ func (u16 UInt16) GetEncodeData() BytesSlice {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("f: " + hexutil.Encode(b)[2:])
+	//fmt.Println("f: " + hexutil.Encode(b)[2:])
 	return b
 }
 

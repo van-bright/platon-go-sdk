@@ -1,6 +1,10 @@
 package req
 
-import "math/big"
+import (
+	"math/big"
+	common2 "platon-go-sdk/common"
+	"platon-go-sdk/ppos/codec"
+)
 
 type UpdateStakingParam struct {
 
@@ -36,12 +40,13 @@ type UpdateStakingParam struct {
 }
 
 func (usp UpdateStakingParam) SubmitInputParameters() []interface{} {
-	return []interface{}{usp.BenifitAddress,
-		usp.NodeId,
-		usp.RewardPer,
-		usp.ExternalId,
-		usp.NodeName,
-		usp.WebSite,
-		usp.Details,
+	return []interface{}{
+		common2.MustBech32ToAddress(usp.BenifitAddress),
+		codec.NodeId{HexStringId: usp.NodeId},
+		codec.UInt32{ValueInner: usp.RewardPer},
+		codec.Utf8String{ValueInner: usp.ExternalId},
+		codec.Utf8String{ValueInner: usp.NodeName},
+		codec.Utf8String{ValueInner: usp.WebSite},
+		codec.Utf8String{ValueInner: usp.Details},
 	}
 }

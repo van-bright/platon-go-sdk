@@ -2,6 +2,8 @@ package req
 
 import (
 	"math/big"
+	common2 "platon-go-sdk/common"
+	"platon-go-sdk/ppos/codec"
 	"platon-go-sdk/ppos/common"
 )
 
@@ -60,18 +62,19 @@ type StakingParam struct {
 }
 
 func (sp StakingParam) SubmitInputParameters() []interface{} {
-	return []interface{}{sp.StakingAmountType.GetValue(),
-		sp.BenefitAddress,
-		sp.NodeId,
-		sp.ExternalId,
-		sp.NodeName,
-		sp.WebSite,
-		sp.Details,
-		sp.Amount,
-		sp.RewardPer,
-		sp.ProcessVersion.Version,
-		sp.ProcessVersion.Sign,
-		sp.BlsPubKey,
-		sp.BlsProof,
+	return []interface{}{
+		codec.UInt16{ValueInner: sp.StakingAmountType.GetValue()},
+		common2.MustBech32ToAddress(sp.BenefitAddress),
+		codec.NodeId{HexStringId: sp.NodeId},
+		codec.Utf8String{ValueInner: sp.ExternalId},
+		codec.Utf8String{ValueInner: sp.NodeName},
+		codec.Utf8String{ValueInner: sp.WebSite},
+		codec.Utf8String{ValueInner: sp.Details},
+		codec.UInt256{ValueInner: sp.Amount},
+		codec.UInt32{ValueInner: sp.RewardPer},
+		codec.UInt32{ValueInner: sp.ProcessVersion.Version},
+		codec.HexStringParam{HexStringValue: sp.ProcessVersion.Sign},
+		codec.HexStringParam{HexStringValue: sp.BlsPubKey},
+		codec.HexStringParam{HexStringValue: sp.BlsProof},
 	}
 }
