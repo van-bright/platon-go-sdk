@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/big"
 	"platon-go-sdk/common"
+	"platon-go-sdk/network"
 	"platon-go-sdk/web3go"
 )
 
@@ -15,7 +16,7 @@ func main() {
 		return
 	}
 
-	w.SetNetworkCfg(&web3go.DefaultTestNetCfg)
+	w.SetNetworkCfg(&network.DefaultTestNetConfig)
 
 	accounts := w.Accounts()
 	for _, account := range accounts {

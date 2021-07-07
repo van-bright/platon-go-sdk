@@ -56,3 +56,7 @@ func (c *Credentials) MustBech32ToAddress(addr string) common.Address {
 	common.SetAddressPrefix(c.hrp)
 	return common.MustBech32ToAddress(addr)
 }
+
+func (c *Credentials) PrivateKey() *ecdsa.PrivateKey {
+	return c.privateKey
+}
