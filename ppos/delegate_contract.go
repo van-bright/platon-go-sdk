@@ -4,14 +4,14 @@ import (
 	"math/big"
 	"platon-go-sdk/network"
 	"platon-go-sdk/ppos/codec"
-	"platon-go-sdk/ppos/common"
+	"platon-go-sdk/ppos/typedefs"
 )
 
 type DelegateContract struct {
 	executor *FunctionExecutor
 }
 
-func NewDelegateContract(pposConfig *network.PposNetworkParameters, credentials *common.Credentials) *DelegateContract {
+func NewDelegateContract(pposConfig *network.PposNetworkParameters, credentials *typedefs.Credentials) *DelegateContract {
 	executor := &FunctionExecutor{
 		httpEntry:    pposConfig.Url,
 		chainId:      pposConfig.ChainId,
@@ -29,11 +29,11 @@ func NewDelegateContract(pposConfig *network.PposNetworkParameters, credentials 
  * @param amount            委托的金额(按照最小单位算，1LAT = 10**18 von)
  * @return
  */
-func (dc *DelegateContract) Delegate(nodeId string, stakingAmountType common.StakingAmountType, amount *big.Int) (common.TransactionHash, error) {
+func (dc *DelegateContract) Delegate(nodeId string, stakingAmountType typedefs.StakingAmountType, amount *big.Int) (typedefs.TransactionHash, error) {
 	params := []interface{}{codec.UInt16{ValueInner: stakingAmountType.GetValue()}, codec.NodeId{HexStringId: nodeId}, codec.UInt256{ValueInner: amount}}
-	function := common.NewFunction(common.DELEGATE_FUNC_TYPE, params)
+	function := typedefs.NewFunction(typedefs.DELEGATE_FUNC_TYPE, params)
 
-	var receipt common.TransactionHash
+	var receipt typedefs.TransactionHash
 	err := dc.executor.SendWithResult(function, &receipt)
 	return receipt, err
 }
@@ -46,11 +46,11 @@ func (dc *DelegateContract) Delegate(nodeId string, stakingAmountType common.Sta
  * @param amount          减持委托的金额(按照最小单位算，1LAT = 10**18 von)
  * @return
  */
-func (dc *DelegateContract) UnDelegate(nodeId string, stakingBlockNum *big.Int, amount *big.Int) (common.TransactionHash, error) {
+func (dc *DelegateContract) UnDelegate(nodeId string, stakingBlockNum *big.Int, amount *big.Int) (typedefs.TransactionHash, error) {
 	params := []interface{}{codec.UInt64{ValueInner: stakingBlockNum}, codec.NodeId{HexStringId: nodeId}, codec.UInt256{ValueInner: amount}}
-	function := common.NewFunction(common.WITHDREW_DELEGATE_FUNC_TYPE, params)
+	function := typedefs.NewFunction(typedefs.WITHDREW_DELEGATE_FUNC_TYPE, params)
 
-	var receipt common.TransactionHash
+	var receipt typedefs.TransactionHash
 	err := dc.executor.SendWithResult(function, &receipt)
 	return receipt, err
 }

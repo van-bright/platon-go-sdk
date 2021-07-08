@@ -5,16 +5,16 @@ import (
 	"platon-go-sdk/common/hexutil"
 	"platon-go-sdk/network"
 	"platon-go-sdk/ppos/codec"
-	"platon-go-sdk/ppos/common"
 	"platon-go-sdk/ppos/req"
 	"platon-go-sdk/ppos/resp"
+	"platon-go-sdk/ppos/typedefs"
 )
 
 type StakingContract struct {
 	executor *FunctionExecutor
 }
 
-func NewStakingContract(pposConfig *network.PposNetworkParameters, credentials *common.Credentials) *StakingContract {
+func NewStakingContract(pposConfig *network.PposNetworkParameters, credentials *typedefs.Credentials) *StakingContract {
 	executor := &FunctionExecutor{
 		httpEntry:    pposConfig.Url,
 		chainId:      pposConfig.ChainId,
@@ -31,7 +31,7 @@ func NewStakingContract(pposConfig *network.PposNetworkParameters, credentials *
  * @return
  */
 func (sc *StakingContract) GetStakingInfo(nodeId string) (resp.Node, error) {
-	f := common.NewFunction(common.GET_STAKINGINFO_FUNC_TYPE, []interface{}{codec.NodeId{HexStringId: nodeId}})
+	f := typedefs.NewFunction(typedefs.GET_STAKINGINFO_FUNC_TYPE, []interface{}{codec.NodeId{HexStringId: nodeId}})
 
 	var node resp.Node
 	err := sc.executor.CallWithResult(f, &node)
@@ -44,7 +44,7 @@ func (sc *StakingContract) GetStakingInfo(nodeId string) (resp.Node, error) {
  * @return
  */
 func (sc *StakingContract) GetPackageReward() (*big.Int, error) {
-	f := common.NewFunction(common.GET_PACKAGEREWARD_FUNC_TYPE, nil)
+	f := typedefs.NewFunction(typedefs.GET_PACKAGEREWARD_FUNC_TYPE, nil)
 
 	var reward *hexutil.Big
 	err := sc.executor.CallWithResult(f, &reward)
@@ -57,7 +57,7 @@ func (sc *StakingContract) GetPackageReward() (*big.Int, error) {
  * @return
  */
 func (sc *StakingContract) GetStakingReward() (*big.Int, error) {
-	f := common.NewFunction(common.GET_STAKINGREWARD_FUNC_TYPE, nil)
+	f := typedefs.NewFunction(typedefs.GET_STAKINGREWARD_FUNC_TYPE, nil)
 
 	var reward *hexutil.Big
 	err := sc.executor.CallWithResult(f, &reward)
@@ -70,7 +70,7 @@ func (sc *StakingContract) GetStakingReward() (*big.Int, error) {
  * @return
  */
 func (sc *StakingContract) GetAvgPackTime() (*big.Int, error) {
-	f := common.NewFunction(common.GET_AVGPACKTIME_FUNC_TYPE, nil)
+	f := typedefs.NewFunction(typedefs.GET_AVGPACKTIME_FUNC_TYPE, nil)
 
 	var reward = big.NewInt(0)
 	err := sc.executor.CallWithResult(f, &reward)
@@ -84,10 +84,10 @@ func (sc *StakingContract) GetAvgPackTime() (*big.Int, error) {
  * @return
  * @see StakingParam
  */
-func (sc *StakingContract) Staking(stakingParam req.StakingParam) (common.TransactionHash, error) {
-	f := common.NewFunction(common.STAKING_FUNC_TYPE, stakingParam.SubmitInputParameters())
+func (sc *StakingContract) Staking(stakingParam req.StakingParam) (typedefs.TransactionHash, error) {
+	f := typedefs.NewFunction(typedefs.STAKING_FUNC_TYPE, stakingParam.SubmitInputParameters())
 
-	var receipt common.TransactionHash
+	var receipt typedefs.TransactionHash
 	err := sc.executor.SendWithResult(f, &receipt)
 	return receipt, err
 }
@@ -98,10 +98,10 @@ func (sc *StakingContract) Staking(stakingParam req.StakingParam) (common.Transa
  * @param nodeId 64bytes 被质押的节点Id(也叫候选人的节点Id)
  * @return
  */
-func (sc *StakingContract) UnStaking(nodeId string) (common.TransactionHash, error) {
-	f := common.NewFunction(common.WITHDREW_STAKING_FUNC_TYPE, []interface{}{codec.NodeId{HexStringId: nodeId}})
+func (sc *StakingContract) UnStaking(nodeId string) (typedefs.TransactionHash, error) {
+	f := typedefs.NewFunction(typedefs.WITHDREW_STAKING_FUNC_TYPE, []interface{}{codec.NodeId{HexStringId: nodeId}})
 
-	var receipt common.TransactionHash
+	var receipt typedefs.TransactionHash
 	err := sc.executor.SendWithResult(f, &receipt)
 	return receipt, err
 }
@@ -112,10 +112,10 @@ func (sc *StakingContract) UnStaking(nodeId string) (common.TransactionHash, err
  * @param updateStakingParam
  * @return
  */
-func (sc *StakingContract) UpdateStakingInfo(updateStakingParam req.UpdateStakingParam) (common.TransactionHash, error) {
-	f := common.NewFunction(common.UPDATE_STAKING_INFO_FUNC_TYPE, updateStakingParam.SubmitInputParameters())
+func (sc *StakingContract) UpdateStakingInfo(updateStakingParam req.UpdateStakingParam) (typedefs.TransactionHash, error) {
+	f := typedefs.NewFunction(typedefs.UPDATE_STAKING_INFO_FUNC_TYPE, updateStakingParam.SubmitInputParameters())
 
-	var receipt common.TransactionHash
+	var receipt typedefs.TransactionHash
 	err := sc.executor.SendWithResult(f, &receipt)
 	return receipt, err
 }
@@ -128,11 +128,11 @@ func (sc *StakingContract) UpdateStakingInfo(updateStakingParam req.UpdateStakin
  * @param amount            增持的von
  * @return
  */
-func (sc *StakingContract) AddStaking(nodeId string, stakingAmountType common.StakingAmountType, amount *big.Int) (common.TransactionHash, error) {
+func (sc *StakingContract) AddStaking(nodeId string, stakingAmountType typedefs.StakingAmountType, amount *big.Int) (typedefs.TransactionHash, error) {
 	params := []interface{}{codec.NodeId{HexStringId: nodeId}, codec.UInt16{ValueInner: stakingAmountType.GetValue()}, codec.UInt256{ValueInner: amount}}
-	f := common.NewFunction(common.ADD_STAKING_FUNC_TYPE, params)
+	f := typedefs.NewFunction(typedefs.ADD_STAKING_FUNC_TYPE, params)
 
-	var receipt common.TransactionHash
+	var receipt typedefs.TransactionHash
 	err := sc.executor.SendWithResult(f, &receipt)
 	return receipt, err
 }

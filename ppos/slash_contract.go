@@ -4,14 +4,14 @@ import (
 	"math/big"
 	"platon-go-sdk/network"
 	"platon-go-sdk/ppos/codec"
-	"platon-go-sdk/ppos/common"
+	"platon-go-sdk/ppos/typedefs"
 )
 
 type SlashContract struct {
 	executor *FunctionExecutor
 }
 
-func NewSlashContract(pposConfig *network.PposNetworkParameters, credentials *common.Credentials) *SlashContract {
+func NewSlashContract(pposConfig *network.PposNetworkParameters, credentials *typedefs.Credentials) *SlashContract {
 	executor := &FunctionExecutor{
 		httpEntry:    pposConfig.Url,
 		chainId:      pposConfig.ChainId,
@@ -27,11 +27,11 @@ func NewSlashContract(pposConfig *network.PposNetworkParameters, credentials *co
  * @param data 证据的json值
  * @return
  */
-func (sc *SlashContract) ReportDoubleSign(duplicateSignType common.DuplicateSignType, data string) (common.TransactionHash, error) {
+func (sc *SlashContract) ReportDoubleSign(duplicateSignType typedefs.DuplicateSignType, data string) (typedefs.TransactionHash, error) {
 	params := []interface{}{codec.UInt32{ValueInner: duplicateSignType.GetValue()}, codec.Utf8String{ValueInner: data}}
-	f := common.NewFunction(common.REPORT_DOUBLESIGN_FUNC_TYPE, params)
+	f := typedefs.NewFunction(typedefs.REPORT_DOUBLESIGN_FUNC_TYPE, params)
 
-	var receipt common.TransactionHash
+	var receipt typedefs.TransactionHash
 	err := sc.executor.SendWithResult(f, &receipt)
 	return receipt, err
 }
@@ -44,9 +44,9 @@ func (sc *SlashContract) ReportDoubleSign(duplicateSignType common.DuplicateSign
  * @param blockNumber    多签的块高
  * @return
  */
-func (sc *SlashContract) CheckDoubleSign(doubleSignType common.DuplicateSignType, nodeId string, blockNumber *big.Int) (string, error) {
+func (sc *SlashContract) CheckDoubleSign(doubleSignType typedefs.DuplicateSignType, nodeId string, blockNumber *big.Int) (string, error) {
 	params := []interface{}{codec.UInt32{ValueInner: doubleSignType.GetValue()}, codec.NodeId{HexStringId: nodeId}, codec.UInt64{ValueInner: blockNumber}}
-	f := common.NewFunction(common.CHECK_DOUBLESIGN_FUNC_TYPE, params)
+	f := typedefs.NewFunction(typedefs.CHECK_DOUBLESIGN_FUNC_TYPE, params)
 
 	var result string
 	err := sc.executor.CallWithResult(f, &result)

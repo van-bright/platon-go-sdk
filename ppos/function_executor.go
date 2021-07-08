@@ -9,14 +9,14 @@ import (
 	common2 "platon-go-sdk/common"
 	"platon-go-sdk/core/types"
 	"platon-go-sdk/ethclient"
-	"platon-go-sdk/ppos/common"
+	"platon-go-sdk/ppos/typedefs"
 )
 
 type FunctionExecutor struct {
 	httpEntry    string
 	chainId      *big.Int
 	contractAddr string
-	credentials  *common.Credentials
+	credentials  *typedefs.Credentials
 }
 
 type CallResponse struct {
@@ -24,7 +24,7 @@ type CallResponse struct {
 	Ret  json.RawMessage `json:"Ret"`
 }
 
-func (fe *FunctionExecutor) SendWithRaw(f *common.Function) (json.RawMessage, error) {
+func (fe *FunctionExecutor) SendWithRaw(f *typedefs.Function) (json.RawMessage, error) {
 	to := fe.credentials.MustBech32ToAddress(fe.contractAddr)
 	data := f.ToBytes()
 
@@ -40,7 +40,7 @@ func (fe *FunctionExecutor) SendWithRaw(f *common.Function) (json.RawMessage, er
 	return r, nil
 }
 
-func (fe *FunctionExecutor) SendWithResult(f *common.Function, result interface{}) error {
+func (fe *FunctionExecutor) SendWithResult(f *typedefs.Function, result interface{}) error {
 	raw, err := fe.SendWithRaw(f)
 	if err != nil {
 		return err
@@ -50,16 +50,16 @@ func (fe *FunctionExecutor) SendWithResult(f *common.Function, result interface{
 	return err
 }
 
-func (fe *FunctionExecutor) getDefaultGasPrice(f *common.Function) *big.Int {
+func (fe *FunctionExecutor) getDefaultGasPrice(f *typedefs.Function) *big.Int {
 	price := new(big.Int)
 	switch f.Type {
-	case common.SUBMIT_TEXT_FUNC_TYPE:
+	case typedefs.SUBMIT_TEXT_FUNC_TYPE:
 		price.SetString("1500000000000000", 10)
-	case common.SUBMIT_VERSION_FUNC_TYPE:
+	case typedefs.SUBMIT_VERSION_FUNC_TYPE:
 		price.SetString("2100000000000000", 10)
-	case common.SUBMIT_PARAM_FUNCTION_TYPE:
+	case typedefs.SUBMIT_PARAM_FUNCTION_TYPE:
 		price.SetString("2000000000000000", 10)
-	case common.SUBMIT_CANCEL_FUNC_TYPE:
+	case typedefs.SUBMIT_CANCEL_FUNC_TYPE:
 		price.SetString("3000000000000000", 10)
 	default:
 		price = big.NewInt(0)
@@ -67,9 +67,9 @@ func (fe *FunctionExecutor) getDefaultGasPrice(f *common.Function) *big.Int {
 	return price
 }
 
-func (fe *FunctionExecutor) getDefaultGasLimit(f *common.Function) uint64 {
-	if common.IsLocalSupportFunction(f.Type) {
-		return common.GetGasLimit(f)
+func (fe *FunctionExecutor) getDefaultGasLimit(f *typedefs.Function) uint64 {
+	if typedefs.IsLocalSupportFunction(f.Type) {
+		return typedefs.GetGasLimit(f)
 	} else {
 		return 0
 	}
@@ -119,14 +119,14 @@ func (fe *FunctionExecutor) doSendRawTx(chainId *big.Int, to common2.Address, da
 	return client.SendRawTransaction(ctx, signedTx)
 }
 
-func (fe *FunctionExecutor) CallWithRaw(f *common.Function) ([]byte, error) {
+func (fe *FunctionExecutor) CallWithRaw(f *typedefs.Function) ([]byte, error) {
 	to := fe.credentials.MustBech32ToAddress(fe.contractAddr)
 	data := f.ToBytes()
 
 	return fe.doCallRawTx(to, data)
 }
 
-func (fe *FunctionExecutor) CallWithResult(f *common.Function, result interface{}) error {
+func (fe *FunctionExecutor) CallWithResult(f *typedefs.Function, result interface{}) error {
 	raw, err := fe.CallWithRaw(f)
 	if err != nil {
 		return err

@@ -1,4 +1,4 @@
-package common
+package typedefs
 
 import "platon-go-sdk/core/types"
 

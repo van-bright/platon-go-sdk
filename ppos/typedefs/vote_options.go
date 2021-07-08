@@ -1,4 +1,4 @@
-package common
+package typedefs
 
 type VoteOption uint16
 

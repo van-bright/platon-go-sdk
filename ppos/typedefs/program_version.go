@@ -1,4 +1,4 @@
-package common
+package typedefs
 
 import "math/big"
 

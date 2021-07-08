@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"math/big"
 	"platon-go-sdk/network"
-	common2 "platon-go-sdk/ppos/common"
+	"platon-go-sdk/ppos/typedefs"
 	"testing"
 )
 
@@ -17,7 +17,7 @@ func TestDelegateContract_Delegate(t *testing.T) {
 
 	amount := new(big.Int)
 	amount.SetString("200000000000000000000", 10)
-	list, err := dc.Delegate(nodeId, common2.FREE_AMOUNT_TYPE, amount)
+	list, err := dc.Delegate(nodeId, typedefs.FREE_AMOUNT_TYPE, amount)
 	if err != nil {
 		t.Errorf("DelegateContract.Delegate failed: %s", err)
 	}

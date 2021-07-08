@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"platon-go-sdk/network"
-	"platon-go-sdk/ppos/common"
+	"platon-go-sdk/ppos/typedefs"
 	"testing"
 )
 
 const PrivateKey = "ed72066fa30607420635be56785595ccf935675a890bef7c808afc1537f52281"
 
-var credentials, _ = common.NewCredential(PrivateKey, network.MainNetHrp)
+var credentials, _ = typedefs.NewCredential(PrivateKey, network.MainNetHrp)
 
 func TestNodeContract_GetCandidateList(t *testing.T) {
 	config := network.PposMainNetParams

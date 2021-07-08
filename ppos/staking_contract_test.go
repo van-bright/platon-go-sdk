@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"math/big"
 	"platon-go-sdk/network"
-	"platon-go-sdk/ppos/common"
 	"platon-go-sdk/ppos/req"
+	"platon-go-sdk/ppos/typedefs"
 	"testing"
 )
 
@@ -94,13 +94,13 @@ func TestStakingContract_Staking(t *testing.T) {
 	sp := req.StakingParam{
 		NodeId:            "0x77fffc999d9f9403b65009f1eb27bae65774e2d8ea36f7b20a89f82642a5067557430e6edfe5320bb81c3666a19cf4a5172d6533117d7ebcd0f2c82055499050",
 		Amount:            big.NewInt(10),
-		StakingAmountType: common.FREE_AMOUNT_TYPE,
+		StakingAmountType: typedefs.FREE_AMOUNT_TYPE,
 		BenefitAddress:    MainFanAccount,
 		ExternalId:        "",
 		NodeName:          "chendai-node3",
 		WebSite:           "www.baidu.com",
 		Details:           "chendai-node3-details",
-		ProcessVersion: common.ProgramVersion{
+		ProcessVersion: typedefs.ProgramVersion{
 			Version: big.NewInt(4096),
 			Sign:    "0x0dca7024507a5d94c84b9c9deb417d56bf58f6fe5e37ecee86e64a62d1f518b67ddeeed7ba59a619b7f30ecd881164e96f9781b30309c07ea8985929401692de00",
 		},
@@ -144,7 +144,7 @@ func TestStakingContract_AddStaking(t *testing.T) {
 
 	nodeId := "0x77fffc999d9f9403b65009f1eb27bae65774e2d8ea36f7b20a89f82642a5067557430e6edfe5320bb81c3666a19cf4a5172d6533117d7ebcd0f2c82055499050"
 
-	list, err := sc.AddStaking(nodeId, common.FREE_AMOUNT_TYPE, big.NewInt(10))
+	list, err := sc.AddStaking(nodeId, typedefs.FREE_AMOUNT_TYPE, big.NewInt(10))
 	if err != nil {
 		t.Errorf("StakingContract.AddStaking failed: %s", err)
 	}

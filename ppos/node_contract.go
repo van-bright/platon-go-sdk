@@ -3,15 +3,15 @@ package ppos
 import (
 	"encoding/json"
 	"platon-go-sdk/network"
-	"platon-go-sdk/ppos/common"
 	"platon-go-sdk/ppos/resp"
+	"platon-go-sdk/ppos/typedefs"
 )
 
 type NodeContract struct {
 	executor *FunctionExecutor
 }
 
-func NewNodeContract(pposConfig *network.PposNetworkParameters, credentials *common.Credentials) *NodeContract {
+func NewNodeContract(pposConfig *network.PposNetworkParameters, credentials *typedefs.Credentials) *NodeContract {
 	executor := &FunctionExecutor{
 		httpEntry:    pposConfig.Url,
 		chainId:      pposConfig.ChainId,
@@ -21,7 +21,7 @@ func NewNodeContract(pposConfig *network.PposNetworkParameters, credentials *com
 	return &NodeContract{executor}
 }
 
-func (nc *NodeContract) doExecuteFunction(f *common.Function) ([]resp.Node, error) {
+func (nc *NodeContract) doExecuteFunction(f *typedefs.Function) ([]resp.Node, error) {
 	raw, err := nc.executor.CallWithRaw(f)
 	if err != nil {
 		return nil, err
@@ -44,7 +44,7 @@ func (nc *NodeContract) doExecuteFunction(f *common.Function) ([]resp.Node, erro
  * @return
  */
 func (nc *NodeContract) GetVerifierList() ([]resp.Node, error) {
-	f := common.NewFunction(common.GET_VERIFIERLIST_FUNC_TYPE, nil)
+	f := typedefs.NewFunction(typedefs.GET_VERIFIERLIST_FUNC_TYPE, nil)
 
 	return nc.doExecuteFunction(f)
 }
@@ -55,7 +55,7 @@ func (nc *NodeContract) GetVerifierList() ([]resp.Node, error) {
  * @return
  */
 func (nc *NodeContract) GetValidatorList() ([]resp.Node, error) {
-	f := common.NewFunction(common.GET_VALIDATORLIST_FUNC_TYPE, nil)
+	f := typedefs.NewFunction(typedefs.GET_VALIDATORLIST_FUNC_TYPE, nil)
 	return nc.doExecuteFunction(f)
 }
 
@@ -65,6 +65,6 @@ func (nc *NodeContract) GetValidatorList() ([]resp.Node, error) {
  * @return
  */
 func (nc *NodeContract) GetCandidateList() ([]resp.Node, error) {
-	f := common.NewFunction(common.GET_CANDIDATELIST_FUNC_TYPE, nil)
+	f := typedefs.NewFunction(typedefs.GET_CANDIDATELIST_FUNC_TYPE, nil)
 	return nc.doExecuteFunction(f)
 }

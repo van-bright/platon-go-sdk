@@ -5,15 +5,15 @@ import (
 	"platon-go-sdk/common/hexutil"
 	"platon-go-sdk/network"
 	"platon-go-sdk/ppos/codec"
-	"platon-go-sdk/ppos/common"
 	"platon-go-sdk/ppos/resp"
+	"platon-go-sdk/ppos/typedefs"
 )
 
 type ProposalContract struct {
 	executor *FunctionExecutor
 }
 
-func NewProposalContract(pposConfig *network.PposNetworkParameters, credentials *common.Credentials) *ProposalContract {
+func NewProposalContract(pposConfig *network.PposNetworkParameters, credentials *typedefs.Credentials) *ProposalContract {
 	executor := &FunctionExecutor{
 		httpEntry:    pposConfig.Url,
 		chainId:      pposConfig.ChainId,
@@ -30,7 +30,7 @@ func NewProposalContract(pposConfig *network.PposNetworkParameters, credentials 
  * @return
  */
 func (pc *ProposalContract) GetProposal(proposalId string) (resp.Proposal, error) {
-	f := common.NewFunction(common.GET_PROPOSAL_FUNC_TYPE, []interface{}{codec.HexStringParam{HexStringValue: proposalId}})
+	f := typedefs.NewFunction(typedefs.GET_PROPOSAL_FUNC_TYPE, []interface{}{codec.HexStringParam{HexStringValue: proposalId}})
 
 	var proposal resp.Proposal
 	err := pc.executor.CallWithResult(f, &proposal)
@@ -44,7 +44,7 @@ func (pc *ProposalContract) GetProposal(proposalId string) (resp.Proposal, error
  * @return
  */
 func (pc *ProposalContract) GetTallyResult(proposalId string) (resp.TallyResult, error) {
-	f := common.NewFunction(common.GET_TALLY_RESULT_FUNC_TYPE, []interface{}{codec.HexStringParam{HexStringValue: proposalId}})
+	f := typedefs.NewFunction(typedefs.GET_TALLY_RESULT_FUNC_TYPE, []interface{}{codec.HexStringParam{HexStringValue: proposalId}})
 
 	var tallyResult resp.TallyResult
 	err := pc.executor.CallWithResult(f, &tallyResult)
@@ -57,7 +57,7 @@ func (pc *ProposalContract) GetTallyResult(proposalId string) (resp.TallyResult,
  * @return
  */
 func (pc *ProposalContract) GetProposalList() ([]resp.Proposal, error) {
-	f := common.NewFunction(common.GET_PROPOSAL_LIST_FUNC_TYPE, nil)
+	f := typedefs.NewFunction(typedefs.GET_PROPOSAL_LIST_FUNC_TYPE, nil)
 
 	var proposals []resp.Proposal
 	err := pc.executor.CallWithResult(f, &proposals)
@@ -73,7 +73,7 @@ func (pc *ProposalContract) GetProposalList() ([]resp.Proposal, error) {
  * @param verifier       投票验证人
  * @return
  */
-func (pc *ProposalContract) Vote(programVersion common.ProgramVersion, voteOption common.VoteOption, proposalID string, nodeId string) (common.TransactionHash, error) {
+func (pc *ProposalContract) Vote(programVersion typedefs.ProgramVersion, voteOption typedefs.VoteOption, proposalID string, nodeId string) (typedefs.TransactionHash, error) {
 	params := []interface{}{
 		codec.HexStringParam{HexStringValue: nodeId},
 		codec.HexStringParam{HexStringValue: proposalID},
@@ -81,9 +81,9 @@ func (pc *ProposalContract) Vote(programVersion common.ProgramVersion, voteOptio
 		codec.UInt32{ValueInner: programVersion.Version},
 		codec.HexStringParam{HexStringValue: programVersion.Sign},
 	}
-	f := common.NewFunction(common.VOTE_FUNC_TYPE, params)
+	f := typedefs.NewFunction(typedefs.VOTE_FUNC_TYPE, params)
 
-	var receipt common.TransactionHash
+	var receipt typedefs.TransactionHash
 	err := pc.executor.SendWithResult(f, &receipt)
 	return receipt, err
 }
@@ -96,11 +96,11 @@ func (pc *ProposalContract) Vote(programVersion common.ProgramVersion, voteOptio
  * @param gasProvider
  * @return
  */
-func (pc *ProposalContract) DeclareVersion(programVersion common.ProgramVersion, verifier string) (common.TransactionHash, error) {
+func (pc *ProposalContract) DeclareVersion(programVersion typedefs.ProgramVersion, verifier string) (typedefs.TransactionHash, error) {
 	params := []interface{}{codec.HexStringParam{HexStringValue: verifier}, codec.UInt32{ValueInner: programVersion.Version}, codec.HexStringParam{HexStringValue: programVersion.Sign}}
-	f := common.NewFunction(common.DECLARE_VERSION_FUNC_TYPE, params)
+	f := typedefs.NewFunction(typedefs.DECLARE_VERSION_FUNC_TYPE, params)
 
-	var receipt common.TransactionHash
+	var receipt typedefs.TransactionHash
 	err := pc.executor.SendWithResult(f, &receipt)
 	return receipt, err
 }
@@ -111,10 +111,10 @@ func (pc *ProposalContract) DeclareVersion(programVersion common.ProgramVersion,
  * @param proposal 包括文本提案和版本提案
  * @return
  */
-func (pc *ProposalContract) SubmitProposal(proposal *resp.Proposal) (common.TransactionHash, error) {
-	f := common.NewFunction(proposal.GetSubmitFunctionType(), proposal.GetSubmitInputParameters())
+func (pc *ProposalContract) SubmitProposal(proposal *resp.Proposal) (typedefs.TransactionHash, error) {
+	f := typedefs.NewFunction(proposal.GetSubmitFunctionType(), proposal.GetSubmitInputParameters())
 
-	var receipt common.TransactionHash
+	var receipt typedefs.TransactionHash
 	err := pc.executor.SendWithResult(f, &receipt)
 	return receipt, err
 }
@@ -125,7 +125,7 @@ func (pc *ProposalContract) SubmitProposal(proposal *resp.Proposal) (common.Tran
  * @return
  */
 func (pc *ProposalContract) GetActiveVersion() (uint64, error) {
-	f := common.NewFunction(common.GET_ACTIVE_VERSION, nil)
+	f := typedefs.NewFunction(typedefs.GET_ACTIVE_VERSION, nil)
 
 	var ver uint64
 	err := pc.executor.CallWithResult(f, &ver)
@@ -141,7 +141,7 @@ func (pc *ProposalContract) GetActiveVersion() (uint64, error) {
  */
 func (pc *ProposalContract) GetGovernParamValue(module string, name string) (string, error) {
 	params := []interface{}{codec.Utf8String{ValueInner: module}, codec.Utf8String{ValueInner: name}}
-	f := common.NewFunction(common.GET_GOVERN_PARAM_VALUE, params)
+	f := typedefs.NewFunction(typedefs.GET_GOVERN_PARAM_VALUE, params)
 
 	var value string
 	err := pc.executor.CallWithResult(f, &value)
@@ -157,7 +157,7 @@ func (pc *ProposalContract) GetGovernParamValue(module string, name string) (str
  */
 func (pc *ProposalContract) GetAccuVerifiersCount(proposalId string, blockHash string) (*big.Int, error) {
 	params := []interface{}{codec.HexStringParam{HexStringValue: proposalId}, codec.HexStringParam{HexStringValue: blockHash}}
-	f := common.NewFunction(common.GET_ACCUVERIFIERS_COUNT, params)
+	f := typedefs.NewFunction(typedefs.GET_ACCUVERIFIERS_COUNT, params)
 
 	var value *hexutil.Big
 	err := pc.executor.CallWithResult(f, &value)
@@ -170,7 +170,7 @@ func (pc *ProposalContract) GetAccuVerifiersCount(proposalId string, blockHash s
  */
 func (pc *ProposalContract) GetParamList(module string) ([]resp.GovernParam, error) {
 	params := []interface{}{codec.Utf8String{ValueInner: module}}
-	f := common.NewFunction(common.GET_PARAM_LIST, params)
+	f := typedefs.NewFunction(typedefs.GET_PARAM_LIST, params)
 
 	var value []resp.GovernParam
 	err := pc.executor.CallWithResult(f, &value)

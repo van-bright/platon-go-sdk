@@ -4,15 +4,15 @@ import (
 	common2 "platon-go-sdk/common"
 	"platon-go-sdk/network"
 	"platon-go-sdk/ppos/codec"
-	"platon-go-sdk/ppos/common"
 	"platon-go-sdk/ppos/resp"
+	"platon-go-sdk/ppos/typedefs"
 )
 
 type RewardContract struct {
 	executor *FunctionExecutor
 }
 
-func NewRewardContract(pposConfig *network.PposNetworkParameters, credentials *common.Credentials) *RewardContract {
+func NewRewardContract(pposConfig *network.PposNetworkParameters, credentials *typedefs.Credentials) *RewardContract {
 	executor := &FunctionExecutor{
 		httpEntry:    pposConfig.Url,
 		chainId:      pposConfig.ChainId,
@@ -27,10 +27,10 @@ func NewRewardContract(pposConfig *network.PposNetworkParameters, credentials *c
  *
  * @return
  */
-func (rc *RewardContract) WithdrawDelegateReward() (common.TransactionHash, error) {
-	f := common.NewFunction(common.WITHDRAW_DELEGATE_REWARD_FUNC_TYPE, nil)
+func (rc *RewardContract) WithdrawDelegateReward() (typedefs.TransactionHash, error) {
+	f := typedefs.NewFunction(typedefs.WITHDRAW_DELEGATE_REWARD_FUNC_TYPE, nil)
 
-	var receipt common.TransactionHash
+	var receipt typedefs.TransactionHash
 	err := rc.executor.SendWithResult(f, &receipt)
 	return receipt, err
 }
@@ -49,7 +49,7 @@ func (rc *RewardContract) GetDelegateReward(address common2.Address, nodeIdList 
 	}
 
 	params := []interface{}{address, nodeIds}
-	f := common.NewFunction(common.GET_DELEGATE_REWARD_FUNC_TYPE, params)
+	f := typedefs.NewFunction(typedefs.GET_DELEGATE_REWARD_FUNC_TYPE, params)
 
 	var rewards []resp.Reward
 	err := rc.executor.CallWithResult(f, &rewards)

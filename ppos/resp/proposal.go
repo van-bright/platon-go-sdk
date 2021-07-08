@@ -3,7 +3,7 @@ package resp
 import (
 	"math/big"
 	"platon-go-sdk/ppos/codec"
-	"platon-go-sdk/ppos/common"
+	"platon-go-sdk/ppos/typedefs"
 )
 
 type Proposal struct {
@@ -67,7 +67,7 @@ func CreateTextProposal(verifier string, piPid string) *Proposal {
 	return &Proposal{
 		ProposalId:     "",
 		Proposer:       "",
-		ProposalType:   common.TEXT_PROPOSAL,
+		ProposalType:   typedefs.TEXT_PROPOSAL,
 		PiPid:          piPid,
 		SubmitBlock:    nil,
 		EndVotingBlock: nil,
@@ -85,7 +85,7 @@ func CreateVersionProposal(verifier string, pIDID string, newVersion *big.Int, e
 	return &Proposal{
 		ProposalId:     "",
 		Proposer:       "",
-		ProposalType:   common.VERSION_PROPOSAL,
+		ProposalType:   typedefs.VERSION_PROPOSAL,
 		PiPid:          pIDID,
 		SubmitBlock:    nil,
 		EndVotingBlock: endVotingRounds,
@@ -103,7 +103,7 @@ func CreateCancelProposal(verifier string, pIDID string, endVotingRounds *big.In
 	return &Proposal{
 		ProposalId:     "",
 		Proposer:       "",
-		ProposalType:   common.CANCEL_PROPOSAL,
+		ProposalType:   typedefs.CANCEL_PROPOSAL,
 		PiPid:          pIDID,
 		SubmitBlock:    nil,
 		EndVotingBlock: endVotingRounds,
@@ -121,7 +121,7 @@ func CreateParamProposal(verifier string, pIDID string, module string, name stri
 	return &Proposal{
 		ProposalId:     "",
 		Proposer:       "",
-		ProposalType:   common.PARAM_PROPOSAL,
+		ProposalType:   typedefs.PARAM_PROPOSAL,
 		PiPid:          pIDID,
 		SubmitBlock:    nil,
 		EndVotingBlock: nil,
@@ -135,41 +135,41 @@ func CreateParamProposal(verifier string, pIDID string, module string, name stri
 	}
 }
 
-func (p *Proposal) GetSubmitFunctionType() common.FunctionType {
+func (p *Proposal) GetSubmitFunctionType() typedefs.FunctionType {
 	switch p.ProposalType {
-	case common.TEXT_PROPOSAL:
-		return common.SUBMIT_TEXT_FUNC_TYPE
-	case common.VERSION_PROPOSAL:
-		return common.SUBMIT_VERSION_FUNC_TYPE
-	case common.CANCEL_PROPOSAL:
-		return common.SUBMIT_CANCEL_FUNC_TYPE
+	case typedefs.TEXT_PROPOSAL:
+		return typedefs.SUBMIT_TEXT_FUNC_TYPE
+	case typedefs.VERSION_PROPOSAL:
+		return typedefs.SUBMIT_VERSION_FUNC_TYPE
+	case typedefs.CANCEL_PROPOSAL:
+		return typedefs.SUBMIT_CANCEL_FUNC_TYPE
 	default:
-		return common.SUBMIT_PARAM_FUNCTION_TYPE
+		return typedefs.SUBMIT_PARAM_FUNCTION_TYPE
 	}
 }
 
 func (p *Proposal) GetSubmitInputParameters() []interface{} {
 	switch p.ProposalType {
-	case common.TEXT_PROPOSAL:
+	case typedefs.TEXT_PROPOSAL:
 		return []interface{}{
 			codec.HexStringParam{HexStringValue: p.Verifier},
 			codec.Utf8String{ValueInner: p.PiPid},
 		}
-	case common.VERSION_PROPOSAL:
+	case typedefs.VERSION_PROPOSAL:
 		return []interface{}{
 			codec.HexStringParam{HexStringValue: p.Verifier},
 			codec.Utf8String{ValueInner: p.PiPid},
 			codec.UInt32{ValueInner: p.NewVersion},
 			codec.UInt64{ValueInner: p.EndVotingBlock},
 		}
-	case common.CANCEL_PROPOSAL:
+	case typedefs.CANCEL_PROPOSAL:
 		return []interface{}{
 			codec.HexStringParam{HexStringValue: p.Verifier},
 			codec.Utf8String{ValueInner: p.PiPid},
 			codec.UInt64{ValueInner: p.EndVotingBlock},
 			codec.HexStringParam{HexStringValue: p.ToBeCanceled},
 		}
-	default: // common.PARAM_PROPOSAL:
+	default: // typedefs.PARAM_PROPOSAL:
 		return []interface{}{
 			codec.HexStringParam{HexStringValue: p.Verifier},
 			codec.Utf8String{ValueInner: p.PiPid},

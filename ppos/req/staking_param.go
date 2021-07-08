@@ -4,7 +4,7 @@ import (
 	"math/big"
 	common2 "platon-go-sdk/common"
 	"platon-go-sdk/ppos/codec"
-	"platon-go-sdk/ppos/common"
+	"platon-go-sdk/ppos/typedefs"
 )
 
 type StakingParam struct {
@@ -20,7 +20,7 @@ type StakingParam struct {
 	/**
 	 * 表示使用账户自由金额还是账户的锁仓金额做质押，0: 自由金额； 1: 锁仓金额
 	 */
-	StakingAmountType common.StakingAmountType
+	StakingAmountType typedefs.StakingAmountType
 	/**
 	 * 20bytes 用于接受出块奖励和质押奖励的收益账户
 	 */
@@ -44,7 +44,7 @@ type StakingParam struct {
 	/**
 	 * 程序的真实版本，治理rpc获取
 	 */
-	ProcessVersion common.ProgramVersion
+	ProcessVersion typedefs.ProgramVersion
 	/**
 	 * bls的公钥
 	 */

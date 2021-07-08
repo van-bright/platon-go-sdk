@@ -4,15 +4,15 @@ import (
 	common2 "platon-go-sdk/common"
 	"platon-go-sdk/network"
 	"platon-go-sdk/ppos/codec"
-	"platon-go-sdk/ppos/common"
 	"platon-go-sdk/ppos/resp"
+	"platon-go-sdk/ppos/typedefs"
 )
 
 type RestrictingPlanContract struct {
 	executor *FunctionExecutor
 }
 
-func NewRestrictingPlanContract(pposConfig *network.PposNetworkParameters, credentials *common.Credentials) *RestrictingPlanContract {
+func NewRestrictingPlanContract(pposConfig *network.PposNetworkParameters, credentials *typedefs.Credentials) *RestrictingPlanContract {
 	executor := &FunctionExecutor{
 		httpEntry:    pposConfig.Url,
 		chainId:      pposConfig.ChainId,
@@ -31,16 +31,16 @@ func NewRestrictingPlanContract(pposConfig *network.PposNetworkParameters, crede
  *                            另外，period * 每周期的区块数至少要大于最高不可逆区块高度。Amount：表示目标区块上待释放的金额。
  * @return
  */
-func (rc *RestrictingPlanContract) CreateRestrictingPlan(account common2.Address, restrictingPlanList []resp.RestrictingPlan) (common.TransactionHash, error) {
+func (rc *RestrictingPlanContract) CreateRestrictingPlan(account common2.Address, restrictingPlanList []resp.RestrictingPlan) (typedefs.TransactionHash, error) {
 	list := codec.RlpList{}
 	for _, p := range restrictingPlanList {
 		list.Append(p.GetRlpEncodeData())
 	}
 
 	params := []interface{}{account, list}
-	f := common.NewFunction(common.CREATE_RESTRICTINGPLAN_FUNC_TYPE, params)
+	f := typedefs.NewFunction(typedefs.CREATE_RESTRICTINGPLAN_FUNC_TYPE, params)
 
-	var receipt common.TransactionHash
+	var receipt typedefs.TransactionHash
 	err := rc.executor.SendWithResult(f, &receipt)
 	return receipt, err
 }
@@ -52,7 +52,7 @@ func (rc *RestrictingPlanContract) CreateRestrictingPlan(account common2.Address
  * @return
  */
 func (rc *RestrictingPlanContract) GetRestrictingInfo(account common2.Address) (resp.RestrictingItem, error) {
-	f := common.NewFunction(common.GET_RESTRICTINGINFO_FUNC_TYPE, []interface{}{account})
+	f := typedefs.NewFunction(typedefs.GET_RESTRICTINGINFO_FUNC_TYPE, []interface{}{account})
 	var item resp.RestrictingItem
 	err := rc.executor.CallWithResult(f, &item)
 	return item, err
