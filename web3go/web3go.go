@@ -30,7 +30,7 @@ type Geb3 interface {
 	// To retrieve gas price currently
 	GasPrice() (*big.Int, error)
 	// To estimate gas limit of a CallMsg
-	EstimateGasLimit(msg platon.CallMsg) (uint64, error)
+	EstimateGasLimit(msg platon.CallMsg2) (uint64, error)
 	// Returns a list of addresses owned by client.
 	Accounts() ([]string, error)
 	// Returns the number of most recent block.

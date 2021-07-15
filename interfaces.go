@@ -104,6 +104,15 @@ type CallMsg struct {
 	Data     []byte          // input data, usually an ABI-encoded contract method invocation
 }
 
+type CallMsg2 struct {
+	From     string   // the sender of the 'transaction'
+	To       string   // the destination contract (nil for contract creation)
+	Gas      uint64   // if 0, the call executes with near-infinite gas
+	GasPrice *big.Int // wei <-> gas exchange ratio
+	Value    *big.Int // amount of wei sent along with the call
+	Data     []byte   // input data, usually an ABI-encoded contract method invocation
+}
+
 // A ContractCaller provides contract calls, essentially transactions that are executed by
 // the EVM but not mined into the blockchain. ContractCall is a low-level method to
 // execute such calls. For applications which are structured around specific contracts,

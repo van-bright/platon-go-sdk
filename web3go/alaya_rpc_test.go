@@ -286,10 +286,9 @@ func TestWeb3g_EstimateGas(t *testing.T) {
 
 	var execFunc ExecFunc = func(geb3 Geb3) {
 		gas := uint64(1000)
-		to := common.MustBech32ToAddress("atp2")
-		var req = platon_go_sdk.CallMsg{
-			From:     common.MustBech32ToAddress("atp1"),
-			To:       &to,
+		var req = platon_go_sdk.CallMsg2{
+			From:     "atp1",
+			To:       "atp2",
 			Gas:      gas,
 			GasPrice: big.NewInt(1000000000),
 			Value:    big.NewInt(9527),

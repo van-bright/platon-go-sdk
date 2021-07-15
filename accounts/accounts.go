@@ -21,9 +21,10 @@ import (
 	"fmt"
 	"golang.org/x/crypto/sha3"
 	"math/big"
+	platongosdk "platon-go-sdk"
 	"platon-go-sdk/common/bech32util"
+	"platon-go-sdk/network"
 
-	ethereum "platon-go-sdk"
 	"platon-go-sdk/common"
 	"platon-go-sdk/core/types"
 	"platon-go-sdk/event"
@@ -39,13 +40,13 @@ type Account struct {
 func (a Account) ToMainNetAddress() (string, error) {
 	publicKeyBytes := a.Address.Bytes()
 
-	return bech32util.ConvertAndEncode(common.MainNetHrp, publicKeyBytes)
+	return bech32util.ConvertAndEncode(network.MainNetHrp, publicKeyBytes)
 }
 
 func (a Account) ToTestNetAddress() (string, error) {
 	publicKeyBytes := a.Address.Bytes()
 
-	return bech32util.ConvertAndEncode(common.TestNetHrp, publicKeyBytes)
+	return bech32util.ConvertAndEncode(network.TestNetHrp, publicKeyBytes)
 }
 
 const (
@@ -111,7 +112,7 @@ type Wallet interface {
 	//
 	// You can disable automatic account discovery by calling SelfDerive with a nil
 	// chain state reader.
-	SelfDerive(bases []DerivationPath, chain ethereum.ChainStateReader)
+	SelfDerive(bases []DerivationPath, chain platongosdk.ChainStateReader)
 
 	// SignData requests the wallet to sign the hash of the given data
 	// It looks up the account specified either solely via its address contained within,

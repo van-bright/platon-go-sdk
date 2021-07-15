@@ -68,12 +68,7 @@ func (alaya *AlayaRPC) Sha3(str string) (common.Hash, error) {
 
 // to get platon protocol version by platon_protocolVersion
 func (alaya *AlayaRPC) ProtocolVersion() (uint64, error) {
-	strver, err := alaya.client.ProtocolVersion(ctx)
-	if err != nil {
-		return 0, err
-	}
-
-	return hexutil.DecodeUint64(strver)
+	return alaya.client.ProtocolVersion(ctx)
 }
 
 // to get syncing status of network by platon_syncing
@@ -90,7 +85,7 @@ func (alaya *AlayaRPC) GasPrice() (*big.Int, error) {
 }
 
 // to estimate gas count by platon_estimateGas
-func (alaya *AlayaRPC) EstimateGasLimit(msg platon.CallMsg) (uint64, error) {
+func (alaya *AlayaRPC) EstimateGasLimit(msg platon.CallMsg2) (uint64, error) {
 	return alaya.client.EstimateGas(ctx, msg)
 }
 
@@ -101,11 +96,7 @@ func (alaya *AlayaRPC) Accounts() ([]string, error) {
 
 // to get the latest block number by platon_blockNumber
 func (alaya *AlayaRPC) BlockNumber() (uint64, error) {
-	snum, err := alaya.client.BlockNumber(ctx)
-	if err != nil {
-		return 0, err
-	}
-	return hexutil.DecodeUint64(snum)
+	return alaya.client.BlockNumber(ctx)
 }
 
 // to get the balance of account by platon_getBalance
@@ -150,7 +141,7 @@ func (alaya *AlayaRPC) CodeAt(account string, option interface{}) ([]byte, error
 		return nil, err
 	}
 
-	code, err := alaya.client.CodeAt(ctx, common.MustBech32ToAddress(account), blockNumber)
+	code, err := alaya.client.CodeAt(ctx, account, blockNumber)
 	if err != nil {
 		return nil, err
 	}

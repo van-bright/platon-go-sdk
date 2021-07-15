@@ -317,7 +317,7 @@ func (ec *Client) StorageAt(ctx context.Context, account common.Address, key com
 
 // CodeAt returns the contract code of the given account.
 // The block number can be nil, in which case the code is taken from the latest known block.
-func (ec *Client) CodeAt(ctx context.Context, account common.Address, option interface{}) ([]byte, error) {
+func (ec *Client) CodeAt(ctx context.Context, account string, option interface{}) ([]byte, error) {
 	var result hexutil.Bytes
 	err := ec.c.CallContext(ctx, &result, "platon_getCode", account, option)
 	return result, err
@@ -444,9 +444,9 @@ func (ec *Client) SuggestGasPrice(ctx context.Context) (*big.Int, error) {
 // the current pending state of the backend blockchain. There is no guarantee that this is
 // the true gas limit requirement as other transactions may be added or removed by miners,
 // but it should provide a basis for setting a reasonable default.
-func (ec *Client) EstimateGas(ctx context.Context, msg platon.CallMsg) (uint64, error) {
+func (ec *Client) EstimateGas(ctx context.Context, msg platon.CallMsg2) (uint64, error) {
 	var hex hexutil.Uint64
-	err := ec.c.CallContext(ctx, &hex, "platon_estimateGas", toCallArg(msg))
+	err := ec.c.CallContext(ctx, &hex, "platon_estimateGas", toCallArg2(msg))
 	if err != nil {
 		return 0, err
 	}
@@ -522,19 +522,19 @@ func (ec *Client) NetListening(ctx context.Context) (bool, error) {
 }
 
 func (ec *Client) NetPeerCount(ctx context.Context) (uint64, error) {
-	var count uint64
+	var count hexutil.Uint64
 	if err := ec.c.CallContext(ctx, &count, "net_peerCount"); err != nil {
 		return 0, err
 	}
-	return count, nil
+	return uint64(count), nil
 }
 
-func (ec *Client) ProtocolVersion(ctx context.Context) (string, error) {
-	var ver string
+func (ec *Client) ProtocolVersion(ctx context.Context) (uint64, error) {
+	var ver hexutil.Uint64
 	if err := ec.c.CallContext(ctx, &ver, "platon_protocolVersion"); err != nil {
-		return "", err
+		return 0, err
 	}
-	return ver, nil
+	return uint64(ver), nil
 }
 
 func (ec *Client) Accounts(ctx context.Context) ([]string, error) {
@@ -545,12 +545,12 @@ func (ec *Client) Accounts(ctx context.Context) ([]string, error) {
 	return accounts, nil
 }
 
-func (ec *Client) BlockNumber(ctx context.Context) (string, error) {
-	var num string
+func (ec *Client) BlockNumber(ctx context.Context) (uint64, error) {
+	var num hexutil.Uint64
 	if err := ec.c.CallContext(ctx, &num, "platon_blockNumber"); err != nil {
-		return "", err
+		return 0, err
 	}
-	return num, nil
+	return uint64(num), nil
 }
 
 // TransactionByBlockHashAndIndex returns a single transaction at index in the given block.
@@ -679,6 +679,26 @@ func (ec *Client) GetFilterLogs(ctx context.Context, filterId *big.Int) ([]types
 }
 
 func toCallArg(msg platon.CallMsg) interface{} {
+	arg := map[string]interface{}{
+		"from": msg.From,
+		"to":   msg.To,
+	}
+	if len(msg.Data) > 0 {
+		arg["data"] = hexutil.Bytes(msg.Data)
+	}
+	if msg.Value != nil {
+		arg["value"] = (*hexutil.Big)(msg.Value)
+	}
+	if msg.Gas != 0 {
+		arg["gas"] = hexutil.Uint64(msg.Gas)
+	}
+	if msg.GasPrice != nil {
+		arg["gasPrice"] = (*hexutil.Big)(msg.GasPrice)
+	}
+	return arg
+}
+
+func toCallArg2(msg platon.CallMsg2) interface{} {
 	arg := map[string]interface{}{
 		"from": msg.From,
 		"to":   msg.To,
