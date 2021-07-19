@@ -51,7 +51,7 @@ func (h Header) MarshalJSON() ([]byte, error) {
 func (h *Header) UnmarshalJSON(input []byte) error {
 	type Header struct {
 		ParentHash  *common.Hash    `json:"parentHash"       gencodec:"required"`
-		Coinbase    *common.Address `json:"miner"            gencodec:"required"`
+		Coinbase    string          `json:"miner"            gencodec:"required"`
 		Root        *common.Hash    `json:"stateRoot"        gencodec:"required"`
 		TxHash      *common.Hash    `json:"transactionsRoot" gencodec:"required"`
 		ReceiptHash *common.Hash    `json:"receiptsRoot"     gencodec:"required"`
@@ -71,10 +71,10 @@ func (h *Header) UnmarshalJSON(input []byte) error {
 		return errors.New("missing required field 'parentHash' for Header")
 	}
 	h.ParentHash = *dec.ParentHash
-	if dec.Coinbase == nil {
+	if len(dec.Coinbase) == 0 {
 		return errors.New("missing required field 'miner' for Header")
 	}
-	h.Coinbase = *dec.Coinbase
+	h.Coinbase = common.MustBech32ToAddress(dec.Coinbase)
 	if dec.Root == nil {
 		return errors.New("missing required field 'stateRoot' for Header")
 	}

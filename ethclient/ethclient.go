@@ -67,7 +67,7 @@ func (ec *Client) Close() {
 //
 // Note that loading full blocks requires two requests. Use HeaderByHash
 // if you don't need all transactions.
-func (ec *Client) BlockByHash(ctx context.Context, hash common.Hash) (*types.Block, error) {
+func (ec *Client) BlockByHash(ctx context.Context, hash string) (string, error) {
 	return ec.getBlock(ctx, "platon_getBlockByHash", hash, true)
 }
 
@@ -76,7 +76,7 @@ func (ec *Client) BlockByHash(ctx context.Context, hash common.Hash) (*types.Blo
 //
 // Note that loading full blocks requires two requests. Use HeaderByNumber
 // if you don't need all transactions.
-func (ec *Client) BlockByNumber(ctx context.Context, option interface{}) (*types.Block, error) {
+func (ec *Client) BlockByNumber(ctx context.Context, option interface{}) (string, error) {
 	return ec.getBlock(ctx, "platon_getBlockByNumber", option, true)
 }
 
@@ -85,39 +85,41 @@ type rpcBlock struct {
 	Transactions []rpcTransaction `json:"transactions"`
 }
 
-func (ec *Client) getBlock(ctx context.Context, method string, args ...interface{}) (*types.Block, error) {
+func (ec *Client) getBlock(ctx context.Context, method string, args ...interface{}) (string, error) {
 	var raw json.RawMessage
 	err := ec.c.CallContext(ctx, &raw, method, args...)
 	if err != nil {
-		return nil, err
+		return "", err
 	} else if len(raw) == 0 {
-		return nil, platon.NotFound
+		return "", platon.NotFound
 	}
+
+	return string(raw), nil
 	// Decode header and transactions.
-	var head *types.Header
-	var body rpcBlock
-	if err := json.Unmarshal(raw, &head); err != nil {
-		return nil, err
-	}
-	if err := json.Unmarshal(raw, &body); err != nil {
-		return nil, err
-	}
-	// Quick-verify transaction. This mostly helps with debugging the server.
-	if head.TxHash == types.EmptyRootHash && len(body.Transactions) > 0 {
-		return nil, fmt.Errorf("server returned non-empty transaction list but block header indicates no transactions")
-	}
-	if head.TxHash != types.EmptyRootHash && len(body.Transactions) == 0 {
-		return nil, fmt.Errorf("server returned empty transaction list but block header indicates transactions")
-	}
+	//var head *types.Header
+	//var body rpcBlock
+	//if err := json.Unmarshal(raw, &head); err != nil {
+	//	return nil, err
+	//}
+	//if err := json.Unmarshal(raw, &body); err != nil {
+	//	return nil, err
+	//}
+	//// Quick-verify transaction. This mostly helps with debugging the server.
+	//if head.TxHash == types.EmptyRootHash && len(body.Transactions) > 0 {
+	//	return nil, fmt.Errorf("server returned non-empty transaction list but block header indicates no transactions")
+	//}
+	//if head.TxHash != types.EmptyRootHash && len(body.Transactions) == 0 {
+	//	return nil, fmt.Errorf("server returned empty transaction list but block header indicates transactions")
+	//}
 	// Fill the sender cache of transactions in the block.
-	txs := make([]*types.Transaction, len(body.Transactions))
-	for i, tx := range body.Transactions {
-		if tx.From != nil {
-			setSenderFromServer(tx.tx, *tx.From, body.Hash)
-		}
-		txs[i] = tx.tx
-	}
-	return types.NewBlockWithHeader(head).WithBody(txs, nil), nil
+	//txs := make([]*types.Transaction, len(body.Transactions))
+	//for i, tx := range body.Transactions {
+	//	if tx.From != nil {
+	//		setSenderFromServer(tx.tx, *tx.From, body.Hash)
+	//	}
+	//	txs[i] = tx.tx
+	//}
+	//return types.NewBlockWithHeader(head).WithBody(txs, nil), nil
 }
 
 // HeaderByHash returns the block header with the given hash.

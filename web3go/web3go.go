@@ -48,9 +48,9 @@ type Geb3 interface {
 	// Return count of transaction by block number, or one of 'latest', 'pending', 'earliest'
 	TransactionCountByNumber(option interface{}) (uint, error)
 	// Return block info by block hash
-	BlockByHash(hash common.Hash) (*types.Block, error)
+	BlockByHash(hash string) (string, error)
 	// Return block info by block number, or one of 'latest', 'pending', 'earliest'
-	BlockByNumber(option interface{}) (*types.Block, error)
+	BlockByNumber(option interface{}) (string, error)
 	// Returns the information about a transaction requested by transaction hash.
 	TransactionByHash(hash common.Hash) (tx *types.Transaction, isPending bool, err error)
 	// Returns information about a transaction by block hash and transaction index position.

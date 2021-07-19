@@ -350,14 +350,14 @@ func TestWeb3g_PlatonGetBalance(t *testing.T) {
 }
 
 func TestWeb3g_PlatonGetBlockByHash(t *testing.T) {
-	expect := types.Block{}
+	expect := ""
 
 	var respFunc = GenRespFunction(expect)
 
 	var execFunc ExecFunc = func(geb3 Geb3) {
-		resp, _ := geb3.BlockByHash(common.HexToHash("0x000000000001"))
+		resp, _ := geb3.BlockByHash("0x000000000001")
 
-		if resp.Hash() != expect.Hash() {
+		if resp != expect {
 			t.Errorf("BlockByHash failed.")
 		}
 	}
@@ -366,14 +366,14 @@ func TestWeb3g_PlatonGetBlockByHash(t *testing.T) {
 }
 
 func TestWeb3g_PlatonGetBlockByNumber(t *testing.T) {
-	expect := types.Block{}
+	expect := ""
 
 	var respFunc = GenRespFunction(expect)
 
 	var execFunc ExecFunc = func(geb3 Geb3) {
 		resp, _ := geb3.BlockByNumber("latest")
 
-		if resp.Hash() != expect.Hash() {
+		if resp != expect {
 			t.Errorf("BlockByNumber failed.")
 		}
 	}

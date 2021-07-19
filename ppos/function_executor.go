@@ -9,6 +9,7 @@ import (
 	common2 "platon-go-sdk/common"
 	"platon-go-sdk/core/types"
 	"platon-go-sdk/ethclient"
+	"platon-go-sdk/network"
 	"platon-go-sdk/ppos/typedefs"
 )
 
@@ -96,9 +97,9 @@ func (fe *FunctionExecutor) doSendRawTx(chainId *big.Int, to common2.Address, da
 	}
 
 	if gasLimit == 0 {
-		msg := platongosdk.CallMsg{
-			From:     fe.credentials.Address(),
-			To:       &to,
+		msg := platongosdk.CallMsg2{
+			From:     fromAddr,
+			To:       to.Bech32WithPrefix(network.MainNetHrp),
 			Gas:      0,
 			GasPrice: gasPrice,
 			Value:    value,

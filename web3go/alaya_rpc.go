@@ -190,16 +190,16 @@ func (alaya *AlayaRPC) TransactionCountByNumber(option interface{}) (uint, error
 
 // to get block info by block hash  by platon_getBlockByHash
 // @param hash  block hash
-func (alaya *AlayaRPC) BlockByHash(hash common.Hash) (*types.Block, error) {
+func (alaya *AlayaRPC) BlockByHash(hash string) (string, error) {
 	return alaya.client.BlockByHash(ctx, hash)
 }
 
 // to get block info by block number  by platon_getBlockByNumber
 // @param option     the block number as bignumber, or 'latest', 'pending', 'earliest'.
-func (alaya *AlayaRPC) BlockByNumber(option interface{}) (*types.Block, error) {
+func (alaya *AlayaRPC) BlockByNumber(option interface{}) (string, error) {
 	blockNumber, err := checkBlockNumber(option)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	return alaya.client.BlockByNumber(ctx, blockNumber)
 }

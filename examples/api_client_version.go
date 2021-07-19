@@ -2,25 +2,71 @@ package main
 
 import (
 	"fmt"
-	platongosdk "platon-go-sdk"
+	"platon-go-sdk/common"
+	"platon-go-sdk/core/types"
+	"platon-go-sdk/network"
+	"platon-go-sdk/ppos/typedefs"
 	"platon-go-sdk/web3go"
 )
 
-// const alayaEndpoint = "https://openapi.alaya.network/rpc"
+//const alayaEndpoint = "https://openapi.alaya.network/rpc"
+
 func main() {
 	const alayaEndpoint = "http://172.16.64.132:6789"
 	web3g, err := web3go.New(alayaEndpoint)
 
-	req := platongosdk.CallMsg2{
-		From:     "atp1fgdm0vsevzc8wy2094vmw4dtpdnph25j6l9e8a",
-		To:       "atp1fgdm0vsevzc8wy2094vmw4dtpdnph25j6l9e8a",
-		Gas:      0,
-		GasPrice: nil,
-		Value:    nil,
-		Data:     nil,
-	}
-	gaslimit, err := web3g.EstimateGasLimit(req)
-	fmt.Println(gaslimit, err)
+	const PrivateKey = "ed72066fa30607420635be56785595ccf935675a890bef7c808afc1537f52281"
+	var credentials, _ = typedefs.NewCredential(PrivateKey, network.MainNetHrp)
+	tx := types.NewTransaction(0, common.MustBech32ToAddress("atp1qv5ffg7z3h42zt4e035vja65d86al7q0nr9s0g"), nil, 0, nil, nil)
+	signedTx, _ := credentials.SignTx(tx, network.MainNetChainId)
+	rsp, err := web3g.SendTransaction(signedTx)
+	fmt.Println(rsp, err)
+
+	//from := common.MustBech32ToAddress("atp1r93a6kug4nx637rvpkdyslpkenwq4ws0t0g884")
+	//to := common.MustBech32ToAddress("atp1qv5ffg7z3h42zt4e035vja65d86al7q0nr9s0g")
+	//
+	//msg := platongosdk.CallMsg{
+	//	From:     from,
+	//	To:       &to,
+	//	Gas:      0,
+	//	GasPrice: nil,
+	//	Value:    nil,
+	//	Data:     nil,
+	//}
+	//
+	//rsp, err := web3g.CallContract(msg, "latest")
+	//fmt.Println(rsp, err)
+	//tx := types.NewTransaction(
+	//
+	//	)
+	//reeipt, err := web3g.SendTransaction(tx)
+	//fmt.Println(reeipt, err)
+
+	//p, err := web3g.GetSchnorrNIZKProve()
+	//fmt.Println(p, err)
+
+	//pv, err := web3g.AdminGetProgramVersion()
+	//fmt.Println(pv, err)
+
+	//tx, err := web3g.TransactionByBlockNumberAndIndex("latest", 0)
+	//fmt.Println(tx, err)
+
+	//block, err := web3g.BlockByNumber("latest")
+	//fmt.Println(block, err)
+
+	//block, err := web3g.BlockByHash("0x733a072fd7d074f4116585c7be7c036c86ead3f453265b8c34ba56a99b9f6bcc")
+	//fmt.Println(block, err)
+
+	//req := platongosdk.CallMsg2{
+	//	From:     "atp1fgdm0vsevzc8wy2094vmw4dtpdnph25j6l9e8a",
+	//	To:       "atp1fgdm0vsevzc8wy2094vmw4dtpdnph25j6l9e8a",
+	//	Gas:      0,
+	//	GasPrice: nil,
+	//	Value:    nil,
+	//	Data:     nil,
+	//}
+	//gaslimit, err := web3g.EstimateGasLimit(req)
+	//fmt.Println(gaslimit, err)
 
 	//code, err := web3g.CodeAt("atp1fgdm0vsevzc8wy2094vmw4dtpdnph25j6l9e8a", "latest")
 	//fmt.Println(code, err)

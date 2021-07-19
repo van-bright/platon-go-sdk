@@ -20,6 +20,7 @@ type Config struct {
 var (
 	DefaultTestNetConfig = Config{"http://47.241.91.2:6789", TestNetChainId}
 	DefaultMainNetConfig = Config{"https://openapi.alaya.network/rpc", MainNetChainId}
+	//DefaultMainNetConfig = Config{"http://172.16.64.132:6789", MainNetChainId}
 )
 
 type PposNetworkParameters struct {
