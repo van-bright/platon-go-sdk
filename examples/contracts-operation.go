@@ -11,7 +11,7 @@ import (
 	"github.com/AlayaNetwork/Alaya-Go/common"
 )
 
-const AlayaEndpoint = "http://172.16.64.132:6789"
+const PlatonEndpoint = "http://172.16.64.132:6789"
 const privateKey = "ed72066fa30607420635be56785595ccf935675a890bef7c808afc1537f52281"
 
 func toDeployContract(opts *bind.TransactOpts, client bind.ContractBackend) string {
@@ -67,7 +67,7 @@ func toCallContractMethod(hexContractAddr string, opts *bind.TransactOpts, clien
 
 func main() {
 	contract := contracts.Contract{
-		Url:        AlayaEndpoint,
+		Url:        PlatonEndpoint,
 		PrivateKey: privateKey,
 	}
 

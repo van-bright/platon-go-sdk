@@ -272,11 +272,11 @@ func (ec *Client) SyncProgress(ctx context.Context) (*platon.SyncProgress, error
 		return nil, err
 	}
 	return &platon.SyncProgress{
-		StartingBlock: uint64(progress.StartingBlock),
-		CurrentBlock:  uint64(progress.CurrentBlock),
-		HighestBlock:  uint64(progress.HighestBlock),
-		PulledStates:  uint64(progress.PulledStates),
-		KnownStates:   uint64(progress.KnownStates),
+		StartingBlock: progress.StartingBlock,
+		CurrentBlock:  progress.CurrentBlock,
+		HighestBlock:  progress.HighestBlock,
+		PulledStates:  progress.PulledStates,
+		KnownStates:   progress.KnownStates,
 	}, nil
 }
 

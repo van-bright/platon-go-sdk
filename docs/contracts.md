@@ -43,7 +43,7 @@ contract Store {
 在操作合约之前, 我们需要先获得一个`Contract`对象:
 ```go
 contract := contracts.Contract{
-    Url:        AlayaEndpoint,
+    Url:        PlatonEndpoint,
     PrivateKey: privateKey,
 }
 

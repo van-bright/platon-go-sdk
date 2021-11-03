@@ -13,7 +13,7 @@ import (
 	"platon-go-sdk/params"
 )
 
-type AlayaRPC struct {
+type PlatonRPC struct {
 	client *ethclient.Client
 }
 
@@ -41,74 +41,74 @@ func checkBlockNumber(pos interface{}) (interface{}, error) {
 }
 
 // to get net version by net_version
-func (alaya *AlayaRPC) NetworkID() (*big.Int, error) {
-	return alaya.client.NetworkID(ctx)
+func (platon *PlatonRPC) NetworkID() (*big.Int, error) {
+	return platon.client.NetworkID(ctx)
 }
 
 // to check if network is working by net_listening
-func (alaya *AlayaRPC) NetListening() (bool, error) {
-	return alaya.client.NetListening(ctx)
+func (platon *PlatonRPC) NetListening() (bool, error) {
+	return platon.client.NetListening(ctx)
 }
 
 // to get peer count by net_peerCount
-func (alaya *AlayaRPC) NetPeerCount() (uint64, error) {
-	return alaya.client.NetPeerCount(ctx)
+func (platon *PlatonRPC) NetPeerCount() (uint64, error) {
+	return platon.client.NetPeerCount(ctx)
 }
 
 // to get client version by web3_clientVersion
-func (alaya *AlayaRPC) ClientVersion() (string, error) {
-	return alaya.client.ClientVersion(ctx)
+func (platon *PlatonRPC) ClientVersion() (string, error) {
+	return platon.client.ClientVersion(ctx)
 }
 
 // to get hash of input string by web3_sha3
-func (alaya *AlayaRPC) Sha3(str string) (common.Hash, error) {
+func (platon *PlatonRPC) Sha3(str string) (common.Hash, error) {
 	hexWith0x := hexutil.Encode([]byte(str))
-	return alaya.client.Sha3(ctx, hexWith0x)
+	return platon.client.Sha3(ctx, hexWith0x)
 }
 
 // to get platon protocol version by platon_protocolVersion
-func (alaya *AlayaRPC) ProtocolVersion() (uint64, error) {
-	return alaya.client.ProtocolVersion(ctx)
+func (platon *PlatonRPC) ProtocolVersion() (uint64, error) {
+	return platon.client.ProtocolVersion(ctx)
 }
 
 // to get syncing status of network by platon_syncing
 // if returns (nil, nil) means is not syncing.
 // if returns (*pointer, nil) means is syncing.
 // if returns (any, error) means error happens.
-func (alaya *AlayaRPC) Syncing() (*platon.SyncProgress, error) {
-	return alaya.client.SyncProgress(ctx)
+func (platon *PlatonRPC) Syncing() (*platon.SyncProgress, error) {
+	return platon.client.SyncProgress(ctx)
 }
 
 // to get the suggest gas price at now by platon_gasPrice
-func (alaya *AlayaRPC) GasPrice() (*big.Int, error) {
-	return alaya.client.SuggestGasPrice(ctx)
+func (platon *PlatonRPC) GasPrice() (*big.Int, error) {
+	return platon.client.SuggestGasPrice(ctx)
 }
 
 // to estimate gas count by platon_estimateGas
-func (alaya *AlayaRPC) EstimateGasLimit(msg platon.CallMsg2) (uint64, error) {
-	return alaya.client.EstimateGas(ctx, msg)
+func (platon *PlatonRPC) EstimateGasLimit(msg platon.CallMsg2) (uint64, error) {
+	return platon.client.EstimateGas(ctx, msg)
 }
 
 // to get accounts by platon_accounts
-func (alaya *AlayaRPC) Accounts() ([]string, error) {
-	return alaya.client.Accounts(ctx)
+func (platon *PlatonRPC) Accounts() ([]string, error) {
+	return platon.client.Accounts(ctx)
 }
 
 // to get the latest block number by platon_blockNumber
-func (alaya *AlayaRPC) BlockNumber() (uint64, error) {
-	return alaya.client.BlockNumber(ctx)
+func (platon *PlatonRPC) BlockNumber() (uint64, error) {
+	return platon.client.BlockNumber(ctx)
 }
 
 // to get the balance of account by platon_getBalance
 // @param account an account on platon starts with 'atp' or 'atx'
 // @param option     the block number as bignumber, or 'latest', 'pending', 'earliest'.
-func (alaya *AlayaRPC) BalanceAt(account string, option interface{}) (*big.Int, error) {
+func (platon *PlatonRPC) BalanceAt(account string, option interface{}) (*big.Int, error) {
 	blockNumber, err := checkBlockNumber(option)
 	if err != nil {
 		return nil, err
 	}
 
-	balance, err := alaya.client.BalanceAt(ctx, account, blockNumber)
+	balance, err := platon.client.BalanceAt(ctx, account, blockNumber)
 	if err != nil {
 		return nil, err
 	}
@@ -119,13 +119,13 @@ func (alaya *AlayaRPC) BalanceAt(account string, option interface{}) (*big.Int, 
 // @param account an account on platon starts with 'atp' or 'atx'
 // @param key     which value of this key will be returned
 // @param option     the block number as bignumber, or 'latest', 'pending', 'earliest'.
-func (alaya *AlayaRPC) StorageAt(account string, key common.Hash, option interface{}) ([]byte, error) {
+func (platon *PlatonRPC) StorageAt(account string, key common.Hash, option interface{}) ([]byte, error) {
 	blockNumber, err := checkBlockNumber(option)
 	if err != nil {
 		return nil, err
 	}
 
-	storage, err := alaya.client.StorageAt(ctx, common.MustBech32ToAddress(account), key, blockNumber)
+	storage, err := platon.client.StorageAt(ctx, common.MustBech32ToAddress(account), key, blockNumber)
 	if err != nil {
 		return nil, err
 	}
@@ -135,13 +135,13 @@ func (alaya *AlayaRPC) StorageAt(account string, key common.Hash, option interfa
 // to get the code of account at pos with key by platon_getCode
 // @param account an account on platon starts with 'atp' or 'atx'
 // @param option     the block number as bignumber, or 'latest', 'pending', 'earliest'.
-func (alaya *AlayaRPC) CodeAt(account string, option interface{}) ([]byte, error) {
+func (platon *PlatonRPC) CodeAt(account string, option interface{}) ([]byte, error) {
 	blockNumber, err := checkBlockNumber(option)
 	if err != nil {
 		return nil, err
 	}
 
-	code, err := alaya.client.CodeAt(ctx, account, blockNumber)
+	code, err := platon.client.CodeAt(ctx, account, blockNumber)
 	if err != nil {
 		return nil, err
 	}
@@ -151,13 +151,13 @@ func (alaya *AlayaRPC) CodeAt(account string, option interface{}) ([]byte, error
 // to get nonce of account at pos with key by platon_getTransactionCount
 // @param account an account on platon starts with 'atp' or 'atx'
 // @param option     the block number as bignumber, or 'latest', 'pending', 'earliest'.
-func (alaya *AlayaRPC) NonceAt(account string, option interface{}) (uint64, error) {
+func (platon *PlatonRPC) NonceAt(account string, option interface{}) (uint64, error) {
 	blockNumber, err := checkBlockNumber(option)
 	if err != nil {
 		return 0, err
 	}
 
-	nonce, err := alaya.client.NonceAt(ctx, account, blockNumber)
+	nonce, err := platon.client.NonceAt(ctx, account, blockNumber)
 	if err != nil {
 		return 0, err
 	}
@@ -165,8 +165,8 @@ func (alaya *AlayaRPC) NonceAt(account string, option interface{}) (uint64, erro
 }
 
 // to get transaction count by block hash by platon_getBlockTransactionCountByHash
-func (alaya *AlayaRPC) TransactionCountByHash(blockHash common.Hash) (uint, error) {
-	count, err := alaya.client.TransactionCount(ctx, blockHash)
+func (platon *PlatonRPC) TransactionCountByHash(blockHash common.Hash) (uint, error) {
+	count, err := platon.client.TransactionCount(ctx, blockHash)
 	if err != nil {
 		return 0, err
 	}
@@ -175,13 +175,13 @@ func (alaya *AlayaRPC) TransactionCountByHash(blockHash common.Hash) (uint, erro
 
 // to get transaction count by block number  by platon_getBlockTransactionCountByNumber
 // @param option     the block number as bignumber, or 'latest', 'pending', 'earliest'.
-func (alaya *AlayaRPC) TransactionCountByNumber(option interface{}) (uint, error) {
+func (platon *PlatonRPC) TransactionCountByNumber(option interface{}) (uint, error) {
 	blockNumber, err := checkBlockNumber(option)
 	if err != nil {
 		return 0, err
 	}
 
-	count, err := alaya.client.TransactionCountByNumber(ctx, blockNumber)
+	count, err := platon.client.TransactionCountByNumber(ctx, blockNumber)
 	if err != nil {
 		return 0, err
 	}
@@ -190,154 +190,154 @@ func (alaya *AlayaRPC) TransactionCountByNumber(option interface{}) (uint, error
 
 // to get block info by block hash  by platon_getBlockByHash
 // @param hash  block hash
-func (alaya *AlayaRPC) BlockByHash(hash string) (string, error) {
-	return alaya.client.BlockByHash(ctx, hash)
+func (platon *PlatonRPC) BlockByHash(hash string) (string, error) {
+	return platon.client.BlockByHash(ctx, hash)
 }
 
 // to get block info by block number  by platon_getBlockByNumber
 // @param option     the block number as bignumber, or 'latest', 'pending', 'earliest'.
-func (alaya *AlayaRPC) BlockByNumber(option interface{}) (string, error) {
+func (platon *PlatonRPC) BlockByNumber(option interface{}) (string, error) {
 	blockNumber, err := checkBlockNumber(option)
 	if err != nil {
 		return "", err
 	}
-	return alaya.client.BlockByNumber(ctx, blockNumber)
+	return platon.client.BlockByNumber(ctx, blockNumber)
 }
 
 // to get transaction info by block hash by platon_getTransactionByHash
 // @param hash  the block hash.
-func (alaya *AlayaRPC) TransactionByHash(hash common.Hash) (tx *types.Transaction, isPending bool, err error) {
-	return alaya.client.TransactionByHash(ctx, hash)
+func (platon *PlatonRPC) TransactionByHash(hash common.Hash) (tx *types.Transaction, isPending bool, err error) {
+	return platon.client.TransactionByHash(ctx, hash)
 }
 
 // to get transaction info by block hash and index by platon_getTransactionByBlockHashAndIndex
 // @param hash  the block hash.
 // @param index the specific index
-func (alaya *AlayaRPC) TransactionByBlockHashAndIndex(blockHash common.Hash, index uint) (*types.Transaction, error) {
-	return alaya.client.TransactionByBlockHashAndIndex(ctx, blockHash, index)
+func (platon *PlatonRPC) TransactionByBlockHashAndIndex(blockHash common.Hash, index uint) (*types.Transaction, error) {
+	return platon.client.TransactionByBlockHashAndIndex(ctx, blockHash, index)
 }
 
 // to get transaction info by block number and index by platon_getTransactionByBlockNumberAndIndex
 // @param option  the block number as bignumber, or 'latest', 'pending', 'earliest'.
 // @param index the specific index
-func (alaya *AlayaRPC) TransactionByBlockNumberAndIndex(option interface{}, index uint) (*types.Transaction, error) {
+func (platon *PlatonRPC) TransactionByBlockNumberAndIndex(option interface{}, index uint) (*types.Transaction, error) {
 	blockNumber, err := checkBlockNumber(option)
 	if err != nil {
 		return nil, err
 	}
-	return alaya.client.TransactionByBlockNumberAndIndex(ctx, blockNumber, index)
+	return platon.client.TransactionByBlockNumberAndIndex(ctx, blockNumber, index)
 }
 
 // to get transaction receipt by platon_getTransactionReceipt
 // @param txHash  the transaction hash.
-func (alaya *AlayaRPC) TransactionReceipt(txHash common.Hash) (*types.Receipt, error) {
-	return alaya.client.TransactionReceipt(ctx, txHash)
+func (platon *PlatonRPC) TransactionReceipt(txHash common.Hash) (*types.Receipt, error) {
+	return platon.client.TransactionReceipt(ctx, txHash)
 }
 
 // to get transaction receipt by platon_getLogs
 // @param q  the filter query
-func (alaya *AlayaRPC) FilterLogs(q platon.FilterQuery) ([]types.Log, error) {
-	return alaya.client.GetLogs(ctx, q)
+func (platon *PlatonRPC) FilterLogs(q platon.FilterQuery) ([]types.Log, error) {
+	return platon.client.GetLogs(ctx, q)
 }
 
 // to call a contract by msg at option by platon_call,
 // notice this msg is never mined to block.
 // @param msg  the call message
 // @param option  the block number as bignumber, or 'latest', 'pending', 'earliest'.
-func (alaya *AlayaRPC) CallContract(msg platon.CallMsg, option interface{}) ([]byte, error) {
+func (platon *PlatonRPC) CallContract(msg platon.CallMsg, option interface{}) ([]byte, error) {
 	blockNumber, err := checkBlockNumber(option)
 	if err != nil {
 		return nil, err
 	}
-	return alaya.client.CallContract(ctx, msg, blockNumber)
+	return platon.client.CallContract(ctx, msg, blockNumber)
 }
 
 // to send a transaction by platon_sendRawTransaction
 // notice this msg is never mined to block.
 // @param msg  the call message
 // @param option  the block number as bignumber, or 'latest', 'pending', 'earliest'.
-func (alaya *AlayaRPC) SendRawTransaction(tx *types.Transaction) (json.RawMessage, error) {
-	return alaya.client.SendRawTransaction(ctx, tx)
+func (platon *PlatonRPC) SendRawTransaction(tx *types.Transaction) (json.RawMessage, error) {
+	return platon.client.SendRawTransaction(ctx, tx)
 }
 
-func (alaya *AlayaRPC) SendTransaction(tx *types.Transaction) (json.RawMessage, error) {
-	return alaya.client.SendTransaction(ctx, tx)
+func (platon *PlatonRPC) SendTransaction(tx *types.Transaction) (json.RawMessage, error) {
+	return platon.client.SendTransaction(ctx, tx)
 }
 
 // to get program version by admin_getProgramVersion
-func (alaya *AlayaRPC) AdminGetProgramVersion() (*params.ProgramVersion, error) {
-	return alaya.client.GetProgramVersion(ctx)
+func (platon *PlatonRPC) AdminGetProgramVersion() (*params.ProgramVersion, error) {
+	return platon.client.GetProgramVersion(ctx)
 }
 
 // to get proof of bls by platon_getSchnorrNIZKProve
-func (alaya *AlayaRPC) GetSchnorrNIZKProve() (string, error) {
-	return alaya.client.GetSchnorrNIZKProve(ctx)
+func (platon *PlatonRPC) GetSchnorrNIZKProve() (string, error) {
+	return platon.client.GetSchnorrNIZKProve(ctx)
 }
 
 // to get data dir of admin by admin_dataDir
-func (alaya *AlayaRPC) AdminDataDir() (string, error) {
-	return alaya.client.AdminDataDir(ctx)
+func (platon *PlatonRPC) AdminDataDir() (string, error) {
+	return platon.client.AdminDataDir(ctx)
 }
 
 // to get peers info by admin_peers
-func (alaya *AlayaRPC) AdminPeers() ([]string, error) {
-	return alaya.client.AdminPeers(ctx)
+func (platon *PlatonRPC) AdminPeers() ([]string, error) {
+	return platon.client.AdminPeers(ctx)
 }
 
 // to get node info by admin_nodeInfo
-func (alaya *AlayaRPC) AdminNodeInfo() (string, error) {
-	return alaya.client.AdminNodeInfo(ctx)
+func (platon *PlatonRPC) AdminNodeInfo() (string, error) {
+	return platon.client.AdminNodeInfo(ctx)
 }
 
 // to add a peer by admin_addPeer
-func (alaya *AlayaRPC) AdminAddPeer(peer string) (bool, error) {
-	return alaya.client.AdminAddPeer(ctx, peer)
+func (platon *PlatonRPC) AdminAddPeer(peer string) (bool, error) {
+	return platon.client.AdminAddPeer(ctx, peer)
 }
 
 // to sign a hex string with unlocked wallet signer
-func (alaya *AlayaRPC) Sign(req *platon.SignReq) (string, error) {
-	return alaya.client.Sign(ctx, req)
+func (platon *PlatonRPC) Sign(req *platon.SignReq) (string, error) {
+	return platon.client.Sign(ctx, req)
 }
 
 // Return double sign report data.
-func (alaya *AlayaRPC) Evidences() (string, error) {
-	return alaya.client.Evidences(ctx)
+func (platon *PlatonRPC) Evidences() (string, error) {
+	return platon.client.Evidences(ctx)
 }
 
-func (alaya *AlayaRPC) NewFilter(q platon.FilterQuery) (*big.Int, error) {
-	return alaya.client.NewFilter(ctx, q)
+func (platon *PlatonRPC) NewFilter(q platon.FilterQuery) (*big.Int, error) {
+	return platon.client.NewFilter(ctx, q)
 }
 
 // Add a filter when new block created,
 // use `GetFilterChanges` to check state logs.
-func (alaya *AlayaRPC) NewBlockFilter() (*big.Int, error) {
-	return alaya.client.NewBlockFilter(ctx)
+func (platon *PlatonRPC) NewBlockFilter() (*big.Int, error) {
+	return platon.client.NewBlockFilter(ctx)
 }
 
 // Creates a filter in the node, to notify when new pending transactions arrive.
 // To check if the state has changed, call platon_getFilterChanges.
-func (alaya *AlayaRPC) NewPendingTransactionFilter() (*big.Int, error) {
-	return alaya.client.NewPendingTransactionFilter(ctx)
+func (platon *PlatonRPC) NewPendingTransactionFilter() (*big.Int, error) {
+	return platon.client.NewPendingTransactionFilter(ctx)
 }
 
 // Uninstalls a filter with given id.
 // Should always be called when watch is no longer needed.
 //Additionally Filters timeout when they aren't requested with platon_getFilterChanges for a period of time.
-func (alaya *AlayaRPC) UninstallFilter(filterId *big.Int) bool {
-	return alaya.client.UninstallFilter(ctx, filterId)
+func (platon *PlatonRPC) UninstallFilter(filterId *big.Int) bool {
+	return platon.client.UninstallFilter(ctx, filterId)
 }
 
 // Polling method for a filter, which returns an array of logs which occurred since last poll.
-func (alaya *AlayaRPC) GetFilterChanges(filterId *big.Int) ([]types.Log, error) {
-	return alaya.client.GetFilterChanges(ctx, filterId)
+func (platon *PlatonRPC) GetFilterChanges(filterId *big.Int) ([]types.Log, error) {
+	return platon.client.GetFilterChanges(ctx, filterId)
 }
 
 // Returns an array of all logs matching filter with given id.
-func (alaya *AlayaRPC) GetFilterLogs(filterId *big.Int) ([]types.Log, error) {
-	return alaya.client.GetFilterLogs(ctx, filterId)
+func (platon *PlatonRPC) GetFilterLogs(filterId *big.Int) ([]types.Log, error) {
+	return platon.client.GetFilterLogs(ctx, filterId)
 }
 
 // Returns an array of all logs matching a given filter object.
-func (alaya *AlayaRPC) GetLogs(q platon.FilterQuery) ([]types.Log, error) {
-	return alaya.client.GetLogs(ctx, q)
+func (platon *PlatonRPC) GetLogs(q platon.FilterQuery) ([]types.Log, error) {
+	return platon.client.GetLogs(ctx, q)
 }

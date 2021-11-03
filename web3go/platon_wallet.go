@@ -6,10 +6,7 @@ import (
 	"crypto/ecdsa"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"math/big"
-	"os"
-	"path/filepath"
 	"platon-go-sdk/accounts"
 	"platon-go-sdk/accounts/keystore"
 	"platon-go-sdk/common"
@@ -18,12 +15,10 @@ import (
 	"platon-go-sdk/ethclient"
 	"platon-go-sdk/hdwallet"
 	"platon-go-sdk/network"
-	"strings"
 )
 
-type AlayaWallet struct {
+type PlatonWallet struct {
 	hd         *hdwallet.Wallet
-	ks         *keystore.KeyStore
 	networkCfg *network.Config
 }
 
@@ -39,24 +34,7 @@ type WalletExport struct {
 	Accounts []string `json:"accounts"`
 }
 
-func (w *AlayaWallet) isHdAccount(account accounts.Account) bool {
-	isKeystore := strings.HasPrefix(account.URL.String(), "keystore")
-	return !isKeystore && w.hd.Contains(account)
-}
-
-func (w *AlayaWallet) isKsAccount(account accounts.Account) bool {
-	if w.ks == nil {
-		return false
-	}
-
-	if _, err := w.ks.Find(account); err != nil {
-		return false
-	}
-
-	return true
-}
-
-func (w *AlayaWallet) ToString(account accounts.Account) string {
+func (w *PlatonWallet) ToString(account accounts.Account) string {
 	ma, _ := account.ToMainNetAddress()
 	ta, _ := account.ToTestNetAddress()
 	pk, _ := w.hd.PrivateKeyHex(account)
@@ -67,7 +45,7 @@ func (w *AlayaWallet) ToString(account accounts.Account) string {
 	return string(jsonStr)
 }
 
-func (w *AlayaWallet) ExportHdWallet() string {
+func (w *PlatonWallet) ExportHdWallet() string {
 	result := WalletExport{}
 	result.Mnemonic = w.hd.Mnemonic()
 	result.Seed = hexutil.Encode(w.hd.Seed())
@@ -84,16 +62,12 @@ func (w *AlayaWallet) ExportHdWallet() string {
 	return string(val)
 }
 
-func (w *AlayaWallet) Accounts() []accounts.Account {
+func (w *PlatonWallet) Accounts() []accounts.Account {
 	accounts := w.hd.Accounts()
-	if w.ks != nil {
-		accounts = append(accounts, w.ks.Accounts()...)
-	}
-
 	return accounts
 }
 
-func (w *AlayaWallet) AccountByBech32(bech32addr string) (accounts.Account, error) {
+func (w *PlatonWallet) AccountByBech32(bech32addr string) (accounts.Account, error) {
 	walletAccounts := w.Accounts()
 	findAddr := common.MustBech32ToAddress(bech32addr)
 	for _, a := range walletAccounts {
@@ -106,18 +80,18 @@ func (w *AlayaWallet) AccountByBech32(bech32addr string) (accounts.Account, erro
 }
 
 // MainNetAddress convert to main net address with prefix 'atp'
-func (w *AlayaWallet) MainNetAddress(account accounts.Account) (string, error) {
+func (w *PlatonWallet) MainNetAddress(account accounts.Account) (string, error) {
 	return account.ToMainNetAddress()
 }
 
 // TestNetAddress convert to test net address with prefix 'atx`
-func (w *AlayaWallet) TestNetAddress(account accounts.Account) (string, error) {
+func (w *PlatonWallet) TestNetAddress(account accounts.Account) (string, error) {
 	return account.ToTestNetAddress()
 }
 
 // NewAccount create a new account by hd wallet.
 // `index` means the path index which from 0
-func (w *AlayaWallet) NewAccount(index uint64) (accounts.Account, error) {
+func (w *PlatonWallet) NewAccount(index uint64) (accounts.Account, error) {
 	path := hdwallet.MustParseDerivationPath(fmt.Sprintf("m/44'/60'/0'/0/%d", index))
 	account, err := w.hd.Derive(path, true)
 	if err != nil {
@@ -126,28 +100,13 @@ func (w *AlayaWallet) NewAccount(index uint64) (accounts.Account, error) {
 	return account, nil
 }
 
-// ImportPrivateKey import a private key to keystore file.
-func (w *AlayaWallet) ImportPrivateKey(key *ecdsa.PrivateKey, ksPath string, passphrase string) (accounts.Account, error) {
-	if w.ks == nil {
-		dir := filepath.Dir(ksPath)
-		w.ks = keystore.NewKeyStore(dir, keystore.StandardScryptN, keystore.StandardScryptP)
-	}
-
-	validAccount, err := w.ks.ImportECDSA(key, passphrase)
-	if err != nil {
-		return validAccount, err
-	}
-
-	return validAccount, nil
-}
-
 // SetNetworkCfg set network config for wallet
-func (w *AlayaWallet) SetNetworkCfg(cfg *network.Config) {
+func (w *PlatonWallet) SetNetworkCfg(cfg *network.Config) {
 	w.networkCfg = cfg
 }
 
 // ExportMnemonic export the mnemonic of hd wallet, if there is no mnemonic existed, throw an error
-func (w *AlayaWallet) ExportMnemonic() (string, error) {
+func (w *PlatonWallet) ExportMnemonic() (string, error) {
 	if len(w.hd.Mnemonic()) == 0 {
 		return "", fmt.Errorf("no mnemonic exist")
 	}
@@ -156,46 +115,12 @@ func (w *AlayaWallet) ExportMnemonic() (string, error) {
 }
 
 // ExportPrivateKey export the private key of an account
-func (w *AlayaWallet) ExportPrivateKey(account accounts.Account, passphrass string) (*ecdsa.PrivateKey, error) {
-	if w.isHdAccount(account) {
-		return w.hd.PrivateKey(account)
-	}
-
-	if w.isKsAccount(account) {
-		_, key, err := w.ks.GetDecryptedKey(account, passphrass)
-		if err != nil {
-			return nil, err
-		}
-
-		return key.PrivateKey, nil
-	}
-
-	return nil, fmt.Errorf("account not found")
-}
-
-// ImportFromKeyStore add a new account from a keystore file.
-func (w *AlayaWallet) ImportFromKeyStore(path string, passphrase string, newpassphrase string) (accounts.Account, error) {
-	jsonBytes, err := ioutil.ReadFile(path)
-	if err != nil {
-		return accounts.Account{}, err
-	}
-
-	dir := filepath.Dir(path)
-	w.ks = keystore.NewKeyStore(dir, keystore.StandardScryptN, keystore.StandardScryptP)
-	account, err := w.ks.Import(jsonBytes, passphrase, newpassphrase)
-	if err != nil {
-		return accounts.Account{}, err
-	}
-
-	if newpassphrase != passphrase {
-		os.Remove(path)
-	}
-
-	return account, nil
+func (w *PlatonWallet) ExportPrivateKey(account accounts.Account, passphrass string) (*ecdsa.PrivateKey, error) {
+	return w.hd.PrivateKey(account)
 }
 
 // ExportToKeyStore save a selected account to keystore file.
-func (w *AlayaWallet) ExportToKeyStore(account accounts.Account, path string, passphrase string) error {
+func (w *PlatonWallet) ExportToKeyStore(account accounts.Account, path string, passphrase string) error {
 	ks := keystore.NewKeyStore(path, keystore.StandardScryptN, keystore.StandardScryptP)
 	privateKey, err := w.hd.PrivateKey(account)
 	if err != nil {
@@ -219,7 +144,7 @@ func (w *AlayaWallet) ExportToKeyStore(account accounts.Account, path string, pa
 }
 
 // BalanceOf query the balance of specific account
-func (w *AlayaWallet) BalanceOf(owner common.Address) (*big.Int, error) {
+func (w *PlatonWallet) BalanceOf(owner common.Address) (*big.Int, error) {
 	client, err := ethclient.Dial(w.networkCfg.Url)
 	if err != nil {
 		return nil, err
@@ -238,7 +163,7 @@ func (w *AlayaWallet) BalanceOf(owner common.Address) (*big.Int, error) {
 
 // Transfer send value from `from` account to `to` account
 // if success, return the hash of transaction.
-func (w *AlayaWallet) Transfer(from common.Address, to common.Address, value *big.Int) (string, error) {
+func (w *PlatonWallet) Transfer(from common.Address, to common.Address, value *big.Int) (string, error) {
 	client, err := ethclient.Dial(w.networkCfg.Url)
 	if err != nil {
 		return "", err
@@ -273,66 +198,18 @@ func (w *AlayaWallet) Transfer(from common.Address, to common.Address, value *bi
 	return signedTx.Hash().Hex(), err
 }
 
-func (w *AlayaWallet) SignTx(tx *types.Transaction, fromAccount accounts.Account) (*types.Transaction, error) {
+func (w *PlatonWallet) SignTx(tx *types.Transaction, fromAccount accounts.Account) (*types.Transaction, error) {
 	var signedTx *types.Transaction
 	var err error
-
-	switch {
-	case w.isHdAccount(fromAccount):
-		signedTx, err = w.hd.SignTx(fromAccount, tx, w.networkCfg.ChainId)
-		if err != nil {
-			return nil, err
-		}
-	case w.isKsAccount(fromAccount):
-		signedTx, err = w.ks.SignTx(fromAccount, tx, w.networkCfg.ChainId)
-		if err != nil {
-			return nil, err
-		}
-	default:
-		return nil, fmt.Errorf("unknown from account")
+	signedTx, err = w.hd.SignTx(fromAccount, tx, w.networkCfg.ChainId)
+	if err != nil {
+		return nil, err
 	}
 	return signedTx, nil
 }
 
-// Lock lock an account
-func (w *AlayaWallet) Lock(account accounts.Account) error {
-	if w.isKsAccount(account) {
-		return w.ks.Lock(account.Address)
-	}
-
-	return nil
-}
-
-// LockBech32 to lock an account with bech32 format.
-func (w *AlayaWallet) LockBech32(bech32Address string) error {
-	account, err := w.AccountByBech32(bech32Address)
-	if err != nil {
-		return err
-	}
-
-	return w.Lock(account)
-}
-
-// Unlock to unlock an account with wallet passphrase.
-func (w *AlayaWallet) Unlock(account accounts.Account, passphrase string) error {
-	if w.isKsAccount(account) {
-		return w.ks.Unlock(account, passphrase)
-	}
-	return nil
-}
-
-// UnlockBech32 to unlock a bech32 format account
-func (w *AlayaWallet) UnlockBech32(bech32Address string, passphrase string) error {
-	account, err := w.AccountByBech32(bech32Address)
-	if err != nil {
-		return err
-	}
-
-	return w.Unlock(account, passphrase)
-}
-
 // NewWallet create a new Alaya wallet with mnemonic
-func NewWallet() (*AlayaWallet, error) {
+func NewWallet() (*PlatonWallet, error) {
 	mnemonic, err := hdwallet.NewMnemonic(128)
 	if err != nil {
 		return nil, err
@@ -342,13 +219,13 @@ func NewWallet() (*AlayaWallet, error) {
 }
 
 // NewWalletByMnemonics create a Alaya wallet by importing mnemonics.
-func NewWalletByMnemonics(mnemonics string) (*AlayaWallet, error) {
+func NewWalletByMnemonics(mnemonics string) (*PlatonWallet, error) {
 	w, err := hdwallet.NewFromMnemonic(mnemonics)
 	if err != nil {
 		return nil, err
 	}
 	// 默认生成0地址
-	aw := &AlayaWallet{w, nil, &network.DefaultMainNetConfig}
+	aw := &PlatonWallet{w, &network.DefaultMainNetConfig}
 	_, err = aw.NewAccount(0)
 	if err != nil {
 		return nil, err
@@ -357,13 +234,13 @@ func NewWalletByMnemonics(mnemonics string) (*AlayaWallet, error) {
 }
 
 // NewWalletBySeed create a Alaya wallet by seed of wallet.
-func NewWalletBySeed(seed []byte) (*AlayaWallet, error) {
+func NewWalletBySeed(seed []byte) (*PlatonWallet, error) {
 	w, err := hdwallet.NewFromSeed(seed)
 	if err != nil {
 		return nil, err
 	}
 	// 默认生成0地址
-	aw := &AlayaWallet{w, nil, &network.DefaultMainNetConfig}
+	aw := &PlatonWallet{w, &network.DefaultMainNetConfig}
 	_, err = aw.NewAccount(0)
 	if err != nil {
 		return nil, err

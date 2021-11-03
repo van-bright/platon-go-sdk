@@ -4,8 +4,8 @@
 
 在使用以下接口之前, 我们需要先创建一个`web3go` 对象:
 ```go
-const alayaEndpoint = "http://localhost:6789"
-web3g, err := web3go.New(alayaEndpoint)
+const platonEndpoint = "http://localhost:6789"
+web3g, err := web3go.New(platonEndpoint)
 ```
 所有的接口, 都通过`web3g`对象进行操作.
 

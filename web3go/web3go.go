@@ -109,6 +109,6 @@ func New(url string) (Geb3, error) {
 		return nil, err
 	}
 
-	alaya := &AlayaRPC{client: client}
-	return alaya, nil
+	platon := &PlatonRPC{client: client}
+	return platon, nil
 }

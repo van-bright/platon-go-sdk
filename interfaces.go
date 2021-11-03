@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"math/big"
+	"platon-go-sdk/common/hexutil"
 
 	"platon-go-sdk/common"
 	"platon-go-sdk/core/types"
@@ -81,11 +82,11 @@ type ChainStateReader interface {
 // SyncProgress gives progress indications when the node is synchronising with
 // the Ethereum network.
 type SyncProgress struct {
-	StartingBlock uint64 // Block number where sync began
-	CurrentBlock  uint64 // Current block number where sync is at
-	HighestBlock  uint64 // Highest alleged block number in the chain
-	PulledStates  uint64 // Number of state trie entries already downloaded
-	KnownStates   uint64 // Total number of state trie entries known about
+	StartingBlock hexutil.Uint64 // Block number where sync began
+	CurrentBlock  hexutil.Uint64 // Current block number where sync is at
+	HighestBlock  hexutil.Uint64 // Highest alleged block number in the chain
+	PulledStates  hexutil.Uint64 // Number of state trie entries already downloaded
+	KnownStates   hexutil.Uint64 // Total number of state trie entries known about
 }
 
 // ChainSyncReader wraps access to the node's current sync status. If there's no

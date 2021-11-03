@@ -9,11 +9,9 @@ import (
 	"platon-go-sdk/web3go"
 )
 
-//const alayaEndpoint = "https://openapi.alaya.network/rpc"
-
 func main() {
-	const alayaEndpoint = "http://172.16.64.132:6789"
-	web3g, err := web3go.New(alayaEndpoint)
+	const platonEndpoint = "http://172.16.64.132:6789"
+	web3g, err := web3go.New(platonEndpoint)
 
 	const PrivateKey = "ed72066fa30607420635be56785595ccf935675a890bef7c808afc1537f52281"
 	var credentials, _ = typedefs.NewCredential(PrivateKey, network.MainNetHrp)

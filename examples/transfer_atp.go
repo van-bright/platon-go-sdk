@@ -29,11 +29,9 @@ import (
 		}
 ]
 */
-//const AlayaEndpoint = "https://openapi.alaya.network/rpc"
-//const AlayaEndpoint = "http://47.241.91.2:6789"
 
 func main() {
-	geb3, err := web3go.New(AlayaEndpoint)
+	geb3, err := web3go.New(PlatonEndpoint)
 	if err != nil {
 		log.Fatal("NewCredential error:", err)
 	}
