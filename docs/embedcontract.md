@@ -1,6 +1,6 @@
 # 内置合约
 
-`ppos`模块用来操作Alaya网络的内置合约, 包括`delegate_contract`, `node_contract`, `proposal_contract`, `restricting_plan_contract`, `reward_contract`, `slash_contract`, `staking_contract`.   
+`ppos`模块用来操作PlatON网络的内置合约, 包括`delegate_contract`, `node_contract`, `proposal_contract`, `restricting_plan_contract`, `reward_contract`, `slash_contract`, `staking_contract`.   
 下面我们分别描述如何调用合约中的方法. 详细的使用方式, 请参考各内置合约的test文件, 如`delegate_contract_test.go`, 以获得完整的使用示例.
 
 在调用内置合约之前, 我们需要提供`network.PposNetworkParameters`配置以及`typedefs.Credentials`配置, 这两个配置对于所有的内置合约都是适用的. 在以下的描述中, 我们假设都使用以下的`PposNetworkParameters`和`Credentials`:  

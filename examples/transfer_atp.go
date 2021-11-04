@@ -7,11 +7,12 @@ import (
 	"platon-go-sdk/common"
 	"platon-go-sdk/core/types"
 	"platon-go-sdk/crypto"
+	"platon-go-sdk/network"
 	"platon-go-sdk/web3go"
 )
 
 /*
-"mnemonics":"always brick access science decade nasty marriage attack fame t    opple pen add",
+"mnemonics":"always brick access science decade nasty marriage attack fame topple pen add",
 [
 		{
 			"private-key":"b72faaa798c44d2359d0ccb35dd39446c9c18905fdcecede42a6570ff177ae08",
@@ -31,7 +32,7 @@ import (
 */
 
 func main() {
-	geb3, err := web3go.New(PlatonEndpoint)
+	geb3, err := web3go.New(network.DefaultMainNetConfig.Url)
 	if err != nil {
 		log.Fatal("NewCredential error:", err)
 	}

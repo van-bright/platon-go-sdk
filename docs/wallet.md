@@ -1,13 +1,11 @@
-# Alaya Wallet使用说明
+# Platon Wallet使用说明
 
-**Alaya Wallet**用来管理Alaya网络的账号.
+**Platon Wallet**用来管理Platon网络的账号.
 
-本钱包同时支持**HDWallet**和**KeyStore Wallet**. 
-默认情况下使用HDWallet管理账号, 如果仅通过导入私钥或导入KeyStore文件的方式导入账户,
-则使用KeyStore存储账户信息.
+本钱包支持**HDWallet**.
 
 ## 创建钱包
-创建钱包接口, 默认创建HDWallet钱包. 可以通过以下方式创建:
+创建钱包接口, 可以通过以下方式创建:
 * `NewWallet`方法:  
 调用该方法将创建一个HDWallet钱包, 同时会生成新的一组助记词和`DerivationPath`的index为0的账号.  
 ```go
@@ -49,7 +47,7 @@ account, err := w.NewAccount(1)
 
 ## 转账
 使用`Transfer(from common.Address, to common.Address, value *big.Int) (string, error)`方法用来转账.
-下面的代码示例, 演示了如果在Alaya测试网上列出账户余额和转账的操作.
+下面的代码示例, 演示了如果在Platon测试网上列出账户余额和转账的操作.
 
 ```go
 const mnemonic = "always brick access science decade nasty marriage attack fame topple pen add"
@@ -81,11 +79,7 @@ const mnemonic = "always brick access science decade nasty marriage attack fame 
 
 ## 导出HDWallet的账户详情
 使用`ToString(account accounts.Account) string`方法导出一个HDWallet账号的详情,
-包括Alaya主网地址, 测试网地址, 私钥.
-
-## 导出KeyStore中账户的私钥
-使用`ExportPrivateKey(account accounts.Account, passphrass string) (*ecdsa.PrivateKey, error)`方法
-导出KeyStore中账户的私钥. `passphrase`是KeyStore文件的密码.
+包括Platon主网地址, 测试网地址, 私钥.
 
 ## 导出KeyStore文件
 使用`ExportToKeyStore(account accounts.Account, path string, passphrase string) error`将账号`account`导出到`path`指定的路径下, 
@@ -94,10 +88,6 @@ const mnemonic = "always brick access science decade nasty marriage attack fame 
 ## 导入私钥
 仅仅只有私钥的情况下, 只能将账号的私钥导入到KeyStore文件中. 通过`ImportPrivateKey(key *ecdsa.PrivateKey, ksPath string, passphrase string) (accounts.Account, error)`
 方法, 将私钥`key`导入到`ksPath`指定的KeyStore文件中, 并设置密码为`passphrase`.
-
-## 导入KeyStore文件
-通过`ImportFromKeyStore(path string, passphrase string, newpassphrase string) (accounts.Account, error)`方法
-导入账号. 其中`path`是KeyStore文件的路径, `passphrase`是KeyStore文件的当前密码, `newpassphrase`是更新之后的KeyStore文件的密码.
 
 ## 签名交易但是不广播
 在`Transfer`方法的说明中, 当我们进行转账操作的时候, 默认会通过`rpc.SendRawTransaction`方法, 将交易广播到网络中.

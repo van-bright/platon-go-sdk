@@ -1,6 +1,6 @@
 # web3go rpc 接口使用说明
 
-**web3go rpc** 接口定义了一系列与**Alaya** 网络进行交互的RPC调用, 方便利用go语言开发基于Alaya链的应用.
+**web3go rpc** 接口定义了一系列与**PlatON** 网络进行交互的RPC调用, 方便利用go语言开发基于PlatON链的应用.
 
 在使用以下接口之前, 我们需要先创建一个`web3go` 对象:
 ```go
@@ -106,7 +106,7 @@ fmt.Println("admin node info: ", info, err)
 ```json
 {
     "id":"3537fb8faebef1838ddf3f9cc828be000cda442862b6ca1dc2804e6e42e41345ae0d8377b526732042dc04f7b53ef1304540c0bdfb718fd2294b5172dd019653",
-    "name":"PlatONnetwork/alaya-node/v0.15.0-unstable-9867ee68/linux-amd64/go1.13.4",
+    "name":"PlatONnetwork/platon-node/v0.15.0-unstable-9867ee68/linux-amd64/go1.13.4",
     "blsPubKey":"bbcf9c796585a58d44e3e1f0c899e8dcae3704d9dae78cec9a8a5ae3c4551517449580dc6198205c74186b7223622d060101210926ff603c29686810c8dc63ad595e49e2b12cb116471c3691f943a06b91a3547e034d45c1bf373b19e648e395",
     "enode":"enode://3537fb8faebef1838ddf3f9cc828be000cda442862b6ca1dc2804e6e42e41345ae0d8377b526732042dc04f7b53ef1304540c0bdfb718fd2294b5172dd019653@[::]:16789",
     "ip":"::",
