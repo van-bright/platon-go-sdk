@@ -27,7 +27,7 @@ import (
 	"strings"
 	"testing"
 
-	"platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/common"
 )
 
 // TestPack tests the general pack/unpack tests in packing_test.go

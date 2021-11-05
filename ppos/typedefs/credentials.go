@@ -3,10 +3,10 @@ package typedefs
 import (
 	"crypto/ecdsa"
 	"fmt"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/core/types"
+	"github.com/oldmanfan/platon-go-sdk/crypto"
 	"math/big"
-	"platon-go-sdk/common"
-	"platon-go-sdk/core/types"
-	"platon-go-sdk/crypto"
 	"strings"
 )
 

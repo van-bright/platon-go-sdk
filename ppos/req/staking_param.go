@@ -1,10 +1,10 @@
 package req
 
 import (
+	common2 "github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/ppos/codec"
+	"github.com/oldmanfan/platon-go-sdk/ppos/typedefs"
 	"math/big"
-	common2 "platon-go-sdk/common"
-	"platon-go-sdk/ppos/codec"
-	"platon-go-sdk/ppos/typedefs"
 )
 
 type StakingParam struct {

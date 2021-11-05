@@ -19,7 +19,7 @@ package bloombits
 import (
 	"errors"
 
-	"platon-go-sdk/core/types"
+	"github.com/oldmanfan/platon-go-sdk/core/types"
 )
 
 var (

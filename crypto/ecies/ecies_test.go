@@ -39,7 +39,7 @@ import (
 	"math/big"
 	"testing"
 
-	"platon-go-sdk/crypto"
+	"github.com/oldmanfan/platon-go-sdk/crypto"
 )
 
 // Ensure the KDF generates appropriately sized keys.

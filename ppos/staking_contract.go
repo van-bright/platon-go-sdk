@@ -1,13 +1,13 @@
 package ppos
 
 import (
+	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
+	"github.com/oldmanfan/platon-go-sdk/network"
+	"github.com/oldmanfan/platon-go-sdk/ppos/codec"
+	"github.com/oldmanfan/platon-go-sdk/ppos/req"
+	"github.com/oldmanfan/platon-go-sdk/ppos/resp"
+	"github.com/oldmanfan/platon-go-sdk/ppos/typedefs"
 	"math/big"
-	"platon-go-sdk/common/hexutil"
-	"platon-go-sdk/network"
-	"platon-go-sdk/ppos/codec"
-	"platon-go-sdk/ppos/req"
-	"platon-go-sdk/ppos/resp"
-	"platon-go-sdk/ppos/typedefs"
 )
 
 type StakingContract struct {

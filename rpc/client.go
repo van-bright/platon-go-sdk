@@ -32,7 +32,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"platon-go-sdk/log"
+	"github.com/oldmanfan/platon-go-sdk/log"
 )
 
 var (

@@ -16,7 +16,7 @@
 
 package bind
 
-import "platon-go-sdk/accounts/abi"
+import "github.com/oldmanfan/platon-go-sdk/accounts/abi"
 
 // tmplData is the data structure required to fill the binding template.
 type tmplData struct {
@@ -91,12 +91,12 @@ import (
 	"math/big"
 	"strings"
 
-	platon "platon-go-sdk"
-	"platon-go-sdk/accounts/abi"
-	"platon-go-sdk/accounts/abi/bind"
-	"platon-go-sdk/common"
-	"platon-go-sdk/core/types"
-	"platon-go-sdk/event"
+	platon "github.com/oldmanfan/platon-go-sdk"
+	"github.com/oldmanfan/platon-go-sdk/accounts/abi"
+	"github.com/oldmanfan/platon-go-sdk/accounts/abi/bind"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/core/types"
+	"github.com/oldmanfan/platon-go-sdk/event"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.

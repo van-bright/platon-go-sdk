@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"sync"
 
-	"platon-go-sdk/event"
+	"github.com/oldmanfan/platon-go-sdk/event"
 )
 
 // This example demonstrates how SubscriptionScope can be used to control the lifetime of

@@ -22,9 +22,9 @@ import (
 	"io"
 	"unsafe"
 
-	"platon-go-sdk/common"
-	"platon-go-sdk/common/hexutil"
-	"platon-go-sdk/rlp"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
+	"github.com/oldmanfan/platon-go-sdk/rlp"
 )
 
 //go:generate gencodec -type Receipt -field-override receiptMarshaling -out gen_receipt_json.go

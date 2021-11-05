@@ -22,8 +22,8 @@ import (
 	"fmt"
 	"math/big"
 
-	"platon-go-sdk/common"
-	"platon-go-sdk/crypto"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/crypto"
 )
 
 var (

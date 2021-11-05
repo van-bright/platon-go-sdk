@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"platon-go-sdk/common/hexutil"
-	"platon-go-sdk/web3go"
+	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
+	"github.com/oldmanfan/platon-go-sdk/web3go"
 )
 
 func main() {

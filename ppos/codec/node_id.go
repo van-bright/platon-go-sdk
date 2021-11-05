@@ -1,8 +1,8 @@
 package codec
 
 import (
-	"platon-go-sdk/common/hexutil"
-	"platon-go-sdk/rlp"
+	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
+	"github.com/oldmanfan/platon-go-sdk/rlp"
 )
 
 type NodeId struct {

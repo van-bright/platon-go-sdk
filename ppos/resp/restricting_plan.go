@@ -1,8 +1,8 @@
 package resp
 
 import (
+	"github.com/oldmanfan/platon-go-sdk/ppos/codec"
 	"math/big"
-	"platon-go-sdk/ppos/codec"
 )
 
 type RestrictingPlan struct {

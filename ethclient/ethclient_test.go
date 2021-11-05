@@ -22,8 +22,8 @@ import (
 	"reflect"
 	"testing"
 
-	ethereum "platon-go-sdk"
-	"platon-go-sdk/common"
+	ethereum "github.com/oldmanfan/platon-go-sdk"
+	"github.com/oldmanfan/platon-go-sdk/common"
 )
 
 // Verify that Client implements the ethereum interfaces.

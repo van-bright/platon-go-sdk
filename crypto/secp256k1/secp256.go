@@ -26,8 +26,8 @@ import "C"
 
 import (
 	"errors"
+	"github.com/oldmanfan/platon-go-sdk/common/math"
 	"math/big"
-	"platon-go-sdk/common/math"
 	"unsafe"
 )
 

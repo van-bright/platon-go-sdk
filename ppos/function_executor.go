@@ -4,13 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	platongosdk "github.com/oldmanfan/platon-go-sdk"
+	common2 "github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/core/types"
+	"github.com/oldmanfan/platon-go-sdk/ethclient"
+	"github.com/oldmanfan/platon-go-sdk/network"
+	"github.com/oldmanfan/platon-go-sdk/ppos/typedefs"
 	"math/big"
-	platongosdk "platon-go-sdk"
-	common2 "platon-go-sdk/common"
-	"platon-go-sdk/core/types"
-	"platon-go-sdk/ethclient"
-	"platon-go-sdk/network"
-	"platon-go-sdk/ppos/typedefs"
 )
 
 type FunctionExecutor struct {

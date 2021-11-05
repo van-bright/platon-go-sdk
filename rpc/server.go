@@ -26,7 +26,7 @@ import (
 	"sync/atomic"
 
 	mapset "github.com/deckarep/golang-set"
-	"platon-go-sdk/log"
+	"github.com/oldmanfan/platon-go-sdk/log"
 )
 
 const MetadataApi = "rpc"

@@ -42,7 +42,7 @@ import (
 	"fmt"
 	"hash"
 
-	ethcrypto "platon-go-sdk/crypto"
+	ethcrypto "github.com/oldmanfan/platon-go-sdk/crypto"
 )
 
 var (

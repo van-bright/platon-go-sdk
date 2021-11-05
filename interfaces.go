@@ -3,11 +3,11 @@ package platon_go_sdk
 import (
 	"context"
 	"errors"
+	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
 	"math/big"
-	"platon-go-sdk/common/hexutil"
 
-	"platon-go-sdk/common"
-	"platon-go-sdk/core/types"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/core/types"
 )
 
 // NotFound is returned by API methods if the requested item does not exist.

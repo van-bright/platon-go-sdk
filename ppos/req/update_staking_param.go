@@ -1,9 +1,9 @@
 package req
 
 import (
+	common2 "github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/ppos/codec"
 	"math/big"
-	common2 "platon-go-sdk/common"
-	"platon-go-sdk/ppos/codec"
 )
 
 type UpdateStakingParam struct {

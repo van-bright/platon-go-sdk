@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"platon-go-sdk/common/bech32util"
-	"platon-go-sdk/common/hexutil"
-	"platon-go-sdk/network"
+	"github.com/oldmanfan/platon-go-sdk/common/bech32util"
+	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
+	"github.com/oldmanfan/platon-go-sdk/network"
 )
 
 func main() {

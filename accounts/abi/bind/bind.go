@@ -29,8 +29,8 @@ import (
 	"text/template"
 	"unicode"
 
-	"platon-go-sdk/accounts/abi"
-	"platon-go-sdk/log"
+	"github.com/oldmanfan/platon-go-sdk/accounts/abi"
+	"github.com/oldmanfan/platon-go-sdk/log"
 )
 
 // Lang is a target programming language selector to generate bindings for.

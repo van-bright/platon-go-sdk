@@ -24,11 +24,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/oldmanfan/platon-go-sdk/accounts"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/crypto"
 	"github.com/pborman/uuid"
 	"golang.org/x/crypto/pbkdf2"
-	"platon-go-sdk/accounts"
-	"platon-go-sdk/common"
-	"platon-go-sdk/crypto"
 )
 
 // creates a Key and stores that in the given KeyStore by decrypting a presale key JSON

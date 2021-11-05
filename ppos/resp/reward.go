@@ -1,7 +1,7 @@
 package resp
 
 import (
-	"platon-go-sdk/common/hexutil"
+	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
 )
 
 type Reward struct {

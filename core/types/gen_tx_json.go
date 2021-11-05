@@ -7,8 +7,8 @@ import (
 	"errors"
 	"math/big"
 
-	"platon-go-sdk/common"
-	"platon-go-sdk/common/hexutil"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
 )
 
 var _ = (*txdataMarshaling)(nil)

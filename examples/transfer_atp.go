@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/core/types"
+	"github.com/oldmanfan/platon-go-sdk/crypto"
+	"github.com/oldmanfan/platon-go-sdk/network"
+	"github.com/oldmanfan/platon-go-sdk/web3go"
 	"log"
 	"math/big"
-	"platon-go-sdk/common"
-	"platon-go-sdk/core/types"
-	"platon-go-sdk/crypto"
-	"platon-go-sdk/network"
-	"platon-go-sdk/web3go"
 )
 
 /*

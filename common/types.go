@@ -25,7 +25,7 @@ import (
 	"reflect"
 	"strings"
 
-	"platon-go-sdk/common/hexutil"
+	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
 )
 
 // Lengths of hashes and addresses in bytes.

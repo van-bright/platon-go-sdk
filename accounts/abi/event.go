@@ -20,8 +20,8 @@ import (
 	"fmt"
 	"strings"
 
-	"platon-go-sdk/common"
-	"platon-go-sdk/crypto"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/crypto"
 )
 
 // Event is an event potentially triggered by the EVM's LOG mechanism. The Event

@@ -6,16 +6,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/oldmanfan/platon-go-sdk/network"
 	"math/big"
-	"platon-go-sdk/network"
 	"strings"
 
 	"github.com/btcsuite/btcutil/bech32"
 
-	"platon-go-sdk/common/bech32util"
-	"platon-go-sdk/common/hexutil"
-	"platon-go-sdk/crypto/sha3"
-	"platon-go-sdk/log"
+	"github.com/oldmanfan/platon-go-sdk/common/bech32util"
+	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
+	"github.com/oldmanfan/platon-go-sdk/crypto/sha3"
+	"github.com/oldmanfan/platon-go-sdk/log"
 )
 
 var currentAddressPrefix string

@@ -8,8 +8,8 @@ import (
 	"io"
 	"strings"
 
-	"platon-go-sdk/crypto"
-	"platon-go-sdk/rlp"
+	"github.com/oldmanfan/platon-go-sdk/crypto"
+	"github.com/oldmanfan/platon-go-sdk/rlp"
 )
 
 // Match only 128 hex char length proof

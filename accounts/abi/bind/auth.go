@@ -22,10 +22,10 @@ import (
 	"io"
 	"io/ioutil"
 
-	"platon-go-sdk/accounts/keystore"
-	"platon-go-sdk/common"
-	"platon-go-sdk/core/types"
-	"platon-go-sdk/crypto"
+	"github.com/oldmanfan/platon-go-sdk/accounts/keystore"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/core/types"
+	"github.com/oldmanfan/platon-go-sdk/crypto"
 )
 
 // NewTransactor is a utility method to easily create a transaction signer from

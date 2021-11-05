@@ -23,7 +23,7 @@ import (
 	"testing"
 	"time"
 
-	"platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/common"
 )
 
 const testSectionSize = 4096

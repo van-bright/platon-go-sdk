@@ -2,9 +2,9 @@ package typedefs
 
 import (
 	"fmt"
-	"platon-go-sdk/common"
-	"platon-go-sdk/common/hexutil"
-	"platon-go-sdk/ppos/codec"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
+	"github.com/oldmanfan/platon-go-sdk/ppos/codec"
 )
 
 type Function struct {

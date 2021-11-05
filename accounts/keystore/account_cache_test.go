@@ -30,8 +30,8 @@ import (
 	"github.com/cespare/cp"
 	"github.com/davecgh/go-spew/spew"
 
-	"platon-go-sdk/accounts"
-	"platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/accounts"
+	"github.com/oldmanfan/platon-go-sdk/common"
 )
 
 var (

@@ -26,7 +26,7 @@ import (
 	"strings"
 	"sync"
 
-	"platon-go-sdk/log"
+	"github.com/oldmanfan/platon-go-sdk/log"
 )
 
 const (

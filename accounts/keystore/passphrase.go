@@ -38,12 +38,12 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/common/math"
+	"github.com/oldmanfan/platon-go-sdk/crypto"
 	"github.com/pborman/uuid"
 	"golang.org/x/crypto/pbkdf2"
 	"golang.org/x/crypto/scrypt"
-	"platon-go-sdk/common"
-	"platon-go-sdk/common/math"
-	"platon-go-sdk/crypto"
 )
 
 const (

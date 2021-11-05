@@ -21,9 +21,9 @@ import (
 	"fmt"
 	"time"
 
-	"platon-go-sdk/common"
-	"platon-go-sdk/core/types"
-	"platon-go-sdk/log"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/core/types"
+	"github.com/oldmanfan/platon-go-sdk/log"
 )
 
 // WaitMined waits for tx to be mined on the blockchain.

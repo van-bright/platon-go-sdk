@@ -11,13 +11,13 @@ import (
 
 	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/btcsuite/btcutil/hdkeychain"
+	platon "github.com/oldmanfan/platon-go-sdk"
+	"github.com/oldmanfan/platon-go-sdk/accounts"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
+	"github.com/oldmanfan/platon-go-sdk/core/types"
+	"github.com/oldmanfan/platon-go-sdk/crypto"
 	"github.com/tyler-smith/go-bip39"
-	platon "platon-go-sdk"
-	"platon-go-sdk/accounts"
-	"platon-go-sdk/common"
-	"platon-go-sdk/common/hexutil"
-	"platon-go-sdk/core/types"
-	"platon-go-sdk/crypto"
 )
 
 // DefaultRootDerivationPath is the root path to which custom derivation endpoints

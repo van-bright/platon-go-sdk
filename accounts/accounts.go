@@ -19,15 +19,15 @@ package accounts
 
 import (
 	"fmt"
+	platongosdk "github.com/oldmanfan/platon-go-sdk"
+	"github.com/oldmanfan/platon-go-sdk/common/bech32util"
+	"github.com/oldmanfan/platon-go-sdk/network"
 	"golang.org/x/crypto/sha3"
 	"math/big"
-	platongosdk "platon-go-sdk"
-	"platon-go-sdk/common/bech32util"
-	"platon-go-sdk/network"
 
-	"platon-go-sdk/common"
-	"platon-go-sdk/core/types"
-	"platon-go-sdk/event"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/core/types"
+	"github.com/oldmanfan/platon-go-sdk/event"
 )
 
 // Account represents an Ethereum account located at a specific location defined

@@ -25,7 +25,7 @@ import (
 	"time"
 
 	mapset "github.com/deckarep/golang-set"
-	"platon-go-sdk/log"
+	"github.com/oldmanfan/platon-go-sdk/log"
 )
 
 // fileCache is a cache of files seen during scan of keystore.

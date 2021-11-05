@@ -3,10 +3,10 @@ package ppos
 import (
 	"encoding/json"
 	"fmt"
+	common2 "github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/network"
+	"github.com/oldmanfan/platon-go-sdk/ppos/resp"
 	"math/big"
-	common2 "platon-go-sdk/common"
-	"platon-go-sdk/network"
-	"platon-go-sdk/ppos/resp"
 	"testing"
 )
 

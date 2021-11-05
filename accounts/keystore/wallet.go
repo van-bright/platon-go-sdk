@@ -19,9 +19,9 @@ package keystore
 import (
 	"math/big"
 
-	ethereum "platon-go-sdk"
-	"platon-go-sdk/accounts"
-	"platon-go-sdk/core/types"
+	ethereum "github.com/oldmanfan/platon-go-sdk"
+	"github.com/oldmanfan/platon-go-sdk/accounts"
+	"github.com/oldmanfan/platon-go-sdk/core/types"
 )
 
 // keystoreWallet implements the accounts.Wallet interface for the original

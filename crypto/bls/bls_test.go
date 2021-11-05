@@ -3,14 +3,14 @@ package bls
 import (
 	"testing"
 
-	"platon-go-sdk/rlp"
+	"github.com/oldmanfan/platon-go-sdk/rlp"
 )
 import (
 	"bytes"
 	"fmt"
 	"strconv"
 
-	"platon-go-sdk/crypto"
+	"github.com/oldmanfan/platon-go-sdk/crypto"
 )
 
 var unitN = 0

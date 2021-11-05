@@ -26,8 +26,8 @@ import (
 	"reflect"
 	"testing"
 
-	"platon-go-sdk/common"
-	"platon-go-sdk/common/hexutil"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
 )
 
 var testAddrString = "atx1ju8gz29tsd8gatqh4w8rsyhszpnceau3f69x3g"

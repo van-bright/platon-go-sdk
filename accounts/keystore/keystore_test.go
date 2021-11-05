@@ -26,9 +26,9 @@ import (
 	"testing"
 	"time"
 
-	"platon-go-sdk/accounts"
-	"platon-go-sdk/common"
-	"platon-go-sdk/event"
+	"github.com/oldmanfan/platon-go-sdk/accounts"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/event"
 )
 
 var testSigData = make([]byte, 32)

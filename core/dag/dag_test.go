@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"platon-go-sdk/log"
+	"github.com/oldmanfan/platon-go-sdk/log"
 )
 
 func TestDag(t *testing.T) {

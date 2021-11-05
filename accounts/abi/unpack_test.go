@@ -28,7 +28,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/common"
 )
 
 // TestUnpack tests the general pack/unpack tests in packing_test.go

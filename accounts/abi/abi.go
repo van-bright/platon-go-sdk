@@ -23,8 +23,8 @@ import (
 	"fmt"
 	"io"
 
-	"platon-go-sdk/common"
-	"platon-go-sdk/crypto"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/crypto"
 )
 
 // The ABI holds information about a contract's context and available

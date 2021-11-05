@@ -3,8 +3,8 @@ package ppos
 import (
 	"encoding/json"
 	"fmt"
-	"platon-go-sdk/network"
-	"platon-go-sdk/ppos/typedefs"
+	"github.com/oldmanfan/platon-go-sdk/network"
+	"github.com/oldmanfan/platon-go-sdk/ppos/typedefs"
 	"testing"
 )
 

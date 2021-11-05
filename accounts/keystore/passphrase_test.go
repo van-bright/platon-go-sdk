@@ -20,7 +20,7 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/common"
 )
 
 const (

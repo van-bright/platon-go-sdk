@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/network"
+	"github.com/oldmanfan/platon-go-sdk/web3go"
 	"math/big"
-	"platon-go-sdk/common"
-	"platon-go-sdk/network"
-	"platon-go-sdk/web3go"
 )
 
 func main() {

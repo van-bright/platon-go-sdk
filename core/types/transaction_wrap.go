@@ -1,8 +1,8 @@
 package types
 
 import (
+	"github.com/oldmanfan/platon-go-sdk/rlp"
 	"io"
-	"platon-go-sdk/rlp"
 )
 
 type TransactionWrap struct {

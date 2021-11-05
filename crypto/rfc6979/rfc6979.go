@@ -5,9 +5,9 @@ import (
 	"crypto/ecdsa"
 	"crypto/hmac"
 	"crypto/sha256"
+	"github.com/oldmanfan/platon-go-sdk/crypto/secp256k1"
 	"hash"
 	"math/big"
-	"platon-go-sdk/crypto/secp256k1"
 )
 
 const (

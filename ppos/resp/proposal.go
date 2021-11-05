@@ -1,9 +1,9 @@
 package resp
 
 import (
+	"github.com/oldmanfan/platon-go-sdk/ppos/codec"
+	"github.com/oldmanfan/platon-go-sdk/ppos/typedefs"
 	"math/big"
-	"platon-go-sdk/ppos/codec"
-	"platon-go-sdk/ppos/typedefs"
 )
 
 type Proposal struct {

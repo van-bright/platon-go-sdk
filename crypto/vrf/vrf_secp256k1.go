@@ -24,8 +24,8 @@ import (
 	"errors"
 	"math/big"
 
-	"platon-go-sdk/crypto/rfc6979"
-	"platon-go-sdk/crypto/secp256k1"
+	"github.com/oldmanfan/platon-go-sdk/crypto/rfc6979"
+	"github.com/oldmanfan/platon-go-sdk/crypto/secp256k1"
 )
 
 const (

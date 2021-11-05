@@ -5,7 +5,7 @@ import (
 
 	"fmt"
 
-	"platon-go-sdk/rlp"
+	"github.com/oldmanfan/platon-go-sdk/rlp"
 )
 
 func TestSchnorrNIZK(t *testing.T) {

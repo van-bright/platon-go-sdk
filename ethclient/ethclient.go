@@ -24,14 +24,14 @@ import (
 	"fmt"
 	"math/big"
 
-	"platon-go-sdk/params"
+	"github.com/oldmanfan/platon-go-sdk/params"
 
-	platon "platon-go-sdk"
-	"platon-go-sdk/common"
-	"platon-go-sdk/common/hexutil"
-	"platon-go-sdk/core/types"
-	"platon-go-sdk/rlp"
-	"platon-go-sdk/rpc"
+	platon "github.com/oldmanfan/platon-go-sdk"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
+	"github.com/oldmanfan/platon-go-sdk/core/types"
+	"github.com/oldmanfan/platon-go-sdk/rlp"
+	"github.com/oldmanfan/platon-go-sdk/rpc"
 )
 
 // Client defines typed wrappers for the Ethereum RPC API.

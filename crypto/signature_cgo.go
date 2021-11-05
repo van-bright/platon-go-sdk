@@ -22,8 +22,8 @@ import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"fmt"
-	"platon-go-sdk/common/math"
-	"platon-go-sdk/crypto/secp256k1"
+	"github.com/oldmanfan/platon-go-sdk/common/math"
+	"github.com/oldmanfan/platon-go-sdk/crypto/secp256k1"
 )
 
 // Ecrecover returns the uncompressed public key that created the given signature.

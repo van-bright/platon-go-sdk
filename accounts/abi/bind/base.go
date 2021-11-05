@@ -22,13 +22,13 @@ import (
 	"fmt"
 	"math/big"
 
-	platon "platon-go-sdk"
+	platon "github.com/oldmanfan/platon-go-sdk"
 
-	"platon-go-sdk/accounts/abi"
-	"platon-go-sdk/common"
-	"platon-go-sdk/core/types"
-	"platon-go-sdk/crypto"
-	"platon-go-sdk/event"
+	"github.com/oldmanfan/platon-go-sdk/accounts/abi"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/core/types"
+	"github.com/oldmanfan/platon-go-sdk/crypto"
+	"github.com/oldmanfan/platon-go-sdk/event"
 )
 
 // SignerFn is a signer function callback when a contract requires a method to

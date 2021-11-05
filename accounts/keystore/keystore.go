@@ -33,11 +33,11 @@ import (
 	"sync"
 	"time"
 
-	"platon-go-sdk/accounts"
-	"platon-go-sdk/common"
-	"platon-go-sdk/core/types"
-	"platon-go-sdk/crypto"
-	"platon-go-sdk/event"
+	"github.com/oldmanfan/platon-go-sdk/accounts"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/core/types"
+	"github.com/oldmanfan/platon-go-sdk/crypto"
+	"github.com/oldmanfan/platon-go-sdk/event"
 )
 
 var (

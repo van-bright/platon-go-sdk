@@ -22,9 +22,9 @@ import (
 	"reflect"
 	"testing"
 
-	"platon-go-sdk/common"
-	"platon-go-sdk/common/hexutil"
-	"platon-go-sdk/common/math"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
+	"github.com/oldmanfan/platon-go-sdk/common/math"
 )
 
 var (

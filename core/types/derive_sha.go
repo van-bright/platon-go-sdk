@@ -17,7 +17,7 @@
 package types
 
 import (
-	"platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/common"
 )
 
 type DerivableList interface {

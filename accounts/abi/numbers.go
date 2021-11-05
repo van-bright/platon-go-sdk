@@ -20,8 +20,8 @@ import (
 	"math/big"
 	"reflect"
 
-	"platon-go-sdk/common"
-	"platon-go-sdk/common/math"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/common/math"
 )
 
 var (

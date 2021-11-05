@@ -28,8 +28,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"platon-go-sdk/common"
-	"platon-go-sdk/crypto"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/crypto"
 )
 
 var jsonEventTransfer = []byte(`{

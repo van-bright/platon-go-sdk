@@ -2,9 +2,9 @@ package ppos
 
 import (
 	"encoding/json"
-	"platon-go-sdk/network"
-	"platon-go-sdk/ppos/resp"
-	"platon-go-sdk/ppos/typedefs"
+	"github.com/oldmanfan/platon-go-sdk/network"
+	"github.com/oldmanfan/platon-go-sdk/ppos/resp"
+	"github.com/oldmanfan/platon-go-sdk/ppos/typedefs"
 )
 
 type NodeContract struct {

@@ -1,8 +1,8 @@
 package codec
 
 import (
+	"github.com/oldmanfan/platon-go-sdk/rlp"
 	"math/big"
-	"platon-go-sdk/rlp"
 )
 
 type UInt16 struct {

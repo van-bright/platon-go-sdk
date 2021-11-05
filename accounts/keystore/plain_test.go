@@ -27,8 +27,8 @@ import (
 	"strings"
 	"testing"
 
-	"platon-go-sdk/common"
-	"platon-go-sdk/crypto"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/crypto"
 )
 
 func tmpKeyStoreIface(t *testing.T, encrypted bool) (dir string, ks keyStore) {

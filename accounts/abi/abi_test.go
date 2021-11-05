@@ -26,9 +26,9 @@ import (
 	"strings"
 	"testing"
 
-	"platon-go-sdk/common"
-	"platon-go-sdk/common/math"
-	"platon-go-sdk/crypto"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/common/math"
+	"github.com/oldmanfan/platon-go-sdk/crypto"
 )
 
 const jsondata = `

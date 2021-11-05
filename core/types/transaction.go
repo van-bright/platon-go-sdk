@@ -23,11 +23,11 @@ import (
 	"math/big"
 	"sync/atomic"
 
-	"platon-go-sdk/common"
-	"platon-go-sdk/common/hexutil"
-	"platon-go-sdk/crypto"
-	"platon-go-sdk/log"
-	"platon-go-sdk/rlp"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
+	"github.com/oldmanfan/platon-go-sdk/crypto"
+	"github.com/oldmanfan/platon-go-sdk/log"
+	"github.com/oldmanfan/platon-go-sdk/rlp"
 )
 
 //go:generate gencodec -type txdata -field-override txdataMarshaling -out gen_tx_json.go

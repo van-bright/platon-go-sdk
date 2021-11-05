@@ -5,10 +5,10 @@ import (
 	"math/big"
 	"testing"
 
-	ethereum "platon-go-sdk"
-	"platon-go-sdk/accounts/abi"
-	"platon-go-sdk/accounts/abi/bind"
-	"platon-go-sdk/common"
+	ethereum "github.com/oldmanfan/platon-go-sdk"
+	"github.com/oldmanfan/platon-go-sdk/accounts/abi"
+	"github.com/oldmanfan/platon-go-sdk/accounts/abi/bind"
+	"github.com/oldmanfan/platon-go-sdk/common"
 )
 
 type mockCaller struct {

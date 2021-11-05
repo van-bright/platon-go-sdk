@@ -15,9 +15,9 @@ import (
 	"strings"
 	"unsafe"
 
-	"platon-go-sdk/rlp"
+	"github.com/oldmanfan/platon-go-sdk/rlp"
 
-	"platon-go-sdk/crypto"
+	"github.com/oldmanfan/platon-go-sdk/crypto"
 )
 
 // Init --

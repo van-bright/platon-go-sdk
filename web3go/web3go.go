@@ -2,12 +2,12 @@ package web3go
 
 import (
 	"encoding/json"
+	platon "github.com/oldmanfan/platon-go-sdk"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/core/types"
+	"github.com/oldmanfan/platon-go-sdk/ethclient"
+	"github.com/oldmanfan/platon-go-sdk/params"
 	"math/big"
-	platon "platon-go-sdk"
-	"platon-go-sdk/common"
-	"platon-go-sdk/core/types"
-	"platon-go-sdk/ethclient"
-	"platon-go-sdk/params"
 )
 
 type Geb3 interface {

@@ -6,8 +6,8 @@ import (
 	"encoding/json"
 	"errors"
 
-	"platon-go-sdk/common"
-	"platon-go-sdk/common/hexutil"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
 )
 
 var _ = (*logMarshaling)(nil)

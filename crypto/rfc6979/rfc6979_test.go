@@ -22,8 +22,8 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"github.com/oldmanfan/platon-go-sdk/crypto/secp256k1"
 	"math/big"
-	"platon-go-sdk/crypto/secp256k1"
 	"testing"
 )
 

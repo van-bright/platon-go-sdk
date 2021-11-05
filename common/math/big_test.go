@@ -22,7 +22,7 @@ import (
 	"math/big"
 	"testing"
 
-	"platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/common"
 )
 
 func TestHexOrDecimal256(t *testing.T) {

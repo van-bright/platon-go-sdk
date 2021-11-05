@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"strings"
 
-	"platon-go-sdk/crypto"
+	"github.com/oldmanfan/platon-go-sdk/crypto"
 )
 
 // FunctionType represents different types of functions a contract might have.

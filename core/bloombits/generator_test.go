@@ -21,7 +21,7 @@ import (
 	"math/rand"
 	"testing"
 
-	"platon-go-sdk/core/types"
+	"github.com/oldmanfan/platon-go-sdk/core/types"
 )
 
 // Tests that batched bloom bits are correctly rotated from the input bloom

@@ -24,8 +24,8 @@ import (
 
 	"github.com/davecgh/go-spew/spew"
 
-	"platon-go-sdk/common"
-	"platon-go-sdk/common/hexutil"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
 )
 
 var unmarshalLogTests = map[string]struct {

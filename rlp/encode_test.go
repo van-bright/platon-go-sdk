@@ -29,7 +29,7 @@ import (
 	"sync"
 	"testing"
 
-	"platon-go-sdk/common/hexutil"
+	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
 )
 
 type testEncoder struct {

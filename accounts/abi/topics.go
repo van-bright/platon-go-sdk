@@ -23,8 +23,8 @@ import (
 	"math/big"
 	"reflect"
 
-	"platon-go-sdk/common"
-	"platon-go-sdk/crypto"
+	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/crypto"
 )
 
 // MakeTopics converts a filter query argument list into a filter topic set.
