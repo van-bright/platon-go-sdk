@@ -16,7 +16,7 @@ func main() {
 		return
 	}
 
-	w.SetNetworkCfg(&network.DefaultTestNetConfig)
+	w.SetNetworkCfg(&network.DefaultMainNetConfig)
 
 	accounts := w.Accounts()
 	for _, account := range accounts {
@@ -25,7 +25,7 @@ func main() {
 		fmt.Printf("balance of %s is %s\n", addr, b.String())
 	}
 
-	digest, err := w.Transfer(accounts[0].Address, common.MustBech32ToAddress("atp1ydaqepg8s48gqhz29kk0wrf3lqdtj38d8mkcz3"), big.NewInt(1000000000000000000))
+	digest, err := w.Transfer(accounts[0].Address, common.MustBech32ToAddress("lat1u3vrx4n0hcmgdjzqk299xcvl2p5fqen8skh03c"), big.NewInt(1000000000000000000))
 	if err != nil {
 		fmt.Println("transfer failed: ", err)
 		return

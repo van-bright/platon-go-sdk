@@ -82,20 +82,6 @@ fmt.Println("accounts: ", accounts)
 查询多签证明.
 ### Sign(req *platon.SignReq) (string, error)
 使用已经解锁的账号, 对交易hash进行签名.
-### NewFilter(q platon.FilterQuery) (*big.Int, error)
-添加一个符合要求的过滤器
-### NewBlockFilter() (*big.Int, error)
-添加监听新块产生的过滤器, 使用`GetFilterChanges`方法监听事件发生的状态变化log.
-### NewPendingTransactionFilter() (*big.Int, error)
-添加监听有新的pending交易时的过滤器.
-### UninstallFilter(filterId *big.Int) bool
-移除一个监听器.
-### GetFilterChanges(filterId *big.Int) ([]types.Log, error)
-监听过滤器的log, 当满足要求的事件发生时, 将获得回调.
-### GetFilterLogs(filterId *big.Int) ([]types.Log, error)
-获取过滤器的log.
-### GetLogs(req platon.FilterQuery) ([]types.Log, error)
-获取符合查询条件的Log.
 ### AdminNodeInfo
 查询所连接的Node信息
 ```go
