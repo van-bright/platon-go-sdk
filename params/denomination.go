@@ -24,5 +24,5 @@ package params
 const (
 	Von  = 1
 	GVon = 1e9
-	ATP  = 1e18
+	LAT  = 1e18
 )

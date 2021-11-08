@@ -3,10 +3,10 @@ package platon_go_sdk
 import (
 	"context"
 	"errors"
-	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
 	"math/big"
 
 	"github.com/oldmanfan/platon-go-sdk/common"
+	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
 	"github.com/oldmanfan/platon-go-sdk/core/types"
 )
 

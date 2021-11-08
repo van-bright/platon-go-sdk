@@ -21,9 +21,9 @@ import "math/big"
 const (
 	GasLimitBoundDivisor uint64 = 1024               // The bound divisor of the gas limit, used in update calculations.
 	MinGasLimit          uint64 = 5000               // Minimum the gas limit may ever be.
-	GenesisGasLimit      uint64 = 4712388 * 2        // Gas limit of the Genesis block. 2020-10-15 Improved the default Gas Limit
+	GenesisGasLimit      uint64 = 4712388 * 2        // Gas limit of the Genesis block.
 	DefaultMinerGasCeil  uint64 = 21000 * 8000 * 1.2 // 201600000
-	MaxGasCeil           uint64 = 21000 * 30000
+	MaxGasCeil           uint64 = 300000000
 
 	MaximumExtraDataSize uint64 = 32    // Maximum size extra data may be after Genesis.
 	ExpByteGas           uint64 = 10    // Times ceil(log256(exponent)) for the EXP instruction.
@@ -133,13 +133,13 @@ const (
 
 	// PlatONPrecompiled contract gas
 
-	StakingGas          uint64 = 6000  // Gas needed for precompiled contract: stakingContract
-	CreateStakeGas      uint64 = 32000 // Gas needed for createStaking
-	EditCandidatGas     uint64 = 12000 // Gas needed for editCandidate
-	IncStakeGas         uint64 = 20000 // Gas needed for increaseStaking
-	WithdrewStakeGas    uint64 = 20000 // Gas needed for withdrewStaking
-	DelegateGas         uint64 = 16000 // Gas needed for delegate
-	WithdrewDelegateGas uint64 = 8000  // Gas needed for withdrewDelegate
+	StakingGas            uint64 = 6000  // Gas needed for precompiled contract: stakingContract
+	CreateStakeGas        uint64 = 32000 // Gas needed for createStaking
+	EditCandidateGas      uint64 = 12000 // Gas needed for editCandidate
+	IncStakeGas           uint64 = 20000 // Gas needed for increaseStaking
+	WithdrewStakeGas      uint64 = 20000 // Gas needed for withdrewStaking
+	DelegateGas           uint64 = 16000 // Gas needed for delegate
+	WithdrewDelegationGas uint64 = 8000  // Gas needed for withdrewDelegate
 
 	GovGas                   uint64 = 9000   // Gas needed for precompiled contract: govContract
 	SubmitTextProposalGas    uint64 = 320000 // Gas needed for submitText

@@ -22,14 +22,24 @@ import (
 
 const (
 	//These versions are meaning the current code version.
-	VersionMajor = 0          // Major version component of the current release
-	VersionMinor = 13         // Minor version component of the current release
-	VersionPatch = 2          // Patch version component of the current release
+	VersionMajor = 1          // Major version component of the current release
+	VersionMinor = 1          // Minor version component of the current release
+	VersionPatch = 1          // Patch version component of the current release
 	VersionMeta  = "unstable" // Version metadata to append to the version string
 
 	//CAUTION: DO NOT MODIFY THIS ONCE THE CHAIN HAS BEEN INITIALIZED!!!
-	GenesisVersion = uint32(0<<16 | 13<<8 | 2)
+	GenesisVersion = uint32(1<<16 | 0<<8 | 0)
 )
+
+func CodeVersion() uint32 {
+	return uint32(VersionMajor<<16 | VersionMinor<<8 | VersionPatch)
+}
+
+func LtMinorVersion(version uint32) bool {
+	localVersion := CodeVersion() >> 8
+	version = version >> 8
+	return localVersion < version
+}
 
 // Version holds the textual version string.
 var Version = func() string {
@@ -75,10 +85,13 @@ func ArchiveVersion(gitCommit string) string {
 	return vsn
 }
 
-func VersionWithCommit(gitCommit string) string {
+func VersionWithCommit(gitCommit, gitDate string) string {
 	vsn := VersionWithMeta
 	if len(gitCommit) >= 8 {
 		vsn += "-" + gitCommit[:8]
+	}
+	if (VersionMeta != "stable") && (gitDate != "") {
+		vsn += "-" + gitDate
 	}
 	return vsn
 }
