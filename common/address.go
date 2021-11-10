@@ -373,3 +373,10 @@ func (ma *MixedcaseAddress) ValidChecksum() bool {
 func (ma *MixedcaseAddress) Original() string {
 	return ma.original
 }
+
+func StringToAddress(s string) (Address, error) {
+	if IsHexAddress(s) {
+		return HexToAddress(s), nil
+	}
+	return Bech32ToAddress(s)
+}

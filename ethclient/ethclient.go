@@ -620,36 +620,36 @@ func (ec *Client) Evidences(ctx context.Context) (string, error) {
 	return evidence, nil
 }
 
-func (ec *Client) NewFilter(ctx context.Context, q platon.FilterQuery) (*big.Int, error) {
+func (ec *Client) NewFilter(ctx context.Context, q platon.FilterQuery) (rpc.ID, error) {
 	args, err := toFilterArg(q)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	var filterId hexutil.Big
+	var filterId rpc.ID
 	if err = ec.c.CallContext(ctx, &filterId, "platon_newFilter", args); err != nil {
-		return nil, err
+		return "", err
 	}
 
-	return (*big.Int)(&filterId), nil
+	return filterId, nil
 }
 
-func (ec *Client) NewBlockFilter(ctx context.Context) (*big.Int, error) {
-	var filterId hexutil.Big
+func (ec *Client) NewBlockFilter(ctx context.Context) (rpc.ID, error) {
+	var filterId rpc.ID
 	if err := ec.c.CallContext(ctx, &filterId, "platon_newBlockFilter"); err != nil {
-		return nil, err
+		return "", err
 	}
-	return (*big.Int)(&filterId), nil
+	return filterId, nil
 }
 
-func (ec *Client) NewPendingTransactionFilter(ctx context.Context) (*big.Int, error) {
-	var filterId hexutil.Big
+func (ec *Client) NewPendingTransactionFilter(ctx context.Context) (rpc.ID, error) {
+	var filterId rpc.ID
 	if err := ec.c.CallContext(ctx, &filterId, "platon_newPendingTransactionFilter"); err != nil {
-		return nil, err
+		return "", err
 	}
-	return (*big.Int)(&filterId), nil
+	return filterId, nil
 }
 
-func (ec *Client) UninstallFilter(ctx context.Context, filterId *big.Int) bool {
+func (ec *Client) UninstallFilter(ctx context.Context, filterId rpc.ID) bool {
 	var result bool
 	if err := ec.c.CallContext(ctx, &result, "platon_uninstallFilter", filterId); err != nil {
 		return false
@@ -658,8 +658,8 @@ func (ec *Client) UninstallFilter(ctx context.Context, filterId *big.Int) bool {
 }
 
 // GetLogs executes a filter query.
-func (ec *Client) GetLogs(ctx context.Context, q platon.FilterQuery) ([]types.Log, error) {
-	var result []types.Log
+func (ec *Client) GetLogs(ctx context.Context, q platon.FilterQuery) ([]*types.Log, error) {
+	var result []*types.Log
 	arg, err := toFilterArg(q)
 	if err != nil {
 		return nil, err
@@ -668,14 +668,14 @@ func (ec *Client) GetLogs(ctx context.Context, q platon.FilterQuery) ([]types.Lo
 	return result, err
 }
 
-func (ec *Client) GetFilterChanges(ctx context.Context, filterId *big.Int) ([]types.Log, error) {
+func (ec *Client) GetFilterChanges(ctx context.Context, filterId rpc.ID) ([]types.Log, error) {
 	var result []types.Log
 	err := ec.c.CallContext(ctx, &result, "platon_getFilterChanges", filterId)
 	return result, err
 }
 
-func (ec *Client) GetFilterLogs(ctx context.Context, filterId *big.Int) ([]types.Log, error) {
-	var result []types.Log
+func (ec *Client) GetFilterLogs(ctx context.Context, filterId rpc.ID) ([]*types.Log, error) {
+	var result []*types.Log
 	err := ec.c.CallContext(ctx, &result, "platon_getFilterLogs", filterId)
 	return result, err
 }
