@@ -10,6 +10,7 @@ import (
 	"github.com/oldmanfan/platon-go-sdk/core/types"
 	"github.com/oldmanfan/platon-go-sdk/ethclient"
 	"github.com/oldmanfan/platon-go-sdk/params"
+	"github.com/oldmanfan/platon-go-sdk/rpc"
 	"math/big"
 )
 
@@ -236,7 +237,7 @@ func (platon *PlatonRPC) TransactionReceipt(txHash common.Hash) (*types.Receipt,
 
 // to get transaction receipt by platon_getLogs
 // @param q  the filter query
-func (platon *PlatonRPC) FilterLogs(q platon.FilterQuery) ([]types.Log, error) {
+func (platon *PlatonRPC) FilterLogs(q platon.FilterQuery) ([]*types.Log, error) {
 	return platon.client.GetLogs(ctx, q)
 }
 
@@ -302,4 +303,42 @@ func (platon *PlatonRPC) Sign(req *platon.SignReq) (string, error) {
 // Return double sign report data.
 func (platon *PlatonRPC) Evidences() (string, error) {
 	return platon.client.Evidences(ctx)
+}
+
+func (platon *PlatonRPC) NewFilter(q platon.FilterQuery) (rpc.ID, error) {
+	return platon.client.NewFilter(ctx, q)
+}
+
+// Add a filter when new block created,
+// use `GetFilterChanges` to check state logs.
+func (platon *PlatonRPC) NewBlockFilter() (rpc.ID, error) {
+	return platon.client.NewBlockFilter(ctx)
+}
+
+// Creates a filter in the node, to notify when new pending transactions arrive.
+// To check if the state has changed, call platon_getFilterChanges.
+func (platon *PlatonRPC) NewPendingTransactionFilter() (rpc.ID, error) {
+	return platon.client.NewPendingTransactionFilter(ctx)
+}
+
+// Uninstalls a filter with given id.
+// Should always be called when watch is no longer needed.
+//Additionally Filters timeout when they aren't requested with platon_getFilterChanges for a period of time.
+func (platon *PlatonRPC) UninstallFilter(filterId rpc.ID) bool {
+	return platon.client.UninstallFilter(ctx, filterId)
+}
+
+// Polling method for a filter, which returns an array of logs which occurred since last poll.
+func (platon *PlatonRPC) GetFilterChanges(filterId rpc.ID) (json.RawMessage, error) {
+	return platon.client.GetFilterChanges(ctx, filterId)
+}
+
+// Returns an array of all logs matching filter with given id.
+func (platon *PlatonRPC) GetFilterLogs(filterId rpc.ID) ([]*types.Log, error) {
+	return platon.client.GetFilterLogs(ctx, filterId)
+}
+
+// Returns an array of all logs matching a given filter object.
+func (platon *PlatonRPC) GetLogs(q platon.FilterQuery) ([]*types.Log, error) {
+	return platon.client.GetLogs(ctx, q)
 }

@@ -7,6 +7,7 @@ import (
 	"github.com/oldmanfan/platon-go-sdk/core/types"
 	"github.com/oldmanfan/platon-go-sdk/ethclient"
 	"github.com/oldmanfan/platon-go-sdk/params"
+	"github.com/oldmanfan/platon-go-sdk/rpc"
 	"math/big"
 )
 
@@ -83,6 +84,24 @@ type Geb3 interface {
 	Evidences() (string, error)
 	// to Sign a hex string, with unlocked Signer
 	Sign(req *platon.SignReq) (string, error)
+	// Add a filter while requirements full filled.
+	NewFilter(q platon.FilterQuery) (rpc.ID, error)
+	// Add a filter when new block created,
+	// use `GetFilterChanges` to check state logs.
+	NewBlockFilter() (rpc.ID, error)
+	// Creates a filter in the node, to notify when new pending transactions arrive.
+	// To check if the state has changed, call platon_getFilterChanges.
+	NewPendingTransactionFilter() (rpc.ID, error)
+	// Uninstalls a filter with given id.
+	// Should always be called when watch is no longer needed.
+	//Additionally Filters timeout when they aren't requested with platon_getFilterChanges for a period of time.
+	UninstallFilter(filterId rpc.ID) bool
+	// Polling method for a filter, which returns an array of logs which occurred since last poll.
+	GetFilterChanges(filterId rpc.ID) (json.RawMessage, error)
+	// Returns an array of all logs matching filter with given id.
+	GetFilterLogs(filterId rpc.ID) ([]*types.Log, error)
+	// Returns an array of all logs matching a given filter object.
+	GetLogs(req platon.FilterQuery) ([]*types.Log, error)
 }
 
 func New(url string) (Geb3, error) {

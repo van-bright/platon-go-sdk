@@ -668,9 +668,10 @@ func (ec *Client) GetLogs(ctx context.Context, q platon.FilterQuery) ([]*types.L
 	return result, err
 }
 
-func (ec *Client) GetFilterChanges(ctx context.Context, filterId rpc.ID) ([]types.Log, error) {
-	var result []types.Log
+func (ec *Client) GetFilterChanges(ctx context.Context, filterId rpc.ID) (json.RawMessage, error) {
+	var result json.RawMessage
 	err := ec.c.CallContext(ctx, &result, "platon_getFilterChanges", filterId)
+
 	return result, err
 }
 
