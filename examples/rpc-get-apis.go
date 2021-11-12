@@ -66,4 +66,8 @@ func main() {
 
 	netver, err := web3g.NetworkID()
 	fmt.Println("NetworkID: ", netver, err)
+
+	header, err := web3g.HeaderByNumber(nil)
+	r, _ := header.MarshalJSON()
+	fmt.Println("HeaderByNumber: ", string(r), err)
 }

@@ -52,6 +52,10 @@ type Geb3 interface {
 	BlockByHash(hash string) (string, error)
 	// Return block info by block number, or one of 'latest', 'pending', 'earliest'
 	BlockByNumber(option interface{}) (string, error)
+	// Return header info by block number, or one of 'latest', 'pending', 'earliest'
+	HeaderByNumber(number *big.Int) (*types.Header, error)
+	// Return header info by hash
+	HeaderByHash(hash common.Hash) (*types.Header, error)
 	// Returns the information about a transaction requested by transaction hash.
 	TransactionByHash(hash common.Hash) (tx *types.Transaction, isPending bool, err error)
 	// Returns information about a transaction by block hash and transaction index position.

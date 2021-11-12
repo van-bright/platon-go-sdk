@@ -342,3 +342,11 @@ func (platon *PlatonRPC) GetFilterLogs(filterId rpc.ID) ([]*types.Log, error) {
 func (platon *PlatonRPC) GetLogs(q platon.FilterQuery) ([]*types.Log, error) {
 	return platon.client.GetLogs(ctx, q)
 }
+
+func (platon *PlatonRPC) HeaderByNumber(number *big.Int) (*types.Header, error) {
+	return platon.client.HeaderByNumber(ctx, number)
+}
+
+func (platon *PlatonRPC) HeaderByHash(hash common.Hash) (*types.Header, error) {
+	return platon.client.HeaderByHash(ctx, hash)
+}
