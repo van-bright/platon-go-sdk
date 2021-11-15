@@ -1,9 +1,7 @@
 package typedefs
 
 import (
-	"fmt"
 	"github.com/oldmanfan/platon-go-sdk/common"
-	"github.com/oldmanfan/platon-go-sdk/common/hexutil"
 	"github.com/oldmanfan/platon-go-sdk/ppos/codec"
 )
 
@@ -78,15 +76,15 @@ func (f *Function) ToBytes() []byte {
 	params := f.encodeParams()
 
 	argsList := append([]codec.BytesSlice{ftype}, params...)
-	fmt.Println("Function Parameters List:")
-	for _, p := range argsList {
-		fmt.Println(hexutil.Encode(p)[2:])
-	}
+	//fmt.Println("Function Parameters List:")
+	//for _, p := range argsList {
+	//	fmt.Println(hexutil.Encode(p)[2:])
+	//}
 
 	argsBytes := codec.EncodeBytesSlice(argsList)
 
-	data := hexutil.Encode(argsBytes)
-	fmt.Println("Function Data is: " + data[2:])
+	//data := hexutil.Encode(argsBytes)
+	//fmt.Println("Function Data is: " + data[2:])
 
 	return argsBytes
 }

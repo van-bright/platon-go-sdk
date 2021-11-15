@@ -37,7 +37,7 @@ func (fe *FunctionExecutor) SendWithRaw(f *typedefs.Function) (json.RawMessage, 
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("[SendWithRaw] Http Response: " + string(r))
+	//fmt.Println("[SendWithRaw] Http Response: " + string(r))
 	return r, nil
 }
 
@@ -154,7 +154,7 @@ func (fe *FunctionExecutor) doCallRawTx(to common2.Address, data []byte) ([]byte
 	}
 
 	b, err := client.CallContract(ctx, msg, "latest")
-	fmt.Println("[doCallRawTx] HTTP RESPONSE: " + string(b))
+	//fmt.Println("[doCallRawTx] HTTP RESPONSE: " + string(b))
 	if err != nil {
 		return nil, err
 	}

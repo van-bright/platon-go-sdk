@@ -44,6 +44,10 @@ fmt.Println("accounts: ", accounts)
 ### CodeAt(bech32Account string, pos interface{}) ([]byte, error)
 查询账号`bech32Account`在`pos`位置存储的合约代码, `pos`可以是`latest`, `pending`, 或者`earliest`.
 如果是EOA账号, 则无代码返回.
+### HeaderByNumber(number *big.Int) (*types.Header, error)
+通过块高查询header块的信息. 如果查询`latest`的头信息, 使用参数`nil`
+### HeaderByHash(hash common.Hash) (*types.Header, error)
+通过hash查询header的信息.
 ### NonceAt(bech32Account string, pos interface{}) (uint64, error)
 查询账号`bech32Account`在`pos`位置的`nonce`值, `pos`可以是`latest`, `pending`, 或者`earliest`
 ### TransactionCountByHash(blockHash common.Hash) (uint, error)

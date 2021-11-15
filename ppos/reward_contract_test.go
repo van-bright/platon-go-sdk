@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	MainFanAccount = "atp1qv5ffg7z3h42zt4e035vja65d86al7q0nr9s0g"
+	MainFanAccount = "lat1qzqykpmfwvuj9lf2mx88r6vx2q0lmeals83aw8"
 	SNZPoolId      = "0xc0dc97ee57ba202faf012ecb72bf30aebcd2cf7c161d7012017e0320e0db15925c107998bd833d61ec4c2689172d7e34a0371f4511773641e00814c2632b0e66"
 	XiaoYiId       = "0x0423022e05633d8d2a80cb66d65d7b8bb267ef3c5deeb6cc124726219ddcd05194f6e958207443c3d39fb81b1072025b24525c7f2a14a2a2076b59a9af7bb70e"
 )
